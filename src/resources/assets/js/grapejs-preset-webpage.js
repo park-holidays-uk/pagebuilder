@@ -1,5 +1,5 @@
 /*export default*/
-grapesjs.plugins.add('additional-options', (editor, options) => {
+grapesjs.plugins.add('preset-webpage', (editor, options) => {
 
     var opt = options || {};
     var config = editor.getConfig();
@@ -7,7 +7,11 @@ grapesjs.plugins.add('additional-options', (editor, options) => {
     var modal = editor.Modal;
 
     config.showDevices = 0;
-    console.log(config);
+
+    /** DOM Wrapper **/
+    var domComponents = editor.DomComponents;
+    var wrapper = domComponents.getWrapper();
+    // wrapper.set('attributes', { 'data-gjs-droppable': '.column' });
 
     /** IMPORTER **/
     var codeViewer = editor.CodeManager.getViewer('CodeMirror').clone();
@@ -98,7 +102,34 @@ grapesjs.plugins.add('additional-options', (editor, options) => {
 
     /** Buttons **/
     var pnm = editor.Panels;
+    pnm.addPanel({ id: 'options' });
+
     pnm.addButton('options', [{
+            id: 'sw-visibility',
+            className: 'fa fa-square-o',
+            command: 'sw-visibility',
+            attributes: { title: 'View Components' },
+            active: true
+        },
+        {
+            id: 'preview',
+            className: 'fa fa-eye',
+            command: 'preview',
+            attributes: { title: 'Preview' }
+        },
+        {
+            id: 'fullscreen',
+            className: 'fa fa-arrows-alt',
+            command: 'fullscreen',
+            attributes: { title: 'Fullscreen' }
+        },
+        {
+            id: 'export-template',
+            className: 'fa fa-code',
+            command: 'export-template',
+            attributes: { title: 'View code' }
+        },
+        {
             id: 'undo',
             className: 'fa fa-undo icon-undo',
             command: 'undo',
@@ -141,4 +172,27 @@ grapesjs.plugins.add('additional-options', (editor, options) => {
             attributes: { 'title': 'Mobile' },
         }
     ]);
+
+    /** Views  */
+    pnm.addPanel({ id: 'views' });
+    pnm.addPanel({ id: 'views-container' });
+    // cmdm.get('open-blocks');
+
+    pnm.addButton('views', [{
+            id: 'open-layers',
+            className: 'fa fa-bars',
+            command: 'open-layers',
+            attributes: { title: 'Open Layer Manager' },
+            active: false,
+        },
+        {
+            id: 'open-blocks',
+            className: 'fa fa-th-large',
+            command: 'open-blocks',
+            attributes: { title: 'Open Blocks' },
+            active: true,
+        }
+    ]);
+
+    console.log(pnm);
 });

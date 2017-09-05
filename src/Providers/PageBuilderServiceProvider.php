@@ -21,6 +21,9 @@ class PageBuilderServiceProvider extends ServiceProvider
         // Views
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'pagebuilder');
 
+        // Migrations
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+
         // Publish config file
         $this->publishes([
             __DIR__.'/../config/pagebuilder.php' => config_path('pagebuilder.php'),

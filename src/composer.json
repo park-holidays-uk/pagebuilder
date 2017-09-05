@@ -10,7 +10,8 @@
     "require": {},
     "autoload": {
         "classmap": [
-            "Http/Controllers"
+            "Http/Controllers",
+            "Models"
         ],
         "psr-4": {
 
