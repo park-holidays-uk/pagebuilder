@@ -17,12 +17,15 @@ class CreatePageBuilderBlocksTable extends Migration
             $table->increments('id');
             $table->integer('block_group_id')->unsigned();
 
-            $table->string('block_id');
+            $table->string('block_id')->nullable();
             $table->string('label');
             $table->text('html_base64');
             $table->string('attributes')->nullable()->default(null);
             $table->string('properties', 1000)->nullable()->default(null);
             
+            $table->string('tag', 60)->nullable();
+            $table->boolean('dynamic')->default(false);
+
             $table->timestamps();
             $table->softDeletes();
         });
