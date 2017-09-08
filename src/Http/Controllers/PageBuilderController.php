@@ -2,75 +2,119 @@
 
 namespace ParkHolidays\PageBuilder\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+
+use ParkHolidays\PageBuilder\Models\Block;
+use ParkHolidays\PageBuilder\Models\Template;
+use App\Models\Pages\Page;
 
 class PageBuilderController extends Controller
 {
-	public function dashboard()
-	{
-		return view('pagebuilder::dashboard');
-	}
-
-	public function pageEditor($id = null)
+	public function editor($type, $id)
 	{
 		$viewModel = new \StdClass;
+		$record = $this->getRecord($type, $id);
 		
-		$viewModel->components = preg_replace("/\s+|\n+|\r/", ' ', base64_decode('PGRpdiBjbGFzcz0iYWR2ZXJ0LXByb21vIG9uZSB0ZXh0LXdoaXRlIg0KICAgICBkYXRhLWdqcy1jdXN0b20tbmFtZT0iQWR2ZXJ0IFByb21vIiANCj4NCiAgICA8ZGl2IGNsYXNzPSJpbWFnZSIgc3R5bGU9ImJhY2tncm91bmQtaW1hZ2U6IHVybChodHRwczovL3Bhcmtob2xpZGF5cy5zMy5hbWF6b25hd3MuY29tL3N0YXRpY19hc3NldHMvaG9tZV9wYWdlL2FkX29uZV9ob2xpZGF5cy5wbmcpOyINCiAgICAgICAgIGRhdGEtZ2pzLWN1c3RvbS1uYW1lPSJCYWNrZ3JvdW5kIEltYWdlIg0KICAgICAgICAgZGF0YS1nanMtcmVtb3ZhYmxlPSJmYWxzZSINCiAgICAgICAgIGRhdGEtZ2pzLWNvcHlhYmxlPSJmYWxzZSINCiAgICAgICAgIGRhdGEtZ2pzLWRyYWdnYWJsZT0iZmFsc2UiDQogICAgPjwvZGl2Pg0KICAgIDxoMiBjbGFzcz0ic2F0aXNmeS1yZWd1bGFyIHJvdGF0ZSBtYi0wIHctNTAgdGV4dC1jZW50ZXIiDQogICAgICAgIGRhdGEtZ2pzLXJlbW92YWJsZT0iZmFsc2UiDQogICAgICAgIGRhdGEtZ2pzLWNvcHlhYmxlPSJmYWxzZSINCiAgICAgICAgZGF0YS1nanMtZHJhZ2dhYmxlPSJmYWxzZSINCiAgICA+RGlwIFlvdXI8L2gyPg0KICAgIDxoMiBjbGFzcz0icmFsZXdheS1ib2xkIGgxIG0tMCBtdC0yIHctNTAgdGV4dC1jZW50ZXIiDQogICAgICAgIGRhdGEtZ2pzLXJlbW92YWJsZT0iZmFsc2UiDQogICAgICAgIGRhdGEtZ2pzLWNvcHlhYmxlPSJmYWxzZSINCiAgICAgICAgZGF0YS1nanMtZHJhZ2dhYmxlPSJmYWxzZSINCiAgICA+VG9lPC9oMj4NCiAgICA8aDIgY2xhc3M9InNhdGlzZnktcmVndWxhciByb3RhdGUgbS0wIHctNTAgdGV4dC1jZW50ZXIiDQogICAgICAgIGRhdGEtZ2pzLXJlbW92YWJsZT0iZmFsc2UiDQogICAgICAgIGRhdGEtZ2pzLWNvcHlhYmxlPSJmYWxzZSINCiAgICAgICAgZGF0YS1nanMtZHJhZ2dhYmxlPSJmYWxzZSINCiAgICA+aW50bzwvaDI+DQogICAgPGgyIGNsYXNzPSJyYWxld2F5LWJvbGQgaDEgbS0wIHctNTAgdGV4dC1jZW50ZXIiDQogICAgICAgIGRhdGEtZ2pzLXJlbW92YWJsZT0iZmFsc2UiDQogICAgICAgIGRhdGEtZ2pzLWNvcHlhYmxlPSJmYWxzZSINCiAgICAgICAgZGF0YS1nanMtZHJhZ2dhYmxlPSJmYWxzZSINCiAgICA+MjAxODwvaDI+DQogICAgPGEgY2xhc3M9Img0IHByLTMiDQogICAgICAgZGF0YS1nanMtcmVtb3ZhYmxlPSJmYWxzZSINCiAgICAgICAgZGF0YS1nanMtY29weWFibGU9ImZhbHNlIg0KICAgICAgICBkYXRhLWdqcy1kcmFnZ2FibGU9ImZhbHNlIg0KICAgID4yMDE4IE9mZmVyczxpIGNsYXNzPSJpY29uLWNoZXZyb24tcmlnaHQiPjwvaT48L2E+DQo8L2Rpdj4='));
+		$viewModel->url_store = '/ajax/store/'. $type .'/'. $id;
+		$viewModel->url_load = '/ajax/load/'. $type .'/'. $id;
+		$viewModel->mode = $type;
 
-		return view('pagebuilder::editor', ['viewModel' => $viewModel]);
+		return $record ? view('pagebuilder::editor', ['viewModel' => $viewModel]) : abort(404);
 	}
 
 	/*
 	*	Ajax 
 	*/
-	public function getTemplates() {
-		$templates = collect([
-			(object) [
-				'category' => 'Layouts',
-				'block_id' => 'layout-one',
-				'label' => '1 Column',
-				'content' => base64_decode('PGRpdiBjbGFzcz0iZ3JpZCIgDQogICAgICAgICBkYXRhLWdqcy1jdXN0b20tbmFtZT0iUm93IiANCiAgICAgICAgIGRhdGEtZ2pzLWRyb3BwYWJsZT0iLmNvbHVtbiINCiAgICAgICAgIGRhdGEtZ2pzLWNvcHlhYmxlPSJmYWxzZSINCiAgICA+DQogICAgICAgIDxkaXYgY2xhc3M9ImNvbC0xMiIgDQogICAgICAgICAgICAgZGF0YS1nanMtY3VzdG9tLW5hbWU9IkNvbHVtbiIgDQogICAgICAgICAgICAgZGF0YS1nanMtcmVtb3ZhYmxlPSJmYWxzZSINCiAgICAgICAgICAgICBkYXRhLWdqcy1jb3B5YWJsZT0iZmFsc2UiDQogICAgICAgICAgICAgZGF0YS1nanMtZHJhZ2dhYmxlPSJmYWxzZSINCiAgICAgICAgPjwvZGl2Pg0KICAgIDwvZGl2Pg=='),
-				'attributes' => (object) [
-					'class' => 'gjs-fonts gjs-f-b1'
-				]
-			],
-			(object) [
-				'category' => 'Layouts',
-				'block_id' => 'layout-two',
-				'label' => '2 Column 6/6',
-				'content' => base64_decode('PGRpdiBjbGFzcz0iZ3JpZCIgDQogICAgICAgICBkYXRhLWdqcy1jdXN0b20tbmFtZT0iUm93IiANCiAgICAgICAgIGRhdGEtZ2pzLWRyb3BwYWJsZT0iLmNvbHVtbiINCiAgICAgICAgIGRhdGEtZ2pzLWNvcHlhYmxlPSJmYWxzZSINCiAgICA+DQogICAgICAgIDxkaXYgY2xhc3M9ImNvbC02IiANCiAgICAgICAgICAgICBkYXRhLWdqcy1jdXN0b20tbmFtZT0iQ29sdW1uIiANCiAgICAgICAgICAgICBkYXRhLWdqcy1yZW1vdmFibGU9ImZhbHNlIg0KICAgICAgICAgICAgIGRhdGEtZ2pzLWNvcHlhYmxlPSJmYWxzZSINCiAgICAgICAgICAgICBkYXRhLWdqcy1kcmFnZ2FibGU9ImZhbHNlIg0KICAgICAgICA+PC9kaXY+DQogICAgICAgIDxkaXYgY2xhc3M9ImNvbC02IiANCiAgICAgICAgICAgICBkYXRhLWdqcy1jdXN0b20tbmFtZT0iQ29sdW1uIiANCiAgICAgICAgICAgICBkYXRhLWdqcy1yZW1vdmFibGU9ImZhbHNlIg0KICAgICAgICAgICAgIGRhdGEtZ2pzLWNvcHlhYmxlPSJmYWxzZSINCiAgICAgICAgICAgICBkYXRhLWdqcy1kcmFnZ2FibGU9ImZhbHNlIg0KICAgICAgICA+PC9kaXY+DQogICAgPC9kaXY+'),
-				'attributes' => (object) [
-					'class' => 'gjs-fonts gjs-f-b2'
-				]
-			],
-			(object) [
-				'category' => 'Layouts',
-				'block_id' => 'layout-three',
-				'label' => '2 Column 8/4',
-				'content' => base64_decode('PGRpdiBjbGFzcz0iZ3JpZCIgDQogICAgICAgICBkYXRhLWdqcy1jdXN0b20tbmFtZT0iUm93IiANCiAgICAgICAgIGRhdGEtZ2pzLWRyb3BwYWJsZT0iLmNvbHVtbiINCiAgICAgICAgIGRhdGEtZ2pzLWNvcHlhYmxlPSJmYWxzZSINCiAgICA+DQogICAgICAgIDxkaXYgY2xhc3M9ImNvbC04IiANCiAgICAgICAgICAgICBkYXRhLWdqcy1jdXN0b20tbmFtZT0iQ29sdW1uIiANCiAgICAgICAgICAgICBkYXRhLWdqcy1yZW1vdmFibGU9ImZhbHNlIg0KICAgICAgICAgICAgIGRhdGEtZ2pzLWNvcHlhYmxlPSJmYWxzZSINCiAgICAgICAgICAgICBkYXRhLWdqcy1kcmFnZ2FibGU9ImZhbHNlIg0KICAgICAgICA+PC9kaXY+DQogICAgICAgIDxkaXYgY2xhc3M9ImNvbC00IiANCiAgICAgICAgICAgICBkYXRhLWdqcy1jdXN0b20tbmFtZT0iQ29sdW1uIiANCiAgICAgICAgICAgICBkYXRhLWdqcy1yZW1vdmFibGU9ImZhbHNlIg0KICAgICAgICAgICAgIGRhdGEtZ2pzLWNvcHlhYmxlPSJmYWxzZSINCiAgICAgICAgICAgICBkYXRhLWdqcy1kcmFnZ2FibGU9ImZhbHNlIg0KICAgICAgICA+PC9kaXY+DQogICAgPC9kaXY+'),
-				'attributes' => (object) [
-					'class' => 'gjs-fonts gjs-f-b37'
-				]
-			],
-		]);
 
-		return $templates->toJson();
+	/** LOAD **/
+	public function load($type, $id, Request $request) 
+	{
+		$record = $this->getRecord($type, $id);
+
+		if($record) {
+			$data = collect([
+				'gjs-assets' => [],
+				'gjs-css' => base64_decode($record->css_base64),
+				'gjs-html' => preg_replace("/\s+|\n+|\r/", ' ', base64_decode($record->html_base64)),
+				'gjs-components' => $record->gjs_components
+			]);
+		}
+
+		return isset($data) ? $data->toArray() : [];
 	}
 
-	public function getBlocks() {
-		$blocks = collect([
-			// Blocks
-			(object) [
-				'category' => 'Promotion Blocks',
-				'block_id' => 'promo-one',
-				'label' => 'Holidays Advert Promo',
-				'content' => base64_decode('PGRpdiBjbGFzcz0iYWR2ZXJ0LXByb21vIG9uZSB0ZXh0LXdoaXRlIg0KICAgICBkYXRhLWdqcy1jdXN0b20tbmFtZT0iQWR2ZXJ0IFByb21vIiANCj4NCiAgICA8ZGl2IGNsYXNzPSJpbWFnZSIgc3R5bGU9ImJhY2tncm91bmQtaW1hZ2U6IHVybChodHRwczovL3Bhcmtob2xpZGF5cy5zMy5hbWF6b25hd3MuY29tL3N0YXRpY19hc3NldHMvaG9tZV9wYWdlL2FkX29uZV9ob2xpZGF5cy5wbmcpOyINCiAgICAgICAgIGRhdGEtZ2pzLWN1c3RvbS1uYW1lPSJCYWNrZ3JvdW5kIEltYWdlIg0KICAgICAgICAgZGF0YS1nanMtcmVtb3ZhYmxlPSJmYWxzZSINCiAgICAgICAgIGRhdGEtZ2pzLWNvcHlhYmxlPSJmYWxzZSINCiAgICAgICAgIGRhdGEtZ2pzLWRyYWdnYWJsZT0iZmFsc2UiDQogICAgPjwvZGl2Pg0KICAgIDxoMiBjbGFzcz0ic2F0aXNmeS1yZWd1bGFyIHJvdGF0ZSBtYi0wIHctNTAgdGV4dC1jZW50ZXIiDQogICAgICAgIGRhdGEtZ2pzLXJlbW92YWJsZT0iZmFsc2UiDQogICAgICAgIGRhdGEtZ2pzLWNvcHlhYmxlPSJmYWxzZSINCiAgICAgICAgZGF0YS1nanMtZHJhZ2dhYmxlPSJmYWxzZSINCiAgICA+RGlwIFlvdXI8L2gyPg0KICAgIDxoMiBjbGFzcz0icmFsZXdheS1ib2xkIGgxIG0tMCBtdC0yIHctNTAgdGV4dC1jZW50ZXIiDQogICAgICAgIGRhdGEtZ2pzLXJlbW92YWJsZT0iZmFsc2UiDQogICAgICAgIGRhdGEtZ2pzLWNvcHlhYmxlPSJmYWxzZSINCiAgICAgICAgZGF0YS1nanMtZHJhZ2dhYmxlPSJmYWxzZSINCiAgICA+VG9lPC9oMj4NCiAgICA8aDIgY2xhc3M9InNhdGlzZnktcmVndWxhciByb3RhdGUgbS0wIHctNTAgdGV4dC1jZW50ZXIiDQogICAgICAgIGRhdGEtZ2pzLXJlbW92YWJsZT0iZmFsc2UiDQogICAgICAgIGRhdGEtZ2pzLWNvcHlhYmxlPSJmYWxzZSINCiAgICAgICAgZGF0YS1nanMtZHJhZ2dhYmxlPSJmYWxzZSINCiAgICA+aW50bzwvaDI+DQogICAgPGgyIGNsYXNzPSJyYWxld2F5LWJvbGQgaDEgbS0wIHctNTAgdGV4dC1jZW50ZXIiDQogICAgICAgIGRhdGEtZ2pzLXJlbW92YWJsZT0iZmFsc2UiDQogICAgICAgIGRhdGEtZ2pzLWNvcHlhYmxlPSJmYWxzZSINCiAgICAgICAgZGF0YS1nanMtZHJhZ2dhYmxlPSJmYWxzZSINCiAgICA+MjAxODwvaDI+DQogICAgPGEgY2xhc3M9Img0IHByLTMiDQogICAgICAgZGF0YS1nanMtcmVtb3ZhYmxlPSJmYWxzZSINCiAgICAgICAgZGF0YS1nanMtY29weWFibGU9ImZhbHNlIg0KICAgICAgICBkYXRhLWdqcy1kcmFnZ2FibGU9ImZhbHNlIg0KICAgID4yMDE4IE9mZmVyczxpIGNsYXNzPSJpY29uLWNoZXZyb24tcmlnaHQiPjwvaT48L2E+DQo8L2Rpdj4='),
-				'attributes' => (object) [
-					'class' => 'gjs-fonts gjs-f-hero'
-				]
-			]
-		]);
+	/** STORE **/
+	public function store($type, $id, Request $request) 
+	{
+		parse_str($request->getContent(), $data);
 
-		return $blocks->toJson();
+		try {
+			$record = $this->getRecord($type, $id);
+			
+			$record->html_base64 = base64_encode($data['gjs-html']);
+			$record->css_base64 = base64_encode($data['gjs-css']);
+			$record->gjs_components = $data['gjs-components'];
+			$record->save();
+
+			return collect(['status' => 100])->toJson();
+		}
+		catch (exception $ex) {
+			return $ex;
+		}
+	}
+
+	/** Get Blocks **/
+	public function getBlocks($type, $userDefined = true) 
+	{
+		$blocks = null;
+
+		switch($type) {
+			case 'blocks': 
+				$blocks = Block::where('is_layout', false)->where('is_user_block', (boolean) $userDefined)->get();
+				break;
+			case 'layouts': 
+				$blocks = Block::where('is_layout', true)->get();
+				break;
+		}
+
+		$data = collect([]);
+
+		if($blocks) {
+			$blocks->each(function($item, $key) use($data) { 
+				$data->push((object) [
+					'category' => $item->group->name,
+					'block_id' => $item->block_id,
+					'label' => $item->label,
+					'content' => base64_decode($item->html_base64),
+					'attributes' => $item->attributes
+				]);
+			});
+		}
+
+		return $data->toJson();
+	}
+
+	/*
+	*	Private Methods
+	*/
+
+	function getRecord($type, $id) 
+	{
+		$record = null;
+		
+		switch($type) {
+			case 'block': 
+				$record = Block::where('id', (int) $int)->where('is_layout', false)->where('is_user_block', true)->first();
+				break;
+			case 'layout': 
+				$record = Block::where('id', (int) $int)->where('is_layout', true)->first();
+				break;
+			case 'page': 
+				$record = Page::find((int)$id);
+				break;
+		}
+
+		return $record;
 	}
 }
