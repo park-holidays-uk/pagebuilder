@@ -17,8 +17,10 @@ class CreatePageBuilderTemplatesTable extends Migration
             $table->increments('id');
 
             $table->string('label');
-            $table->text('html_base64');
-            $table->text('gjs_components');
+            $table->mediumText('html_base64');
+            $table->mediumText('css_base64');
+            $table->mediumText('gjs_components');
+            $table->string('attributes')->nullable()->default(null);
             $table->string('properties', 1000)->nullable()->default(null);
             
             $table->timestamps();

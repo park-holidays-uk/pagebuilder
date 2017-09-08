@@ -10,6 +10,6 @@ class BlockGroup extends Model
 
     public function blocks()
     {
-        return $this->hasMany('ParkHolidays\PageBuilder\Models\Block');
+        return $this->hasMany('ParkHolidays\PageBuilder\Models\Block', 'block_group_id', 'id');
     }
 }

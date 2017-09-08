@@ -10,6 +10,6 @@ class Block extends Model
 
     public function group()
     {
-        return $this->belongsTo('ParkHolidays\PageBuilder\Models\BlockGroup');
+        return $this->belongsTo('ParkHolidays\PageBuilder\Models\BlockGroup', 'block_group_id');
     }
 }
