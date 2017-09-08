@@ -2,6 +2,7 @@
 
 return [
 
-    'domain' => env('PAGEBUILDER_DOMAIN', $_SERVER['HTTP_HOST']) // Restrict usage to specific domain.
-
+    /** Domain Restriction **/
+    'domain' => env('PAGEBUILDER_DOMAIN', ''), 
+    
 ];
