@@ -105,10 +105,10 @@ class PageBuilderController extends Controller
 		
 		switch($type) {
 			case 'block': 
-				$record = Block::where('id', (int) $int)->where('is_layout', false)->where('is_user_block', true)->first();
+				$record = Block::where('id', (int) $id)->where('is_layout', false)->where('is_user_block', true)->first();
 				break;
 			case 'layout': 
-				$record = Block::where('id', (int) $int)->where('is_layout', true)->first();
+				$record = Block::where('id', (int) $id)->where('is_layout', true)->first();
 				break;
 			case 'page': 
 				$record = Page::find((int)$id);

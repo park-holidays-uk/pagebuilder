@@ -25,21 +25,28 @@
     
     <!-- Custom Scripts -->
     <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapejs-preset-webpage.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapejs-modals.js') }}"></script>
     <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapejs-blocks.js') }}"></script>
     <script type="text/javascript"> 
         var editor = grapesjs.init({
             container : '#gjs',
+            // autorender: 0,
             fromElement: true,
             showOffsets: true,
             height: '100%',
             
             plugins: [
                 'preset-webpage',
+                'modals',
                 'blocks'
             ],
             
             pluginsOpts: {
                 'preset-webpage': {
+                    mode: '{{ $viewModel->mode }}'
+                },
+                
+                'modals': {
                     mode: '{{ $viewModel->mode }}'
                 },
 
@@ -77,9 +84,9 @@
             //     dropzone: 0
             // },
 
-            // panels: {
-            //     defaults: []
-            // }
+            panels: {
+                defaults: []
+            }
         });
     </script>
 </body>

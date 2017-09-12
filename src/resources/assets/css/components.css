@@ -2,7 +2,7 @@
 * GRID
 */
 
-[class*="grid"] {
+.gjs-dashed [class*="grid"] {
     padding-top: 10px !important;
     padding-right: 10px !important;
     padding-bottom: 10px !important;
@@ -11,7 +11,7 @@
     margin-right: 0 !important;
 }
 
-[class*="container"],
-[class*="col"] {
+.gjs-dashed [class*="container"],
+.gjs-dashed [class*="col"] {
     min-height: 75px !important;
 }
