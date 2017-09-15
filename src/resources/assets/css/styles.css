@@ -21,7 +21,76 @@ body {
 *   GRAPE JS 
 */
 
+.gjs-clickable-blocks .gjs-block {
+    cursor: pointer !important;
+}
+
+.gjs-clickable-blocks .gjs-block:hover,
+.gjs-clickable-blocks .gjs-block:focus {
+    border-color: #fff;
+}
+
+
+/** CANVAS **/
+
+
+/* .gjs-cv-canvas {
+    transition: all 0.15s;
+} */
+
+.gjs-pn-attributes-shown .gjs-cv-canvas {
+    left: 15%;
+    width: 70%;
+}
+
+
+/** VIEWS **/
+
+#gjs-pn-views .gjs-pn-buttons {
+    display: flex;
+    flex-direction: row !important;
+}
+
+#gjs-pn-views .gjs-pn-buttons .gjs-pn-btn {
+    flex: 1;
+}
+
+
+/** PANELS **/
+
+.gjs-pn-active {
+    color: #e01e48 !important;
+}
+
 #gjs-pn-devices-c {
     z-index: 1;
     width: 85%;
+}
+
+#gjs-pn-attributes {
+    display: none;
+    position: fixed;
+    top: 40px;
+    left: 0;
+    width: 15%;
+}
+
+.gjs-pn-attributes-shown #gjs-pn-attributes {
+    display: block;
+}
+
+
+/** MODALS **/
+
+.gjs-mdl-dialog .gjs-mdl-header {
+    padding: 15px !important;
+}
+
+.gjs-mdl-dialog .gjs-mdl-header .gjs-mdl-btn-close {
+    top: 8px !important;
+}
+
+.gjs-import-label,
+.CodeMirror-wrap {
+    margin-bottom: 15px;
 }
