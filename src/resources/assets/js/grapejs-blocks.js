@@ -19,10 +19,10 @@ grapesjs.plugins.add('blocks', (editor, options) => {
      *   Functions 
      */
 
-    var loadBlocks = function(_userDefined = true) {
+    var loadBlocks = function(_includeUserDefined = true) {
         $('.gjs-block-categories .gjs-block-category').css('display', 'none');
         $.ajax({
-            url: '/ajax/get/blocks/' + _userDefined,
+            url: '/ajax/get/blocks/' + _includeUserDefined,
         }).done(function(_data) {
             var _blocks = JSON.parse(_data);
 

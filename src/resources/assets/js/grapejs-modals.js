@@ -25,7 +25,7 @@ grapesjs.plugins.add('modals', (editor, options) => {
         }).done(function(_data) {
             var _layouts = JSON.parse(_data);
             var container = document.createElement('div');
-            container.classList = 'gjs-blocks-c';
+            container.classList = 'gjs-blocks-c gjs-clickable-blocks';
 
             _.forEach(_layouts, function(_block) {
                 var block = document.createElement('div');
@@ -38,7 +38,7 @@ grapesjs.plugins.add('modals', (editor, options) => {
 
                 block.addEventListener('click', function() {
                     editor.setComponents(_block.content);
-                    console.log(editor.UndoManager);
+                    editor.UndoManager.clear();
                     modal.close();
                 });
 
