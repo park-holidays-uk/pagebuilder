@@ -15,3 +15,8 @@
 .gjs-dashed [class*="col"] {
     min-height: 75px !important;
 }
+
+.gjs-dashed [class*="container"] {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
