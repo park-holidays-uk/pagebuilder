@@ -25,12 +25,34 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     // config.showDevices = 0;
 
     /**  **/
-    var isPageMode = (isPageMode);
+    var isPageMode = (opt.mode == 'page');
 
     /** IMPORTER **/
     var codeViewer = editor.CodeManager.getViewer('CodeMirror').clone();
     var container = document.createElement('div');
     var importBtn = document.createElement('button');
+
+    var setDefaultProperties = function(node) {
+        var properties = [
+            { 'attribute': 'removable', 'value': false },
+            { 'attribute': 'draggable', 'value': false },
+            { 'attribute': 'droppable', 'value': false },
+            { 'attribute': 'stylable', 'value': false },
+            { 'attribute': 'copyable', 'value': false },
+            { 'attribute': 'resizable', 'value': false },
+            { 'attribute': 'editable', 'value': false },
+        ]
+
+        _.forEach(properties, function(_property) {
+            node.attr('data-gjs-' + _property.attribute, _property.value);
+        });
+
+        $(node).children().each(function() {
+            setDefaultProperties($(this));
+        });
+
+        return node;
+    }
 
     // Init import button
     importBtn.innerHTML = 'Import';
@@ -38,9 +60,19 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     importBtn.onclick = function() {
         var code = codeViewer.editor.getValue();
         editor.DomComponents.getWrapper().set('content', '');
-        editor.setComponents(code.trim());
+
+        var jQo = setDefaultProperties($(code));
+        code = jQo[0].outerHTML;
+        editor.setComponents(code);
         modal.close();
     };
+
+    // Init code viewer
+    codeViewer.set({
+        codeName: 'htmlmixed',
+        theme: opt.codeViewerTheme || 'hopscotch',
+        readOnly: 0
+    });
 
     /*
      *   COMMANDS
@@ -51,9 +83,13 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     commands.add('empty-canvas', {
         run: function(editor, sender) {
             sender && sender.set('active', false);
-            if (confirm('Are you sure to empty the canvas?')) {
+            if (confirm('Are you sure to empty the canvas? \nYou will not be able to undo it.')) {
                 var comps = editor.DomComponents.clear();
-                editor.runCommand('open-layouts-modal');
+
+                if (isPageMode) {
+                    editor.UndoManager.clear();
+                    editor.runCommand('open-layouts-modal');
+                }
             }
         }
     });
@@ -110,7 +146,7 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
 
                 modal.setContent('');
                 modal.setContent(container);
-                // codeViewer.setContent('');
+                codeViewer.setContent('');
                 modal.open();
                 viewer.refresh();
             }
@@ -135,12 +171,14 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     /*
      *   PANELS
      */
+
     var panels = editor.Panels;
     panels.addPanel({ id: 'options' });
 
     /*
      *   BUTTONS
      */
+
     panels.addButton('options', [{
             id: 'preview',
             className: 'fa fa-eye',
@@ -152,15 +190,19 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
             className: 'fa fa-floppy-o',
             command: 'save',
             attributes: { title: 'Save (CTRL/CMD + S)' }
-        },
-        {
+        }
+    ]);
+
+    if (!isPageMode) {
+        panels.addButton('options', [{
             id: 'import',
             className: 'fa fa-download',
             command: 'html-import',
-            attributes: { title: 'Import' },
-            disabled: (!isPageMode)
-        },
-        {
+            attributes: { title: 'Import' }
+        }]);
+    }
+
+    panels.addButton('options', [{
             id: 'undo',
             className: 'fa fa-undo icon-undo',
             command: 'undo',
@@ -183,6 +225,7 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     /*
      *   DEVICES
      */
+
     var panelDevices = panels.addPanel({ id: 'devices-c' });
     var deviceBtns = panelDevices.get('buttons');
 
@@ -208,6 +251,29 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     ]);
 
     /*
+     *   Views  
+     */
+
+    panels.addPanel({ id: 'views' });
+    panels.addPanel({ id: 'views-container' });
+
+    panels.addButton('views', [{
+            id: 'open-layers',
+            className: 'fa fa-bars',
+            command: 'open-layers',
+            attributes: { title: 'Open Layer Manager' },
+            active: false,
+        },
+        {
+            id: 'open-blocks',
+            className: 'fa fa-th-large',
+            command: 'open-blocks',
+            attributes: { title: 'Open Blocks' },
+            active: true,
+        }
+    ]);
+
+    /*
      *   EVENTS
      */
 
@@ -215,17 +281,8 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
         editor.runCommand('sw-visibility');
 
         if (isPageMode) {
-            $('.gjs-pn-buttons [title="Import"]').css('display', 'none');
             wrapper.attributes.droppable = false;
             wrapper.attributes.stylable = false;
         }
-
-        // console.log('Components', editor.getComponents());
-        // console.log('Wrapper', wrapper);
-        // console.log('Editor', editor);
-        // console.log('Options', editor.Panels.getPanel('options'));
-
-        // console.log('Panels', editor.Panels.getPanels());
     });
-
 });
