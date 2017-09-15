@@ -18,7 +18,7 @@ Route::group(['domain' => config('pagebuilder.domain')], function() {
         /** GET **/
         Route::group(['prefix' => '/get'], function() {
             /** BLOCKS **/
-            Route::get('/{type}/{userDefined?}', array('as' => 'pagebuilder.ajax.get.blocks', 'uses' => 'PageBuilderController@getBlocks'))
+            Route::get('/{type}/{includeUserDefined?}', array('as' => 'pagebuilder.ajax.get.blocks', 'uses' => 'PageBuilderController@getBlocks'))
             ->where('type', 'blocks|layouts');
         });
 

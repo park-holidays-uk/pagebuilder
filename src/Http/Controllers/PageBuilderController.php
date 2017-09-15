@@ -53,7 +53,7 @@ class PageBuilderController extends Controller
 			$record = $this->getRecord($type, $id);
 			
 			$record->html_base64 = base64_encode($data['gjs-html']);
-			$record->css_base64 = base64_encode($data['gjs-css']);
+			$record->css_base64 = base64_encode(preg_replace("/([*{](.*?)[}][body{](.*?)[}])/", "", $data['gjs-css'])) ?? null;
 			$record->gjs_components = $data['gjs-components'];
 			$record->save();
 
@@ -65,13 +65,17 @@ class PageBuilderController extends Controller
 	}
 
 	/** Get Blocks **/
-	public function getBlocks($type, $userDefined = true) 
+	public function getBlocks($type, $includeUserDefined = true) 
 	{
 		$blocks = null;
 
 		switch($type) {
 			case 'blocks': 
-				$blocks = Block::where('is_layout', false)->where('is_user_block', (boolean) $userDefined)->get();
+				$blocks = Block::where('is_layout', false);
+				if(!filter_var($includeUserDefined, FILTER_VALIDATE_BOOLEAN)) { 
+					$blocks->where('is_user_block', false); 
+				}
+				$blocks->get();
 				break;
 			case 'layouts': 
 				$blocks = Block::where('is_layout', true)->get();
@@ -105,7 +109,7 @@ class PageBuilderController extends Controller
 		
 		switch($type) {
 			case 'block': 
-				$record = Block::where('id', (int) $id)->where('is_layout', false)->where('is_user_block', true)->first();
+				$record = Block::where('id', (int) $id)->where('is_layout', false)->first(); //->where('is_user_block', true)
 				break;
 			case 'layout': 
 				$record = Block::where('id', (int) $id)->where('is_layout', true)->first();
