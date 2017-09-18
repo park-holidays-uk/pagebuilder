@@ -27,7 +27,7 @@
     <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapejs-preset-webpage.js') }}"></script>
     <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapejs-modals.js') }}"></script>
     <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapejs-blocks.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapejs-attribute-editor.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapejs-attribute-manager.js') }}"></script>
 
     <script type="text/javascript"> 
         var editor = grapesjs.init({
@@ -41,7 +41,7 @@
                 'preset-webpage',
                 'modals',
                 'blocks',
-                'attribute-editor'
+                'attribute-manager'
             ],
             
             pluginsOpts: {
@@ -57,7 +57,7 @@
                     mode: '{{ $viewModel->mode }}'
                 },
 
-                'attribute-editor': {
+                'attribute-manager': {
                     mode: '{{ $viewModel->mode }}'
                 }
             },

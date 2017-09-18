@@ -67,16 +67,25 @@ body {
     width: 85%;
 }
 
-#gjs-pn-attributes {
+
+/** ATTRIBUTE MANAGER **/
+
+#gjs-pn-attribute-manager {
     display: none;
     position: fixed;
     top: 40px;
     left: 0;
     width: 15%;
+    padding-top: 0 !important;
 }
 
-.gjs-pn-attributes-shown #gjs-pn-attributes {
+.gjs-pn-attributes-shown #gjs-pn-attribute-manager {
     display: block;
+}
+
+#gjs-pn-attribute-manager .gjs-sm-sector .gjs-sm-title {
+    margin-left: -5px;
+    margin-right: -5px;
 }
 
 
