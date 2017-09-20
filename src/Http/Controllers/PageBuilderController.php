@@ -67,7 +67,7 @@ class PageBuilderController extends Controller
 			$record->gjs_components = $data['gjs-components'];
 			$record->save();
 
-			return collect(['status' => 100])->toJson();
+			return collect(['status' => 200])->toJson();
 		}
 		catch (exception $ex) {
 			return $ex;
@@ -139,19 +139,24 @@ class PageBuilderController extends Controller
 
 		// dd($json['attributes']['id']);
 		// dd($dom->saveHTML());
-		$element = $xpath->query("//*[@id = '". $json['attributes']['id'] ."']");
 
-		if(isset($json['custom-name'])) {
-			$element->item(0)->setAttribute('data-gjs-custom-name', $json['custom-name']);
+		if(isset($json['attributes']['id'])) {
+			$element = $xpath->query("//*[@id = '". $json['attributes']['id'] ."']");
+
+			if($element) {
+				if(isset($json['custom-name'])) {
+					$element->item(0)->setAttribute('data-gjs-custom-name', $json['custom-name']);
+				}
+
+				$element->item(0)->setAttribute('data-gjs-stylable', $this->getAttributeValueAsString($json['stylable']));
+				$element->item(0)->setAttribute('data-gjs-draggable', $this->getAttributeValueAsString($json['draggable']));
+				$element->item(0)->setAttribute('data-gjs-droppable', $this->getAttributeValueAsString($json['droppable']));
+				$element->item(0)->setAttribute('data-gjs-copyable', $this->getAttributeValueAsString($json['copyable']));
+				$element->item(0)->setAttribute('data-gjs-resizable', $this->getAttributeValueAsString($json['resizable']));
+				$element->item(0)->setAttribute('data-gjs-editable', $this->getAttributeValueAsString($json['editable']));
+				$element->item(0)->setAttribute('data-gjs-removable', $this->getAttributeValueAsString($json['removable']));
+			}
 		}
-
-		$element->item(0)->setAttribute('data-gjs-stylable', $this->getAttributeValueAsString($json['stylable']));
-		$element->item(0)->setAttribute('data-gjs-draggable', $this->getAttributeValueAsString($json['draggable']));
-		$element->item(0)->setAttribute('data-gjs-droppable', $this->getAttributeValueAsString($json['droppable']));
-		$element->item(0)->setAttribute('data-gjs-copyable', $this->getAttributeValueAsString($json['copyable']));
-		$element->item(0)->setAttribute('data-gjs-resizable', $this->getAttributeValueAsString($json['resizable']));
-		$element->item(0)->setAttribute('data-gjs-editable', $this->getAttributeValueAsString($json['editable']));
-		$element->item(0)->setAttribute('data-gjs-removable', $this->getAttributeValueAsString($json['removable']));
 		
 		$html = $dom->saveHTML();
 		foreach($json['components'] as $component) {

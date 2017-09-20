@@ -60,9 +60,6 @@ grapesjs.plugins.add('blocks', (editor, options) => {
         // block:drag:move
         // block:drag:stop
         editor.runCommand('fix-stylable-attribute', { node: model });
-
-        console.log('Model', model);
-        console.log('Wrapper', wrapper);
     });
 
 });

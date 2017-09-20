@@ -32,7 +32,7 @@ grapesjs.plugins.add('attribute-manager', (editor, options) => {
 
             // Prepoluate values
             var component = editor.getSelected();
-            console.log('selected:', component);
+
             _.forEach(attributes, function(attribute) {
                 var inputEl = document.getElementById('attribute_' + attribute.name);
                 inputEl.value = (!Array.isArray(component.attributes[attribute.name])) ? component.attributes[attribute.name] : ((component.attributes[attribute.name].length > 0) ? component.attributes[attribute.name].join() : 'false');
@@ -58,14 +58,15 @@ grapesjs.plugins.add('attribute-manager', (editor, options) => {
                     editor.runCommand('fix-stylable-attribute', { node: wrapperChild });
                 });
             } else {
-                console.log('Stylable', options.node.attributes.stylable);
                 if (options.node.attributes.stylable == false) {
                     options.node.attributes.stylable = [];
                 }
 
-                _.forEach(options.node.view.components.models, function(model) {
-                    editor.runCommand('fix-stylable-attribute', { node: model });
-                });
+                if (options.node.view) {
+                    _.forEach(options.node.view.components.models, function(model) {
+                        editor.runCommand('fix-stylable-attribute', { node: model });
+                    });
+                }
 
                 editor.refresh();
             }
@@ -89,9 +90,11 @@ grapesjs.plugins.add('attribute-manager', (editor, options) => {
                 options.node.attributes.editable = false;
                 options.node.attributes.removable = false;
 
-                _.forEach(options.node.view.components.models, function(model) {
-                    editor.runCommand('set-default-attributes', { node: model });
-                });
+                if (options.node.view) {
+                    _.forEach(options.node.view.components.models, function(model) {
+                        editor.runCommand('set-default-attributes', { node: model });
+                    });
+                }
 
                 editor.refresh();
             }
