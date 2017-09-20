@@ -87,6 +87,15 @@
                 urlLoad: '{{ $viewModel->url_load }}'
             },
 
+            styleManager: {
+                sectors: [
+                    {
+                        name: 'Extra',
+                        buildProps: ['background-image']
+                    }
+                ]
+            },
+
             // assetManager: {
             //     upload: 0,
             //     dropzone: 0
