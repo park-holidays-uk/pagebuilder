@@ -46,6 +46,7 @@
             
             pluginsOpts: {
                 'preset-webpage': {
+                    id: {{ $viewModel->id }},
                     mode: '{{ $viewModel->mode }}'
                 },
                 

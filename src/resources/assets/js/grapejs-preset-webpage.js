@@ -22,7 +22,8 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     /** DOM WRAPPER **/
     var domComponents = editor.DomComponents;
     var wrapper = domComponents.getWrapper();
-    // config.showDevices = 0;
+
+    config.showDevices = 0;
 
     /**  **/
     var isPageMode = (opt.mode == 'page');
@@ -32,23 +33,12 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     var container = document.createElement('div');
     var importBtn = document.createElement('button');
 
-    var setDefaultProperties = function(node) {
-        var properties = [
-            { 'attribute': 'removable', 'value': false },
-            { 'attribute': 'draggable', 'value': false },
-            { 'attribute': 'droppable', 'value': false },
-            { 'attribute': 'stylable', 'value': false },
-            { 'attribute': 'copyable', 'value': false },
-            { 'attribute': 'resizable', 'value': false },
-            { 'attribute': 'editable', 'value': false },
-        ]
-
-        _.forEach(properties, function(_property) {
-            node.attr('data-gjs-' + _property.attribute, _property.value);
-        });
+    var setNodeId = function(node, count = 1) {
+        node.attr('id', 'c' + opt.id + ((count > 99) ? count : ((count > 9) ? '0' : '00') + count));
 
         $(node).children().each(function() {
-            setDefaultProperties($(this));
+            count++;
+            setNodeId($(this), count);
         });
 
         return node;
@@ -61,9 +51,12 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
         var code = codeViewer.editor.getValue();
         editor.DomComponents.getWrapper().set('content', '');
 
-        var jQo = setDefaultProperties($(code));
+        var jQo = setNodeId($(code));
         code = jQo[0].outerHTML;
         editor.setComponents(code);
+
+        editor.runCommand('set-default-attributes');
+
         modal.close();
     };
 
@@ -256,6 +249,16 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
 
     panels.addPanel({ id: 'views' });
     panels.addPanel({ id: 'views-container' });
+
+    if (!isPageMode) {
+        panels.addButton('views', [{
+            id: 'open-styles',
+            className: 'fa fa-paint-brush',
+            command: 'open-sm',
+            attributes: { title: 'Open Style Manager' },
+            active: false,
+        }]);
+    }
 
     panels.addButton('views', [{
             id: 'open-layers',

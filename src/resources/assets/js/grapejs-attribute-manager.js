@@ -4,6 +4,9 @@ grapesjs.plugins.add('attribute-manager', (editor, options) => {
     var opt = options || {};
     var stylePrefix = editor.getConfig().stylePrefix;
 
+    /** DOM WRAPPER **/
+    var domComponents = editor.DomComponents;
+
     /**  **/
     var isPageMode = (opt.mode == 'page');
 
@@ -29,16 +32,69 @@ grapesjs.plugins.add('attribute-manager', (editor, options) => {
 
             // Prepoluate values
             var component = editor.getSelected();
+            console.log('selected:', component);
             _.forEach(attributes, function(attribute) {
                 var inputEl = document.getElementById('attribute_' + attribute.name);
-                inputEl.value = component.attributes[attribute.name];
+                inputEl.value = (!Array.isArray(component.attributes[attribute.name])) ? component.attributes[attribute.name] : ((component.attributes[attribute.name].length > 0) ? component.attributes[attribute.name].join() : 'false');
             });
+
+            editor.refresh();
         }
     });
 
     commands.add('close-attribute-manager', {
         run: function(editor) {
             $('.gjs-editor').removeClass('gjs-pn-attributes-shown');
+            editor.refresh();
+        }
+    });
+
+    commands.add('fix-stylable-attribute', {
+        run: function(editor, sender, options) {
+            if (!options) {
+                var wrapperChildren = domComponents.getComponents();
+
+                _.forEach(wrapperChildren.models, function(wrapperChild) {
+                    editor.runCommand('fix-stylable-attribute', { node: wrapperChild });
+                });
+            } else {
+                console.log('Stylable', options.node.attributes.stylable);
+                if (options.node.attributes.stylable == false) {
+                    options.node.attributes.stylable = [];
+                }
+
+                _.forEach(options.node.view.components.models, function(model) {
+                    editor.runCommand('fix-stylable-attribute', { node: model });
+                });
+
+                editor.refresh();
+            }
+        }
+    });
+
+    commands.add('set-default-attributes', {
+        run: function(editor, sender, options) {
+            if (!options) {
+                var wrapperChildren = domComponents.getComponents();
+
+                _.forEach(wrapperChildren.models, function(wrapperChild) {
+                    editor.runCommand('set-default-attributes', { node: wrapperChild });
+                });
+            } else {
+                options.node.attributes.stylable = [];
+                options.node.attributes.draggable = false;
+                options.node.attributes.droppable = false;
+                options.node.attributes.copyable = false;
+                options.node.attributes.resizable = false;
+                options.node.attributes.editable = false;
+                options.node.attributes.removable = false;
+
+                _.forEach(options.node.view.components.models, function(model) {
+                    editor.runCommand('set-default-attributes', { node: model });
+                });
+
+                editor.refresh();
+            }
         }
     });
 
@@ -47,7 +103,24 @@ grapesjs.plugins.add('attribute-manager', (editor, options) => {
             // sender.set('active', 0);
             // Set Attributes on Component
             var component = editor.getSelected();
-            component.attributes[options.attribute] = (options.value == 'true' || options.value == 'false') ? JSON.parse(options.value) : ((options.value != '') ? options.value : false);
+            var value = (options.value == 'true' || options.value == 'false') ? JSON.parse(options.value) : ((options.value != '') ? options.value : false);
+
+
+            switch (options.attribute) {
+                case 'stylable':
+                case 'draggable':
+                case 'droppable':
+                    if (typeof value === 'string' && value.indexOf(',') !== -1) {
+                        value = value.split(',');
+                    }
+                    break;
+            }
+
+            if ((options.attribute == 'stylable' && !value)) {
+                value = [];
+            }
+
+            component.attributes[options.attribute] = value;
             editor.refresh();
         }
     });

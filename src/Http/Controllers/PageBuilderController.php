@@ -18,6 +18,7 @@ class PageBuilderController extends Controller
 		
 		$viewModel->url_store = '/ajax/store/'. $type .'/'. $id;
 		$viewModel->url_load = '/ajax/load/'. $type .'/'. $id;
+		$viewModel->id = $id;
 		$viewModel->mode = $type;
 
 		return $record ? view('pagebuilder::editor', ['viewModel' => $viewModel]) : abort(404);
@@ -51,8 +52,17 @@ class PageBuilderController extends Controller
 
 		try {
 			$record = $this->getRecord($type, $id);
+			$html = $data['gjs-html'];
+
+			if($type != 'page') {				
+				$json = json_decode($data['gjs-components'], true);
+				
+				foreach($json as $object) {
+					$html = $this->setAttributes($object, $data['gjs-html']);
+				}
+			}
 			
-			$record->html_base64 = base64_encode($data['gjs-html']);
+			$record->html_base64 = base64_encode($html);
 			$record->css_base64 = base64_encode(preg_replace("/([*{](.*?)[}][body{](.*?)[}])/", "", $data['gjs-css'])) ?? null;
 			$record->gjs_components = $data['gjs-components'];
 			$record->save();
@@ -120,5 +130,49 @@ class PageBuilderController extends Controller
 		}
 
 		return $record;
+	}
+
+	function setAttributes($json, $html) {
+		$dom = new \DOMDocument();
+		@$dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+		$xpath = new \DOMXPath($dom);
+
+		// dd($json['attributes']['id']);
+		// dd($dom->saveHTML());
+		$element = $xpath->query("//*[@id = '". $json['attributes']['id'] ."']");
+
+		if(isset($json['custom-name'])) {
+			$element->item(0)->setAttribute('data-gjs-custom-name', $json['custom-name']);
+		}
+
+		$element->item(0)->setAttribute('data-gjs-stylable', $this->getAttributeValueAsString($json['stylable']));
+		$element->item(0)->setAttribute('data-gjs-draggable', $this->getAttributeValueAsString($json['draggable']));
+		$element->item(0)->setAttribute('data-gjs-droppable', $this->getAttributeValueAsString($json['droppable']));
+		$element->item(0)->setAttribute('data-gjs-copyable', $this->getAttributeValueAsString($json['copyable']));
+		$element->item(0)->setAttribute('data-gjs-resizable', $this->getAttributeValueAsString($json['resizable']));
+		$element->item(0)->setAttribute('data-gjs-editable', $this->getAttributeValueAsString($json['editable']));
+		$element->item(0)->setAttribute('data-gjs-removable', $this->getAttributeValueAsString($json['removable']));
+		
+		$html = $dom->saveHTML();
+		foreach($json['components'] as $component) {
+			$html = $this->setAttributes($component, $html);
+		}
+
+		return $html;
+	}
+
+	function getAttributeValueAsString($value) {
+		$isArray = is_array($value);
+
+		if ($isArray) {
+			$value = implode(',', $value);
+			if(!$value) { $value = 'false'; }
+		} elseif ($value == true) {
+			$value = 'true';
+		} elseif ($value == false) {
+			$value = 'false';
+		}
+
+		return $value;
 	}
 }

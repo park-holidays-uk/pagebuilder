@@ -49,10 +49,20 @@ grapesjs.plugins.add('blocks', (editor, options) => {
         }
     });
 
+    editor.on('block:drag:start', function(model) {
+        // block:drag:start
+        // block:drag:move
+        // block:drag:stop
+    });
+
     editor.on('block:drag:stop', function(model) {
         // block:drag:start
         // block:drag:move
         // block:drag:stop
+        editor.runCommand('fix-stylable-attribute', { node: model });
+
+        console.log('Model', model);
+        console.log('Wrapper', wrapper);
     });
 
 });
