@@ -78,6 +78,7 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
             sender && sender.set('active', false);
             if (confirm('Are you sure to empty the canvas? \nYou will not be able to undo it.')) {
                 var comps = editor.DomComponents.clear();
+                editor.CssComposer.getAll().reset();
 
                 if (isPageMode) {
                     editor.UndoManager.clear();
@@ -110,6 +111,12 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     commands.add('save', {
         run: function(editor, sender) {
             sender.set('active', 0);
+            var components = domComponents.getComponents().models;
+
+            _.forEach(components, function(component) {
+                editor.runCommand('remove-id-attribute', { node: component });
+            });
+
             editor.store();
         }
     });
@@ -250,15 +257,18 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     panels.addPanel({ id: 'views' });
     panels.addPanel({ id: 'views-container' });
 
-    if (!isPageMode) {
-        panels.addButton('views', [{
-            id: 'open-styles',
-            className: 'fa fa-paint-brush',
-            command: 'open-sm',
-            attributes: { title: 'Open Style Manager' },
-            active: false,
-        }]);
-    }
+    // if (!isPageMode) {
+    var styleBtn = panels.addButton('views', [{
+        id: 'open-styles',
+        className: 'fa fa-paint-brush',
+        command: 'open-sm',
+        attributes: { title: 'Open Style Manager' },
+        active: false,
+        visible: false
+    }]);
+
+    console.log(styleBtn);
+    // }
 
     panels.addButton('views', [{
             id: 'open-layers',

@@ -73,6 +73,21 @@ grapesjs.plugins.add('attribute-manager', (editor, options) => {
         }
     });
 
+    commands.add('remove-id-attribute', {
+        run: function(editor, sender, options) {
+
+            options.node.attributes.attributes['id'] = null;
+
+            if (options.node.view) {
+                _.forEach(options.node.view.components.models, function(model) {
+                    editor.runCommand('remove-id-attribute', { node: model });
+                });
+            }
+
+            editor.refresh();
+        }
+    });
+
     commands.add('set-default-attributes', {
         run: function(editor, sender, options) {
             if (!options) {

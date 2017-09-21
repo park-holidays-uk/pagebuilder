@@ -49,7 +49,7 @@ grapesjs.plugins.add('blocks', (editor, options) => {
         }
     });
 
-    editor.on('block:drag:start', function(model) {
+    editor.on('block:drag:start', function() {
         // block:drag:start
         // block:drag:move
         // block:drag:stop
