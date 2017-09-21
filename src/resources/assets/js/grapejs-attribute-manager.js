@@ -76,7 +76,7 @@ grapesjs.plugins.add('attribute-manager', (editor, options) => {
     commands.add('remove-id-attribute', {
         run: function(editor, sender, options) {
 
-            options.node.attributes.attributes['id'] = null;
+            delete options.node.attributes.attributes['id'];
 
             if (options.node.view) {
                 _.forEach(options.node.view.components.models, function(model) {

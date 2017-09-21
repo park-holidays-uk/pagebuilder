@@ -93,10 +93,10 @@
                 ]
             },
 
-            // assetManager: {
-            //     upload: 0,
-            //     dropzone: 0
-            // },
+            assetManager: {
+                upload: false,
+                dropzone: false
+            },
 
             panels: {
                 defaults: []

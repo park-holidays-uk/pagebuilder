@@ -295,7 +295,7 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
 
         if (isPageMode) {
             wrapper.attributes.droppable = false;
-            wrapper.attributes.stylable = false;
+            wrapper.attributes.stylable = [];
         }
     });
 });
