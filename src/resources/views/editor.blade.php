@@ -18,7 +18,7 @@
 
     <!-- Vendor Scripts -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <!-- <script type="text/javascript" src="https://unpkg.com/vue"></script> -->
+    
     <!-- LOCAL -->
     <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/vendor/lodash.js') }}"></script>
     <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapes.min.js') }}"></script>
@@ -74,9 +74,6 @@
                 ]
             },
             
-            // components: '',
-            // style: '.txt-red{color: red}',
-            
             storageManager: {
                 type: 'remote',
                 autosave: false,
@@ -100,8 +97,6 @@
             //     upload: 0,
             //     dropzone: 0
             // },
-
-            traits: [{}],
 
             panels: {
                 defaults: []
