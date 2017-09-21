@@ -61,6 +61,8 @@ class PageBuilderController extends Controller
 					$html = $this->setAttributes($object, $data['gjs-html']);
 				}
 			}
+
+			$html = preg_replace("@\n@","", $this->setInlineStyles($data['gjs-css'], $html)); 
 			
 			$record->html_base64 = base64_encode($html);
 			$record->css_base64 = base64_encode(preg_replace("/([*{](.*?)[}][body{](.*?)[}])/", "", $data['gjs-css'])) ?? null;
@@ -137,9 +139,6 @@ class PageBuilderController extends Controller
 		@$dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 		$xpath = new \DOMXPath($dom);
 
-		// dd($json['attributes']['id']);
-		// dd($dom->saveHTML());
-
 		if(isset($json['attributes']['id'])) {
 			$element = $xpath->query("//*[@id = '". $json['attributes']['id'] ."']");
 
@@ -179,5 +178,47 @@ class PageBuilderController extends Controller
 		}
 
 		return $value;
+	}
+
+	function setInlineStyles($css, $html) {
+		$dom = new \DOMDocument();
+		@$dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+		$xpath = new \DOMXPath($dom);
+
+		preg_match_all ('/(\.(\w+)|#c\d{4})\s?({(.*?)})/', $css, $styles, PREG_PATTERN_ORDER);
+
+		$prevSelector = null;
+		$i = 0;
+
+		foreach($styles[1] as $selector) {
+			$element = null;
+			
+			if($selector != $prevSelector) {
+				switch($selector[0]) {
+					case '#':
+						$element = $xpath->query("//*[@id = '". substr($selector, 1) ."']");
+						break;
+					case '.':
+						$element = $xpath->query("//*[contains(@class, '". substr($selector, 1) ."')]");
+
+						if($element && preg_match('/^(.c\d{3,4})$/', $selector)){
+							$class = $element->item(0)->getAttribute('class');
+							$class = str_replace(substr($selector, 1), '', $class);
+							$element->item(0)->setAttribute('class', trim($class));
+						}
+						break;
+				}
+
+				if($element && $element->item(0)) {
+					$element->item(0)->setAttribute('style', $styles[4][$i]);
+				}
+			}
+
+			$prevSelector = $selector;
+			$i++;
+		}
+
+		$html = $dom->saveHTML();
+		return $html;
 	}
 }
