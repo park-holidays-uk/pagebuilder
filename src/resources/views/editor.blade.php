@@ -24,10 +24,11 @@
     <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapes.min.js') }}"></script>
     
     <!-- Custom Scripts -->
-    <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapejs-preset-webpage.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapejs-modals.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapejs-blocks.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapejs-attribute-manager.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapesjs-preset-webpage.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapesjs-modals.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapesjs-blocks.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapesjs-attribute-manager.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapesjs-assets.js') }}"></script>
 
     <script type="text/javascript"> 
         var editor = grapesjs.init({
@@ -41,6 +42,7 @@
                 'preset-webpage',
                 'modals',
                 'blocks',
+                'assets',
                 'attribute-manager'
             ],
             
@@ -94,8 +96,11 @@
             },
 
             assetManager: {
-                upload: false,
-                dropzone: false
+                autoAdd: 0,
+                noAssets: 'There are currently no available assets',
+                upload: 0,
+                dropzone: 0,
+                dropzoneContent: ''
             },
 
             panels: {

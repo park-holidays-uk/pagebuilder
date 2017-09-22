@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use ParkHolidays\PageBuilder\Models\Block;
 use ParkHolidays\PageBuilder\Models\Template;
 use App\Models\Pages\Page;
+use App\Models\Media;
 
 class PageBuilderController extends Controller
 {
@@ -107,6 +108,14 @@ class PageBuilderController extends Controller
 				]);
 			});
 		}
+
+		return $data->toJson();
+	}
+
+	/** Get Assets **/
+	public function getAssets() 
+	{
+		$data = Media::take(200)->get();
 
 		return $data->toJson();
 	}

@@ -72,6 +72,50 @@ body {
 }
 
 
+/** Asset Manager **/
+
+.gjs-asset-manager .gjs-am-file-uploader,
+.gjs-asset-manager .gjs-am-assets-header {
+    display: none;
+}
+
+.gjs-asset-manager .gjs-am-assets-cont {
+    float: none;
+    width: 100%;
+}
+
+.gjs-am-assets-cont {
+    height: 425px;
+}
+
+.gjs-am-assets-cont .gjs-am-assets {
+    height: 405px;
+}
+
+.gjs-am-asset.gjs-am-asset-image {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+}
+
+.gjs-am-asset.gjs-am-asset-image .gjs-am-preview-cont {
+    width: 100%;
+    height: 100px;
+    float: none;
+}
+
+.gjs-am-asset.gjs-am-asset-image .gjs-am-meta {
+    float: none;
+    display: block;
+    word-wrap: break-word;
+    width: 100%;
+}
+
+.gjs-am-asset.gjs-am-asset-image .gjs-am-close {
+    display: none !important;
+}
+
+
 /** ATTRIBUTE MANAGER **/
 
 #gjs-pn-attribute-manager {
