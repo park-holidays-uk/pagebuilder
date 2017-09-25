@@ -115,7 +115,14 @@ class PageBuilderController extends Controller
 	/** Get Assets **/
 	public function getAssets() 
 	{
-		$data = Media::take(200)->get();
+		$data = \DB::table('media')
+					->leftJoin('media_lookups', 'media_lookups.media_id', '=', 'media.id')
+					->whereIn('media_lookups.media_lookup_type', ['App\Models\Pages\Page'])->get();
+
+		$data->map(function($image) {
+			$image->path = config('pagebuilder.asset_path'). $image->path;
+			return $image;
+		});
 
 		return $data->toJson();
 	}
@@ -196,6 +203,8 @@ class PageBuilderController extends Controller
 
 		preg_match_all ('/(\.(\w+)|#c\d{4})\s?({(.*?)})/', $css, $styles, PREG_PATTERN_ORDER);
 
+		// dd($styles);
+
 		$prevSelector = null;
 		$i = 0;
 
@@ -210,7 +219,7 @@ class PageBuilderController extends Controller
 					case '.':
 						$element = $xpath->query("//*[contains(@class, '". substr($selector, 1) ."')]");
 
-						if($element && preg_match('/^(.c\d{3,4})$/', $selector)){
+						if($element && $element->item(0) && preg_match('/^(.c\d{3,4})$/', $selector)){
 							$class = $element->item(0)->getAttribute('class');
 							$class = str_replace(substr($selector, 1), '', $class);
 							$element->item(0)->setAttribute('class', trim($class));
