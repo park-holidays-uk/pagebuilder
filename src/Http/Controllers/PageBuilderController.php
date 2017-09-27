@@ -86,7 +86,7 @@ class PageBuilderController extends Controller
 			case 'blocks': 
 				$blocks = Block::where('is_layout', false);
 				if(!filter_var($includeUserDefined, FILTER_VALIDATE_BOOLEAN)) { 
-					$blocks->where('is_user_block', false); 
+					$blocks->where('is_user_block', false)->orWhere('dynamic', true); 
 				}
 				$blocks->get();
 				break;
