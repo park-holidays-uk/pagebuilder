@@ -55,7 +55,7 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
         code = jQo[0].outerHTML;
         editor.setComponents(code);
 
-        editor.runCommand('set-default-attributes');
+        editor.runCommand('set-default-properties');
 
         modal.close();
     };
@@ -111,11 +111,14 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     commands.add('save', {
         run: function(editor, sender) {
             sender.set('active', 0);
-            var components = domComponents.getComponents().models;
 
-            _.forEach(components, function(component) {
-                editor.runCommand('remove-id-attribute', { node: component });
-            });
+            if (isPageMode) {
+                var components = domComponents.getComponents().models;
+
+                _.forEach(components, function(component) {
+                    editor.runCommand('remove-id-attribute', { node: component });
+                });
+            }
 
             editor.store();
         }
@@ -263,14 +266,18 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
         className: 'fa fa-paint-brush',
         command: 'open-sm',
         attributes: { title: 'Open Style Manager' },
-        active: false,
-        visible: false
+        active: true,
     }]);
-
-    console.log(styleBtn);
     // }
 
     panels.addButton('views', [{
+            id: 'open-tm',
+            className: 'fa fa-cog hidden',
+            command: 'open-tm',
+            attributes: { title: 'Open Traits' },
+            active: false,
+        },
+        {
             id: 'open-layers',
             className: 'fa fa-bars',
             command: 'open-layers',
@@ -282,7 +289,7 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
             className: 'fa fa-th-large',
             command: 'open-blocks',
             attributes: { title: 'Open Blocks' },
-            active: true,
+            active: false,
         }
     ]);
 

@@ -53,7 +53,7 @@ grapesjs.plugins.add('blocks', (editor, options) => {
         // block:drag:start
         // block:drag:move
         // block:drag:stop
-        editor.runCommand('fix-stylable-attribute', { node: model });
+        editor.runCommand('fix-stylable-property', { node: model });
     });
 
 });

@@ -39,7 +39,7 @@ grapesjs.plugins.add('modals', (editor, options) => {
                 block.addEventListener('click', function() {
                     editor.setComponents(_block.content);
                     editor.UndoManager.clear();
-                    editor.runCommand('fix-stylable-attribute');
+                    editor.runCommand('fix-stylable-property');
                     modal.close();
                 });
 

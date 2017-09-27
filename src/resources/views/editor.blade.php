@@ -27,7 +27,7 @@
     <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapesjs-preset-webpage.js') }}"></script>
     <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapesjs-modals.js') }}"></script>
     <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapesjs-blocks.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapesjs-attribute-manager.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapesjs-traits.js') }}"></script>
     <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapesjs-assets.js') }}"></script>
 
     <script type="text/javascript"> 
@@ -43,7 +43,7 @@
                 'modals',
                 'blocks',
                 'assets',
-                'attribute-manager'
+                'traits'
             ],
             
             pluginsOpts: {
@@ -60,7 +60,7 @@
                     mode: '{{ $viewModel->mode }}'
                 },
 
-                'attribute-manager': {
+                'traits': {
                     mode: '{{ $viewModel->mode }}'
                 }
             },
@@ -90,7 +90,7 @@
                 sectors: [
                     {
                         name: 'Extra',
-                        buildProps: ['background-image']
+                        buildProps: ['color', 'background-image']
                     }
                 ]
             },
