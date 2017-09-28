@@ -18,13 +18,13 @@ grapesjs.plugins.add('traits', (editor, options) => {
 
     /** Editable Properties **/
     var properties = [
-        { 'name': 'stylable', 'label': 'Stylable', 'type': 'checkbox', 'options': [{ value: 'true', name: 'True' }, { value: 'false', name: 'False' }] },
-        { 'name': 'draggable', 'label': 'Draggable', 'type': 'checkbox' },
-        { 'name': 'droppable', 'label': 'Droppable', 'type': 'checkbox' },
-        { 'name': 'copyable', 'label': 'Copyable', 'type': 'checkbox' },
-        { 'name': 'resizable', 'label': 'Resizable', 'type': 'checkbox' },
-        { 'name': 'editable', 'label': 'Editable', 'type': 'checkbox' },
-        { 'name': 'removable', 'label': 'Removable', 'type': 'checkbox' },
+        { 'name': 'stylable', 'label': 'Stylable', 'type': 'select', 'options': [{ value: 'true', name: 'True' }, { value: 'false', name: 'False' }] },
+        { 'name': 'draggable', 'label': 'Draggable', 'type': 'select', 'options': [{ value: 'true', name: 'True' }, { value: 'false', name: 'False' }] },
+        { 'name': 'droppable', 'label': 'Droppable', 'type': 'select', 'options': [{ value: 'true', name: 'True' }, { value: 'false', name: 'False' }] },
+        { 'name': 'copyable', 'label': 'Copyable', 'type': 'select', 'options': [{ value: 'true', name: 'True' }, { value: 'false', name: 'False' }] },
+        { 'name': 'resizable', 'label': 'Resizable', 'type': 'select', 'options': [{ value: 'true', name: 'True' }, { value: 'false', name: 'False' }] },
+        { 'name': 'editable', 'label': 'Editable', 'type': 'select', 'options': [{ value: 'true', name: 'True' }, { value: 'false', name: 'False' }] },
+        { 'name': 'removable', 'label': 'Removable', 'type': 'select', 'options': [{ value: 'true', name: 'True' }, { value: 'false', name: 'False' }] },
     ];
 
     if (!isPageMode) {
@@ -44,6 +44,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
      *   TRAITS
      */
     var componentTypes = [
+        /* TAGS */
         { 'name': 'Heading', 'is': 'tagName', 'value': ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'] },
         { 'name': 'Paragraph', 'is': 'tagName', 'value': ['P'] },
         { 'name': 'Text', 'is': 'tagName', 'value': ['SPAN'] },
@@ -61,7 +62,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
         { 'name': 'Button', 'is': 'tagName', 'value': ['BUTTON'] },
         { 'name': 'Image', 'is': 'tagName', 'value': ['IMG'] },
         { 'name': 'Div', 'is': 'tagName', 'value': ['DIV'] },
-
+        /* CLASSES */
         { 'name': 'Wrapper', 'is': 'className', 'value': 'wrapper' },
         { 'name': 'Container', 'is': 'className', 'value': 'container' },
         { 'name': 'Fluid Container', 'is': 'className', 'value': 'container-fluid' },
@@ -77,15 +78,30 @@ grapesjs.plugins.add('traits', (editor, options) => {
                 defaults: Object.assign({}, defaultModel.prototype.defaults, {
                     traits: componentType.traits ? componentType.traits.concat(traits) : traits
                 }),
+
                 init() {
+                    var self = this;
+
                     var stylableTrait = this.get('traits').where({ name: 'stylable' })[0];
-                    // stylableTrait.set('checked', false);
-                    this.listenTo(this, 'change:stylable', this.fixProperty);
+                    var value = stylableTrait.get('value');
+                    stylableTrait.set('value', (value == '' || value == false || value == null) ? 'false' : 'true');
+
+                    // Listeners
+                    this.listenTo(this, 'change:stylable', function() {
+                        self.property = 'stylable';
+                        self.fixProperty();
+                    });
                 },
 
                 fixProperty() {
-                    console.log(this, 'TEST');
-                    editor.runCommand('fix-stylable-property', { node: this, thisNodeOnly: true });
+                    var trait = this.get('traits').where({ name: this.property })[0];
+                    if (trait.get('value') == 'true') { this.attributes[this.property] = true; }
+                    if (trait.get('value') == 'false') { this.attributes[this.property] = false; }
+                    console.log(trait);
+
+                    if (this.property == 'stylable') {
+                        editor.runCommand('fix-stylable-property', { node: this, thisNodeOnly: true });
+                    }
                 }
             }, {
                 isComponent: function(el) {
