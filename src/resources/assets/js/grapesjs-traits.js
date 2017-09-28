@@ -18,7 +18,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
 
     /** Editable Properties **/
     var properties = [
-        { 'name': 'stylable', 'label': 'Stylable', 'type': 'checkbox' },
+        { 'name': 'stylable', 'label': 'Stylable', 'type': 'checkbox', 'options': [{ value: 'true', name: 'True' }, { value: 'false', name: 'False' }] },
         { 'name': 'draggable', 'label': 'Draggable', 'type': 'checkbox' },
         { 'name': 'droppable', 'label': 'Droppable', 'type': 'checkbox' },
         { 'name': 'copyable', 'label': 'Copyable', 'type': 'checkbox' },
@@ -33,298 +33,80 @@ grapesjs.plugins.add('traits', (editor, options) => {
                 type: property.type,
                 label: property.label,
                 name: property.name,
+                placeholder: property.placeholder || '',
+                options: property.options || [],
                 changeProp: 1
             })
         });
     }
 
     /*
-     *   METHODS
-     */
-
-    var fixStylableProperty = function() {
-        editor.runCommand('fix-stylable-property', { node: editor.getSelected() });
-    };
-
-    /*
      *   TRAITS
      */
+    var componentTypes = [
+        { 'name': 'Heading', 'is': 'tagName', 'value': ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'] },
+        { 'name': 'Paragraph', 'is': 'tagName', 'value': ['P'] },
+        { 'name': 'Text', 'is': 'tagName', 'value': ['SPAN'] },
+        {
+            'name': 'Link',
+            'is': 'tagName',
+            'value': ['A'],
+            'traits': [{
+                type: 'text',
+                label: 'Href',
+                name: 'href',
+                placeholder: '#'
+            }]
+        },
+        { 'name': 'Button', 'is': 'tagName', 'value': ['BUTTON'] },
+        { 'name': 'Image', 'is': 'tagName', 'value': ['IMG'] },
+        { 'name': 'Div', 'is': 'tagName', 'value': ['DIV'] },
 
-    /** TEXT ELEMENTS **/
-    domComponents.addType('Heading', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
-                traits: traits
-            }),
-            init() {
-                this.listenTo(this, 'change:stylable', fixStylableProperty);
-            }
-        }, {
-            isComponent: function(el) {
-                switch (el.tagName) {
-                    case 'H1':
-                    case 'H2':
-                    case 'H3':
-                    case 'H4':
-                    case 'H5':
-                    case 'H6':
-                        return { type: 'Heading' };
-                        break;
+        { 'name': 'Wrapper', 'is': 'className', 'value': 'wrapper' },
+        { 'name': 'Container', 'is': 'className', 'value': 'container' },
+        { 'name': 'Fluid Container', 'is': 'className', 'value': 'container-fluid' },
+        { 'name': 'Grid', 'is': 'className', 'value': 'grid' },
+        { 'name': 'Column', 'is': 'className', 'value': 'col' },
+        { 'name': 'Background Image', 'is': 'className', 'value': 'background-image' },
+    ];
+
+    _.forEach(componentTypes, function(componentType) {
+
+        domComponents.addType(componentType.name, {
+            model: defaultModel.extend({
+                defaults: Object.assign({}, defaultModel.prototype.defaults, {
+                    traits: componentType.traits ? componentType.traits.concat(traits) : traits
+                }),
+                init() {
+                    var stylableTrait = this.get('traits').where({ name: 'stylable' })[0];
+                    // stylableTrait.set('checked', false);
+                    this.listenTo(this, 'change:stylable', this.fixProperty);
+                },
+
+                fixProperty() {
+                    console.log(this, 'TEST');
+                    editor.runCommand('fix-stylable-property', { node: this, thisNodeOnly: true });
                 }
-            },
-        }),
-
-        view: defaultView,
-    });
-
-    domComponents.addType('Paragraph', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
-                traits: traits
+            }, {
+                isComponent: function(el) {
+                    switch (componentType.is) {
+                        case 'tagName':
+                            if (_.indexOf(componentType.value, el[componentType.is]) != -1) {
+                                return { type: componentType.name };
+                            }
+                            break;
+                        case 'className':
+                            if (el[componentType.is] && el[componentType.is].indexOf(componentType.value) != -1) {
+                                return { type: componentType.name };
+                            }
+                            break;
+                    }
+                },
             }),
-            init() {
-                this.listenTo(this, 'change:stylable', fixStylableProperty);
-            }
-        }, {
-            isComponent: function(el) {
-                switch (el.tagName) {
-                    case 'P':
-                        return { type: 'Paragraph' };
-                        break;
-                }
-            },
-        }),
 
-        view: defaultView,
-    });
+            view: defaultView,
+        });
 
-    domComponents.addType('Text', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
-                traits: traits
-            }),
-            init() {
-                this.listenTo(this, 'change:stylable', fixStylableProperty);
-            }
-        }, {
-            isComponent: function(el) {
-                switch (el.tagName) {
-                    case 'SPAN':
-                        return { type: 'Text' };
-                        break;
-                }
-            },
-        }),
-
-        view: defaultView,
-    });
-
-    domComponents.addType('Link', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
-                traits: [{
-                    type: 'text',
-                    label: 'Href',
-                    name: 'href',
-                    placeholder: '#'
-                }].concat(traits)
-            }),
-            init() {
-                this.listenTo(this, 'change:stylable', fixStylableProperty);
-            }
-        }, {
-            isComponent: function(el) {
-                switch (el.tagName) {
-                    case 'A':
-                        return { type: 'Link' };
-                        break;
-                }
-            },
-        }),
-
-        view: defaultView,
-    });
-
-    /** BUTTON ELEMENTS **/
-    domComponents.addType('Button', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
-                traits: traits
-            }),
-            init() {
-                this.listenTo(this, 'change:stylable', fixStylableProperty);
-            }
-        }, {
-            isComponent: function(el) {
-                switch (el.tagName) {
-                    case 'BUTTON':
-                        return { type: 'Button' };
-                        break;
-                }
-            },
-        }),
-
-        view: defaultView,
-    });
-
-    /** IMAGE ELEMENTS **/
-    domComponents.addType('Image', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
-                traits: traits
-            }),
-            init() {
-                this.listenTo(this, 'change:stylable', fixStylableProperty);
-            }
-        }, {
-            isComponent: function(el) {
-                switch (el.tagName) {
-                    case 'IMG':
-                        return { type: 'Image' };
-                        break;
-                }
-            },
-        }),
-
-        view: defaultView,
-    });
-
-
-    /** DIV ELEMENTS **/
-    domComponents.addType('Div', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
-                traits: traits
-            }),
-            init() {
-                this.listenTo(this, 'change:stylable', fixStylableProperty);
-            }
-        }, {
-            isComponent: function(el) {
-                switch (el.tagName) {
-                    case 'DIV':
-                        return { type: 'Div' };
-                        break;
-                }
-            },
-        }),
-
-        view: defaultView,
-    });
-
-    domComponents.addType('Wrapper', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
-                traits: traits
-            }),
-            init() {
-                this.listenTo(this, 'change:stylable', fixStylableProperty);
-            }
-        }, {
-            isComponent: function(el) {
-                if (el.className && el.className.indexOf('wrapper') != -1) {
-                    return { type: 'Wrapper' };
-                }
-            },
-        }),
-
-        view: defaultView,
-    });
-
-    domComponents.addType('Container', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
-                traits: traits
-            }),
-            init() {
-                this.listenTo(this, 'change:stylable', fixStylableProperty);
-            }
-        }, {
-            isComponent: function(el) {
-                if (el.className && el.className.indexOf('container') != -1) {
-                    return { type: 'Container' };
-                }
-            },
-        }),
-
-        view: defaultView,
-    });
-
-    domComponents.addType('Fluid Container', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
-                traits: traits
-            }),
-            init() {
-                this.listenTo(this, 'change:stylable', fixStylableProperty);
-            }
-        }, {
-            isComponent: function(el) {
-                if (el.className && el.className.indexOf('container-fluid') != -1) {
-                    return { type: 'Fluid Container' };
-                }
-            },
-        }),
-
-        view: defaultView,
-    });
-
-    domComponents.addType('Grid', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
-                traits: traits
-            }),
-            init() {
-                this.listenTo(this, 'change:stylable', fixStylableProperty);
-            }
-        }, {
-            isComponent: function(el) {
-                if (el.className && el.className.indexOf('grid') != -1) {
-                    return { type: 'Grid' };
-                }
-            },
-        }),
-
-        view: defaultView,
-    });
-
-    domComponents.addType('Column', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
-                traits: traits
-            }),
-            init() {
-                this.listenTo(this, 'change:stylable', fixStylableProperty);
-            }
-        }, {
-            isComponent: function(el) {
-                if (el.className && el.className.indexOf('col') != -1) {
-                    return { type: 'Column' };
-                }
-            },
-        }),
-
-        view: defaultView,
-    });
-
-    /** BACKGROUND IMAGES **/
-    domComponents.addType('Background Image', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
-                traits: traits
-            }),
-            init() {
-                this.listenTo(this, 'change:stylable', fixStylableProperty);
-            }
-        }, {
-            isComponent: function(el) {
-                if (el.className && el.className.indexOf('background-image') != -1) {
-                    return { type: 'Background Image' };
-                }
-            },
-        }),
-
-        view: defaultView,
     });
 
     /*
@@ -389,7 +171,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
                     options.node.attributes.stylable = [];
                 }
 
-                if (options.node.view) {
+                if (options.node.view && !options.thisNodeOnly) {
                     _.forEach(options.node.view.components.models, function(model) {
                         editor.runCommand('fix-stylable-property', { node: model });
                     });
@@ -427,8 +209,6 @@ grapesjs.plugins.add('traits', (editor, options) => {
 
         var openBmBtn = panelManager.getButton('views', 'open-blocks');
         openBmBtn && openBmBtn.set('active', 1);
-
-        console.log(traits);
     });
 
     editor.on('change:selectedComponent', function() {
