@@ -120,24 +120,15 @@ body {
 }
 
 
-/** ATTRIBUTE MANAGER **/
+/** SETTINGS TRAITS **/
 
-#gjs-pn-attribute-manager {
-    display: none;
-    position: fixed;
-    top: 40px;
-    left: 0;
-    width: 15%;
-    padding-top: 0 !important;
+#gjs-pn-settings .gjs-trt-trait .gjs-field.gjs-field-checkbox {
+    position: absolute;
+    right: 15px;
 }
 
-.gjs-pn-attributes-shown #gjs-pn-attribute-manager {
-    display: block;
-}
-
-#gjs-pn-attribute-manager .gjs-sm-sector .gjs-sm-title {
-    margin-left: -5px;
-    margin-right: -5px;
+#gjs-pn-settings .gjs-trt-trait .gjs-label {
+    font-size: 14px;
 }
 
 
