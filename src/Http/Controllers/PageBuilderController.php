@@ -201,7 +201,7 @@ class PageBuilderController extends Controller
 		@$dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 		$xpath = new \DOMXPath($dom);
 
-		preg_match_all ('/(\.(\w+)|#c\d{4})\s?({(.*?)})/', $css, $styles, PREG_PATTERN_ORDER);
+		preg_match_all ('/(.(.*?)|#c\d{3,})\s?({(.*?)})/', $css, $styles, PREG_PATTERN_ORDER);
 
 		// dd($styles);
 
