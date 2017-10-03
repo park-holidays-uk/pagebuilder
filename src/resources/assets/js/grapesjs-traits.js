@@ -45,11 +45,11 @@ grapesjs.plugins.add('traits', (editor, options) => {
      */
     var componentTypes = [
         /* TAGS */
-        { 'name': 'Heading', 'is': 'tagName', 'value': ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'] },
-        { 'name': 'Paragraph', 'is': 'tagName', 'value': ['P'] },
-        { 'name': 'Text', 'is': 'tagName', 'value': ['SPAN'] },
+        { 'name': 'heading', 'is': 'tagName', 'value': ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'] },
+        { 'name': 'paragraph', 'is': 'tagName', 'value': ['P'] },
+        { 'name': 'text', 'is': 'tagName', 'value': ['SPAN'] },
         {
-            'name': 'Link',
+            'name': 'link',
             'is': 'tagName',
             'value': ['A'],
             'traits': [{
@@ -59,16 +59,18 @@ grapesjs.plugins.add('traits', (editor, options) => {
                 placeholder: '#'
             }]
         },
-        { 'name': 'Button', 'is': 'tagName', 'value': ['BUTTON'] },
-        { 'name': 'Image', 'is': 'tagName', 'value': ['IMG'] },
-        { 'name': 'Div', 'is': 'tagName', 'value': ['DIV'] },
+        { 'name': 'button', 'is': 'tagName', 'value': ['BUTTON'] },
+        { 'name': 'image', 'is': 'tagName', 'value': ['IMG'] },
+        { 'name': 'div', 'is': 'tagName', 'value': ['DIV'] },
+        /* DYNAMIC BLOCKS */
+        { 'name': 'dynamic block', 'is': 'tagName', 'value': ['DYNABLOCK'] },
         /* CLASSES */
-        { 'name': 'Wrapper', 'is': 'className', 'value': 'wrapper' },
-        { 'name': 'Container', 'is': 'className', 'value': 'container' },
-        { 'name': 'Fluid Container', 'is': 'className', 'value': 'container-fluid' },
-        { 'name': 'Grid', 'is': 'className', 'value': 'grid' },
-        { 'name': 'Column', 'is': 'className', 'value': 'col' },
-        { 'name': 'Background Image', 'is': 'className', 'value': 'background-image' },
+        { 'name': 'wrapper', 'is': 'className', 'value': 'wrapper' },
+        { 'name': 'container', 'is': 'className', 'value': 'container' },
+        { 'name': 'fluid container', 'is': 'className', 'value': 'container-fluid' },
+        { 'name': 'grid', 'is': 'className', 'value': 'grid' },
+        { 'name': 'column', 'is': 'className', 'value': 'col' },
+        { 'name': 'background image', 'is': 'className', 'value': 'background-image' },
     ];
 
     _.forEach(componentTypes, function(componentType) {
@@ -76,7 +78,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
         domComponents.addType(componentType.name, {
             model: defaultModel.extend({
                 defaults: Object.assign({}, defaultModel.prototype.defaults, {
-                    traits: componentType.traits ? componentType.traits.concat(traits) : traits
+                    // traits: componentType.traits ? componentType.traits.concat(traits) : traits
                 }),
 
                 init() {
@@ -88,6 +90,25 @@ grapesjs.plugins.add('traits', (editor, options) => {
 
                     // console.log(trait);
                     // Listeners
+                    // console.log(this, this.get('traits'));
+
+                    var myTraits = this.get('traits');
+                    myTraits.push(componentType.traits ? componentType.traits.concat(traits) : traits);
+
+                    this.set('traits', myTraits);
+
+                    self.listenTo(this, 'change:status', function() {
+                        if (_.indexOf(['heading', 'paragraph', 'text', 'link'], self.attributes.type) > -1) {
+                            if (self.attributes.status == '') {
+                                self.view.el.setAttribute('contenteditable', false);
+                            } else if (self.attributes.status == 'selected') {
+                                // Selected
+                            } else {
+                                // Other State
+                            }
+                        }
+                    });
+
                     self.listenTo(this, 'change:stylable', function() {
                         self.property = 'stylable';
                         self.fixProperty();
@@ -95,7 +116,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
                 },
 
                 fixProperty() {
-                    var trait = this.get('traits').where({ name: this.property })[0];
+                    // var trait = this.get('traits').where({ name: this.property })[0];
 
                     if (this.property == 'stylable') {
                         editor.runCommand('fix-stylable-property', { node: this, thisNodeOnly: true });
@@ -118,7 +139,20 @@ grapesjs.plugins.add('traits', (editor, options) => {
                 },
             }),
 
-            view: defaultView,
+            view: defaultView.extend({
+                events: {
+                    'dblclick': 'doubleClicked'
+                },
+
+                doubleClicked(e) {
+                    if (_.indexOf(['heading', 'paragraph', 'text', 'link'], this.model.attributes.type) > -1) {
+                        var component = editor.getSelected();
+                        if (component.attributes.editable) {
+                            component.view.el.setAttribute('contenteditable', true);
+                        }
+                    }
+                },
+            }),
         });
 
     });
@@ -130,7 +164,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
     commands.add('remove-id-attribute', {
         run: function(editor, sender, options) {
 
-            if (options.node.attributes.attributes['id'].match('/{c\d{3})\w+/')) {
+            if (options.node.attributes.attributes['id'] && options.node.attributes.attributes['id'].match('/(c\d{3})\w+/')) {
                 delete options.node.attributes.attributes['id'];
             }
 
@@ -200,6 +234,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
      *   EVENTS
      */
 
+    // ONLOAD
     editor.on('load', function() {
         var openTmBtn = panelManager.getButton('views', 'open-tm');
         openTmBtn && openTmBtn.set('active', 1);
@@ -225,6 +260,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
         openBmBtn && openBmBtn.set('active', 1);
     });
 
+    // SELECTION CHANGE
     editor.on('change:selectedComponent', function() {
         var component = editor.getSelected();
 
