@@ -21,3 +21,13 @@
     padding-top: 10px !important;
     padding-bottom: 10px !important;
 }
+
+
+/* TEMP */
+
+dynablock {
+    width: 100%;
+    min-height: 300px;
+    background-color: #efefef;
+    display: block;
+}
