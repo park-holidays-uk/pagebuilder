@@ -33,8 +33,6 @@ grapesjs.plugins.add('traits', (editor, options) => {
                 type: property.type,
                 label: property.label,
                 name: property.name,
-                // placeholder: property.placeholder || '',
-                // options: property.options || [],
                 changeProp: 1
             })
         });
@@ -125,8 +123,6 @@ grapesjs.plugins.add('traits', (editor, options) => {
                             if (_.indexOf(['heading', 'paragraph', 'text', 'link'], self.get('type')) > -1) {
                                 self.view.el.setAttribute('contenteditable', false);
                             }
-                        } else if (self.get('status') == 'selected') {
-                            console.log(self);
                         }
                     });
 
@@ -146,16 +142,12 @@ grapesjs.plugins.add('traits', (editor, options) => {
 
                                 attrs['data-json'] = btoa(JSON.stringify(datajson));
                                 self.set('attributes', attrs);
-
-                                console.log(self, attrs);
                             });
                         });
                     }
                 },
 
                 fixProperty() {
-                    // var trait = this.get('traits').where({ name: this.property })[0];
-
                     if (this.property == 'stylable') {
                         editor.runCommand('fix-stylable-property', { node: this, thisNodeOnly: true });
                     }
