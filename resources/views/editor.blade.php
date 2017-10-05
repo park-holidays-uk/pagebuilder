@@ -90,7 +90,7 @@
                 sectors: [
                     {
                         name: 'Extra',
-                        buildProps: ['color', 'background-image']
+                        buildProps: ['background-image']
                     }
                 ]
             },
