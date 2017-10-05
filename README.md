@@ -28,6 +28,7 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 
 * Remove fields 'css_base64' and 'gjs_components' from table 'pagebuilder_blocks' and take out and related code.
 * Add support for SRCSET on images - *Once blocks with images have been added*
+* Add notifications on user and system events.
 
 ## Known Issues
 
