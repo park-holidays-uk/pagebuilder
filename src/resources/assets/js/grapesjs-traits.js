@@ -63,7 +63,11 @@ grapesjs.plugins.add('traits', (editor, options) => {
         { 'name': 'image', 'is': 'tagName', 'value': ['IMG'] },
         { 'name': 'div', 'is': 'tagName', 'value': ['DIV'] },
         /* DYNAMIC BLOCKS */
-        { 'name': 'dynamic block', 'is': 'tagName', 'value': ['DYNABLOCK'] },
+        {
+            'name': 'dynamic block',
+            'is': 'tagName',
+            'value': ['DYNABLOCK']
+        },
         /* CLASSES */
         { 'name': 'wrapper', 'is': 'className', 'value': 'wrapper' },
         { 'name': 'container', 'is': 'className', 'value': 'container' },
@@ -77,35 +81,43 @@ grapesjs.plugins.add('traits', (editor, options) => {
 
         domComponents.addType(componentType.name, {
             model: defaultModel.extend({
-                defaults: Object.assign({}, defaultModel.prototype.defaults, {
-                    // traits: componentType.traits ? componentType.traits.concat(traits) : traits
-                }),
-
                 init() {
                     var self = this;
+                    var _traits = ((self.get('type') == 'dynamic block')) ? [] : (componentType.traits ? componentType.traits.concat(traits) : traits);
+                    var attrs = self.get('attributes');
+                    var datajson = {};
 
-                    // var trait = this.get('traits').where({ name: 'stylable' })[0];
-                    // if (trait.get('value') == '') { trait.set('value', false); }
-                    // if (this.attributes.stylable == 'false' || (Array.isArray(this.attributes.stylable) && this.attributes.stylable.length == 0) || trait.get('value') == '') { trait.set('value', false); }
+                    if (self.get('type') == 'dynamic block') {
+                        var props = JSON.parse(atob(attrs['properties']));
+                        self.set('properties', props);
+                        delete attrs['properties'];
 
-                    // console.log(trait);
+                        _.forEach(props, function(prop) {
+                            _traits.push({
+                                type: prop.type,
+                                label: prop.property.replace('_', ' '),
+                                name: prop.property.replace('_', ''),
+                                changeProp: 1
+                            });
+
+                            datajson[prop.property] = '';
+                            self.set(prop.property.replace('_', ''), '');
+                        });
+
+                        attrs['data-json'] = btoa(JSON.stringify(datajson));
+                        self.set('attributes', attrs);
+                    }
+
+                    this.set('traits', _traits);
+
                     // Listeners
-                    // console.log(this, this.get('traits'));
-
-                    var myTraits = this.get('traits');
-                    myTraits.push(componentType.traits ? componentType.traits.concat(traits) : traits);
-
-                    this.set('traits', myTraits);
-
                     self.listenTo(this, 'change:status', function() {
-                        if (_.indexOf(['heading', 'paragraph', 'text', 'link'], self.attributes.type) > -1) {
-                            if (self.attributes.status == '') {
+                        if (self.get('status') == '') {
+                            if (_.indexOf(['heading', 'paragraph', 'text', 'link'], self.get('type')) > -1) {
                                 self.view.el.setAttribute('contenteditable', false);
-                            } else if (self.attributes.status == 'selected') {
-                                // Selected
-                            } else {
-                                // Other State
                             }
+                        } else if (self.get('status') == 'selected') {
+
                         }
                     });
 
@@ -113,6 +125,23 @@ grapesjs.plugins.add('traits', (editor, options) => {
                         self.property = 'stylable';
                         self.fixProperty();
                     });
+
+                    if (self.get('type') == 'dynamic block') {
+                        _.forEach(self.get('properties'), function(prop) {
+                            var name = prop.property.replace('_', '');
+                            self.listenTo(self, 'change:' + name, function() {
+                                attrs = self.get('attributes');
+
+                                var datajson = JSON.parse(atob(attrs['data-json']));
+                                datajson[prop.property] = self.get(name);
+
+                                attrs['data-json'] = btoa(JSON.stringify(datajson));
+                                self.set('attributes', attrs);
+
+                                console.log(self, attrs);
+                            });
+                        });
+                    }
                 },
 
                 fixProperty() {
@@ -187,17 +216,20 @@ grapesjs.plugins.add('traits', (editor, options) => {
                     editor.runCommand('set-default-properties', { node: wrapperChild });
                 });
             } else {
-                options.node.attributes.stylable = [];
-                options.node.attributes.draggable = false;
-                options.node.attributes.droppable = false;
-                options.node.attributes.copyable = false;
-                options.node.attributes.resizable = false;
-                options.node.attributes.editable = false;
-                options.node.attributes.removable = false;
+                var level = options.level || 0;
+
+                options.node.set('stylable', []);
+                options.node.set('draggable', (level == 0));
+                options.node.set('droppable', false);
+                options.node.set('copyable', false);
+                options.node.set('resizable', false);
+                options.node.set('editable', false);
+                options.node.set('removable', (level == 0));
 
                 if (options.node.view) {
+                    level++;
                     _.forEach(options.node.view.components.models, function(model) {
-                        editor.runCommand('set-default-properties', { node: model });
+                        editor.runCommand('set-default-properties', { node: model, level: level });
                     });
                 }
 
@@ -215,8 +247,8 @@ grapesjs.plugins.add('traits', (editor, options) => {
                     editor.runCommand('fix-stylable-property', { node: wrapperChild });
                 });
             } else {
-                if (options.node.attributes.stylable == false) {
-                    options.node.attributes.stylable = [];
+                if (options.node.get('stylable') == false) {
+                    options.node.set('stylable', []);
                 }
 
                 if (options.node.view && !options.thisNodeOnly) {

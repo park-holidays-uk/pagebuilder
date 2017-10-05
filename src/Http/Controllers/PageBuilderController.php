@@ -99,12 +99,14 @@ class PageBuilderController extends Controller
 
 		if($blocks) {
 			$blocks->each(function($item, $key) use($data) { 
+				$html = ($item->dynamic) ? preg_replace("@\n@","", $this->setProperties($item)) : base64_decode($item->html_base64);
+
 				$data->push((object) [
 					'category' => $item->group->name,
 					'block_id' => $item->block_id,
 					'label' => $item->label,
-					'content' => base64_decode($item->html_base64),
-					'attributes' => $item->attributes
+					'content' => $html,
+					'attributes' => $item->attributes					
 				]);
 			});
 		}
@@ -148,6 +150,22 @@ class PageBuilderController extends Controller
 		}
 
 		return $record;
+	}
+
+	function setProperties($item) {
+		$html = base64_decode($item->html_base64);
+
+		$dom = new \DOMDocument();
+		@$dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+		$xpath = new \DOMXPath($dom);
+
+		$element = $xpath->query("//dynablock");
+
+		if($element) {
+			$element->item(0)->setAttribute('properties', base64_encode($item->properties));
+		}
+
+		return $dom->saveHTML();
 	}
 
 	function setAttributes($json, $html) {
