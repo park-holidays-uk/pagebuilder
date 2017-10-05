@@ -9,7 +9,7 @@ A step by step series of examples that tell you have to get a development env ru
 Run the following commands in the CLI
 
 ```
-composer install park-holidays-uk/pagebuilder --save
+composer require park-holidays-uk/pagebuilder
 ```
 
 Don't forget to publish the config and assets..

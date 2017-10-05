@@ -88,24 +88,33 @@ grapesjs.plugins.add('traits', (editor, options) => {
                     var datajson = {};
 
                     if (self.get('type') == 'dynamic block') {
-                        var props = JSON.parse(atob(attrs['properties']));
-                        self.set('properties', props);
-                        delete attrs['properties'];
+                        var props = {};
+                        if (attrs['properties']) {
+                            props = JSON.parse(atob(attrs['properties']));
+                            self.set('properties', props);
+                            delete attrs['properties'];
 
-                        _.forEach(props, function(prop) {
-                            _traits.push({
-                                type: prop.type,
-                                label: prop.property.replace('_', ' '),
-                                name: prop.property.replace('_', ''),
-                                changeProp: 1
+                            _.forEach(props, function(prop) {
+                                var trait = {
+                                    type: prop.type,
+                                    label: prop.property.replace('_', ' '),
+                                    name: prop.property.replace('_', ''),
+                                    changeProp: 1
+                                };
+
+                                if (!attrs['properties']) { trait.value = self.get(prop.property.replace('_', '')); }
+
+                                _traits.push(trait);
+
+                                datajson[prop.property] = '';
+                                self.set(prop.property.replace('_', ''), '');
                             });
 
-                            datajson[prop.property] = '';
-                            self.set(prop.property.replace('_', ''), '');
-                        });
-
-                        attrs['data-json'] = btoa(JSON.stringify(datajson));
-                        self.set('attributes', attrs);
+                            attrs['data-json'] = btoa(JSON.stringify(datajson));
+                            self.set('attributes', attrs);
+                        } else {
+                            _traits = self.get('traits');
+                        }
                     }
 
                     this.set('traits', _traits);
@@ -117,7 +126,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
                                 self.view.el.setAttribute('contenteditable', false);
                             }
                         } else if (self.get('status') == 'selected') {
-
+                            console.log(self);
                         }
                     });
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace ParkHolidays\PageBuilder\Providers;
+namespace ParkHolidays\PageBuilder;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -13,25 +13,27 @@ class PageBuilderServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $resourcePath = __DIR__.'/../resources';
+
         // Routes
         $this->app['router']->group(['namespace' => 'ParkHolidays\PageBuilder\Http\Controllers'], function () {
-            include __DIR__.'/../routes/web.php';
+            include __DIR__.'/Http/routes.php';
         });
 
         // Views
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'pagebuilder');
+        $this->loadViewsFrom($resourcePath .'/views', 'pagebuilder');
 
         // Migrations
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
 
         // Publish config file
         $this->publishes([
-            __DIR__.'/../config/pagebuilder.php' => config_path('pagebuilder.php'),
+            __DIR__.'/config/pagebuilder.php' => config_path('pagebuilder.php'),
         ], 'config');
 
         // Publish assets
         $this->publishes([
-            __DIR__.'/../resources/assets' => public_path('parkholidays/pagebuilder'),
+            $resourcePath .'/assets' => public_path('parkholidays/pagebuilder'),
         ], 'public');
     }
 
