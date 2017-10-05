@@ -1,0 +1,20 @@
+{
+    "name": "park-holidays-uk/pagebuilder",
+    "description": "Page editor for Park Holidays staff",
+    "type": "composer-plugin",
+    "authors": [{
+        "name": "Mark Bailey",
+        "email": "mabailey@parkholidays.com"
+    }],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "classmap": [
+            "Http/Controllers",
+            "Models"
+        ],
+        "psr-4": {
+
+        }
+    }
+}
