@@ -34,3 +34,5 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 
 * Error installing package into a Laravel project. - *Could not find package vendor/package at any version for your minimum-stability (stable).*
 * The GrapesJS property stylable can be either true, false or an array for which an empty array is equivilant to false but when using traits, the checkbox recognises empty array as true and as such displays incorrectly.
+* Mysterious glyph appearing in price point on advert-promo-three block.
+* Once href set on Links, clicking them redirects canvas to the url.
