@@ -4,8 +4,6 @@ Page editor for PHAST CMS...
 
 ### Installing
 
-A step by step series of examples that tell you have to get a development env running
-
 Run the following commands in the CLI
 
 ```
@@ -18,6 +16,10 @@ Don't forget to publish the config and assets..
 php artisan vendor:publish
 ```
 
+## Things To Know
+
+To add both fullwidth blocks to non fullwidth layouts the layout block should be surround in a *DIV* with the class *wrapper*.
+
 ## Authors
 
 * **Mark Bailey** - *Initial work* - [markbailey](https://github.com/markbailey)
@@ -29,6 +31,7 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 * Remove fields 'css_base64' and 'gjs_components' from table 'pagebuilder_blocks' and take out and related code.
 * Add support for SRCSET on images - *Once blocks with images have been added*
 * Add notifications on user and system events.
+* Add filtering options to Asset modal for media library.
 
 ## Known Issues
 
