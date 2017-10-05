@@ -10,6 +10,12 @@ Run the following commands in the CLI
 composer require park-holidays-uk/pagebuilder
 ```
 
+Add the following to the App config 'providers'
+
+```
+ParkHolidays\PageBuilder\PageBuilderServiceProvider::class
+```
+
 Don't forget to publish the config and assets..
 
 ```
@@ -18,7 +24,8 @@ php artisan vendor:publish
 
 ## Things To Know
 
-To add both fullwidth blocks to non fullwidth layouts the layout block should be surround in a *DIV* with the class *wrapper*.
+All layout blocks should be contained within a *DIV* element with the class *wrapper*. This will allow the use of both
+fullwidth and non-fullwidth blocks.
 
 ## Authors
 
