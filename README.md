@@ -53,9 +53,9 @@ fullwidth and non-fullwidth blocks in the page.
 ```
 
 ### FIG. PW3R
-'''
+```
 {"class": "ICON CLASSES GOES HERE"}
-'''
+```
 
 ## Authors
 
