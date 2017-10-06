@@ -7,7 +7,7 @@ Page editor for PHAST CMS...
 Run the following commands in the CLI
 
 ```
-composer require park-holidays-uk/pagebuilder
+composer require park-holidays-uk/PageBuilder
 ```
 
 Add the following to the App config 'providers'
@@ -22,10 +22,39 @@ Don't forget to publish the config and assets..
 php artisan vendor:publish
 ```
 
+Once config has been published, add the following to the .ENV file and change the values appropriately
+
+```
+PAGEBUILDER_DOMAIN=phast.parkholidays.com
+PAGEBUILDER_ASSET_PATH=//parkholidays.s3-website-eu-west-1.amazonaws.com/assets/
+```
+
 ## Things To Know
 
 All layout blocks should be contained within a *DIV* element with the class *wrapper*. This will allow the use of both
-fullwidth and non-fullwidth blocks.
+fullwidth and non-fullwidth blocks in the page.
+
+## PHAST Wizard Requirements
+
+* Must be able to create blocks & layouts as well as pages.
+* For dynamic blocks, it will need to pre-populate the *html_base64* field with base64 encoded html, which includes the view name. see Fig. PW1R
+* For dynamic blocks, it will need to populate the *properties* field with a JSON object that is used to create dynamic traits (payload object). see Fig. PW2R
+* For all blocks and layouts, it will need to set the *attributes* field, with a JSON object that has minimum of 1 property, which must be the class property. This is used to display an icon within pagebuilder. see Fig. PW3R
+
+### FIG. PW1R
+```
+<dynablock data-view="VIEW FILENAME GOES HERE" />
+```
+
+### FIG. PW2R
+```
+[{"property":"park_codes","type":"text", "value": ""},{"property":"rental_type","type":"text", "value": "1"}]
+```
+
+### FIG. PW3R
+'''
+{"class": "ICON CLASSES GOES HERE"}
+'''
 
 ## Authors
 
@@ -35,14 +64,16 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 
 ## TODOS
 
-* Remove fields 'css_base64' and 'gjs_components' from table 'pagebuilder_blocks' and take out and related code.
+* Modulerise CSS and JavaScript.
 * Add support for SRCSET on images - *Once blocks with images have been added*
 * Add notifications on user and system events.
 * Add filtering options to Asset modal for media library.
+* Add authentication to restrict access.
+* Fix default values for traits on Dynamic Blocks.
 
 ## Known Issues
 
 * Error installing package into a Laravel project. - *Could not find package vendor/package at any version for your minimum-stability (stable).*
-* The GrapesJS property stylable can be either true, false or an array for which an empty array is equivilant to false but when using traits, the checkbox recognises empty array as true and as such displays incorrectly.
+* The GrapesJS property stylable can be either true, false or an array, for which an empty array is equivilant to false but when using traits, the checkbox recognises empty array as true and as such displays incorrectly.
 * Mysterious glyph appearing in price point on advert-promo-three block.
 * Once href set on Links, clicking them redirects canvas to the url.
