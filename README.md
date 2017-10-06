@@ -37,6 +37,7 @@ fullwidth and non-fullwidth blocks in the page.
 ## PHAST Wizard Requirements
 
 * Must be able to create blocks & layouts as well as pages.
+* For dynamic blocks, it will need to pre-populate the *block_id* field with the filename of the view.
 * For dynamic blocks, it will need to pre-populate the *html_base64* field with base64 encoded html, which includes the view name. see Fig. PW1R
 * For dynamic blocks, it will need to populate the *properties* field with a JSON object that is used to create dynamic traits (payload object). see Fig. PW2R
 * For all blocks and layouts, it will need to set the *attributes* field, with a JSON object that has minimum of 1 property, which must be the class property. This is used to display an icon within pagebuilder. see Fig. PW3R
@@ -77,3 +78,4 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 * The GrapesJS property stylable can be either true, false or an array, for which an empty array is equivilant to false but when using traits, the checkbox recognises empty array as true and as such displays incorrectly.
 * Mysterious glyph appearing in price point on advert-promo-three block.
 * Once href set on Links, clicking them redirects canvas to the url.
+* If an element with a style associated to it is copied, both copies of the element refer to same style, preventing the elements being styled differently. - *Temporary solution would be to disable copying of elements*
