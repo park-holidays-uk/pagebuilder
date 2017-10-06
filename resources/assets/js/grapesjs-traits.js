@@ -97,15 +97,14 @@ grapesjs.plugins.add('traits', (editor, options) => {
                                     type: prop.type,
                                     label: prop.property.replace('_', ' '),
                                     name: prop.property.replace('_', ''),
+                                    value: prop.value,
                                     changeProp: 1
                                 };
 
-                                if (!attrs['properties']) { trait.value = self.get(prop.property.replace('_', '')); }
-
                                 _traits.push(trait);
 
-                                datajson[prop.property] = '';
-                                self.set(prop.property.replace('_', ''), '');
+                                datajson[prop.property] = prop.value;
+                                self.set(prop.property.replace('_', ''), prop.value);
                             });
 
                             attrs['data-json'] = btoa(JSON.stringify(datajson));
@@ -116,6 +115,8 @@ grapesjs.plugins.add('traits', (editor, options) => {
                     }
 
                     this.set('traits', _traits);
+
+                    console.log(this.get('traits'));
 
                     // Listeners
                     self.listenTo(this, 'change:status', function() {
