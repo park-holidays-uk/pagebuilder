@@ -193,8 +193,8 @@ grapesjs.plugins.add('traits', (editor, options) => {
 
     commands.add('remove-id-attribute', {
         run: function(editor, sender, options) {
-
-            if (options.node.attributes.attributes['id'] && options.node.attributes.attributes['id'].match('/(c\d{3})\w+/')) {
+            var attrs = options.node.get('attributes');
+            if (attrs['id'] && attrs['id'].match(/(c\d{3,})\w+/)) {
                 delete options.node.attributes.attributes['id'];
             }
 
