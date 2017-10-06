@@ -74,7 +74,6 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 * Add notifications on user and system events.
 * Add filtering options to Asset modal for media library.
 * Add authentication to restrict access.
-* Fix default values for traits on Dynamic Blocks.
 
 ## Known Issues
 
