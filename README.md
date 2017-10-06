@@ -1,6 +1,6 @@
 # Page Builder
 
-Page editor for PHAST CMS...
+Page editor for PHAST CMS built using the GrapesJS framework...
 
 ### Installing
 
@@ -38,9 +38,9 @@ fullwidth and non-fullwidth blocks in the page.
 
 * Must be able to create blocks & layouts as well as pages.
 * For dynamic blocks, it will need to pre-populate the *block_id* field with the filename of the view.
-* For dynamic blocks, it will need to pre-populate the *html_base64* field with base64 encoded html, which includes the view name. see Fig. PW1R
-* For dynamic blocks, it will need to populate the *properties* field with a JSON object that is used to create dynamic traits (payload object). see Fig. PW2R
-* For all blocks and layouts, it will need to set the *attributes* field, with a JSON object that has minimum of 1 property, which must be the class property. This is used to display an icon within pagebuilder. see Fig. PW3R
+* For dynamic blocks, it will need to pre-populate the *html_base64* field with base64 encoded html, which includes the view name. see **Fig. PW1R**
+* For dynamic blocks, it will need to populate the *properties* field with a JSON object that is used to create dynamic traits (payload object). see **Fig. PW2R**
+* For all blocks and layouts, it will need to set the *attributes* field, with a JSON object that has minimum of 1 property, which must be the class property. This is used to display an icon within pagebuilder. see **Fig. PW3R**
 
 ### FIG. PW1R
 ```
@@ -48,8 +48,12 @@ fullwidth and non-fullwidth blocks in the page.
 ```
 
 ### FIG. PW2R
+For different trait input types please refer to (https://github.com/artf/grapesjs/wiki/Traits)
 ```
-[{"property":"park_codes","type":"text", "value": ""},{"property":"rental_type","type":"text", "value": "1"}]
+[
+    {"property":"park_codes","type":"text", "value": ""},
+    {"property":"rental_type","type":"text", "value": "1"}
+]
 ```
 
 ### FIG. PW3R
