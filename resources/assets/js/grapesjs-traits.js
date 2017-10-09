@@ -116,8 +116,6 @@ grapesjs.plugins.add('traits', (editor, options) => {
 
                     this.set('traits', _traits);
 
-                    console.log(this.get('traits'));
-
                     // Listeners
                     self.listenTo(this, 'change:status', function() {
                         if (self.get('status') == '') {
@@ -298,7 +296,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
     editor.on('change:selectedComponent', function() {
         var component = editor.getSelected();
 
-        if (component && !component.attributes.wrapper) {
+        if (component && typeof(component.get('wrapper')) === 'undefined') {
             if ($('#gjs-pn-settings').find('.gjs-trt-traits').html() != '') {
                 $('#gjs-pn-settings').removeClass('hidden');
             } else if (!$('#gjs-pn-settings').hasClass('hidden')) {
