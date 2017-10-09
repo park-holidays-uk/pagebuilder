@@ -80,13 +80,6 @@ grapesjs.plugins.add('assets', (editor, options) => {
     /*
      *   EVENTS
      */
-    editor.on('load', function() {
-        // loadAssets();
-    });
-
-    editor.on('am:page:select', function(page) {
-        console.log(page);
-    });
 
     /** MODAL OPEN/CLOSE **/
     model.on('change:open', function(model) {
