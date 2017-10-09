@@ -260,7 +260,6 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     panels.addPanel({ id: 'views' });
     panels.addPanel({ id: 'views-container' });
 
-    // if (!isPageMode) {
     var styleBtn = panels.addButton('views', [{
         id: 'open-styles',
         className: 'fa fa-paint-brush',
@@ -268,7 +267,6 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
         attributes: { title: 'Open Style Manager' },
         active: true,
     }]);
-    // }
 
     panels.addButton('views', [{
             id: 'open-tm',
