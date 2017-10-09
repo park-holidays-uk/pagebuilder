@@ -115,18 +115,23 @@ class PageBuilderController extends Controller
 	}
 
 	/** Get Assets **/
-	public function getAssets() 
+	public function getAssets(Request $request) 
 	{
-		$data = \DB::table('media')
-					->leftJoin('media_lookups', 'media_lookups.media_id', '=', 'media.id')
-					->whereIn('media_lookups.media_lookup_type', ['App\Models\Pages\Page'])->get();
+		$perPage = json_decode(config('pagebuilder.items_per_page'));
+		$assets = \DB::table('media')->leftJoin('media_lookups', 'media_lookups.media_id', '=', 'media.id');
+		$pageCount = ceil($assets->count()/$perPage);
+		$skip = ($request->page-1) * $perPage;
 
-		$data->map(function($image) {
+		$assets = $assets->skip($skip)->take($perPage)->get();
+
+		// ->whereIn('media_lookups.media_lookup_type', ['App\Models\Pages\Page'])->get();
+
+		$assets->map(function($image) {
 			$image->path = config('pagebuilder.asset_path'). $image->path;
 			return $image;
 		});
 
-		return $data->toJson();
+		return collect(['page_count' => $pageCount, 'assets' => $assets])->toJson();
 	}
 
 	/*

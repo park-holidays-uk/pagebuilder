@@ -78,10 +78,12 @@ body {
 
 /** Asset Manager **/
 
+
+/* 
 .gjs-asset-manager .gjs-am-file-uploader,
 .gjs-asset-manager .gjs-am-assets-header {
     display: none;
-}
+} */
 
 .gjs-asset-manager .gjs-am-assets-cont {
     float: none;
@@ -115,8 +117,34 @@ body {
     width: 100%;
 }
 
-.gjs-am-asset.gjs-am-asset-image .gjs-am-close {
+
+/* .gjs-am-asset.gjs-am-asset-image .gjs-am-close {
     display: none !important;
+} */
+
+#gjs-am-pager .gjs-am-pagination {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: auto;
+}
+
+#gjs-am-pager .gjs-am-pagination>li {
+    display: inline-block;
+}
+
+#gjs-am-pager .gjs-am-pagination>li a {
+    display: block;
+    padding: 5px 8px;
+    text-align: center;
+}
+
+#gjs-am-pager .gjs-am-pagination>li a.gjs-am-page-link {
+    cursor: pointer;
+}
+
+#gjs-am-pager .gjs-am-pagination>li.active a {
+    background-color: rgba(33, 33, 33, 0.2);
 }
 
 

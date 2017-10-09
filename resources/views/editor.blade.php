@@ -62,6 +62,10 @@
 
                 'traits': {
                     mode: '{{ $viewModel->mode }}'
+                },
+
+                'assets': {
+                    asset_manager_path: '{{ config("pagebuilder.asset_manager_path") }}'
                 }
             },
 

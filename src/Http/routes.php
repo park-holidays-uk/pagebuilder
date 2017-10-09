@@ -11,6 +11,14 @@ Route::group(['domain' => config('pagebuilder.domain')], function() {
     });
 
     /*
+    *   Asset Manager Routes
+    */
+
+    Route::any(config('pagebuilder.asset_manager_path'), function() {
+        return view('pagebuilder::partials.asset-manager');
+    });
+
+    /*
     *   Ajax Routers
     */
 
@@ -18,7 +26,7 @@ Route::group(['domain' => config('pagebuilder.domain')], function() {
         /** GET **/
         Route::group(['prefix' => '/get'], function() {
             /** ASSETS **/
-            Route::get('/assets', array('as' => 'pagebuilder.ajax.get.assets', 'uses' => 'PageBuilderController@getAssets'));
+            Route::post('/assets', array('as' => 'pagebuilder.ajax.get.assets', 'uses' => 'PageBuilderController@getAssets'));
 
             /** BLOCKS **/
             Route::get('/{type}/{includeUserDefined?}', array('as' => 'pagebuilder.ajax.get.blocks', 'uses' => 'PageBuilderController@getBlocks'))
