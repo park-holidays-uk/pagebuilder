@@ -18,18 +18,13 @@ grapesjs.plugins.add('assets', (editor, options) => {
 
     commands.add('am-load-assets', {
         run: function(editor, sender, formData) {
-            $('.gjs-block-categories .gjs-block-category').css('display', 'none');
-
             $.ajax({
                 type: 'POST',
                 url: '/ajax/get/assets',
                 data: formData
             }).done(function(_data) {
                 var data = JSON.parse(_data);
-                console.log(data);
-                console.log(assetManager.getAll());
                 _.forEach(assetManager.getAll().models, function(_asset) {
-                    console.log(_asset);
                     if (_asset) {
                         assetManager.remove(_asset.get('src'));
                     }
@@ -42,13 +37,12 @@ grapesjs.plugins.add('assets', (editor, options) => {
                     });
                 });
 
-
                 /* Pagination */
                 $('#gjs-am-pager').html('');
 
                 var pagination = $('<ul class="gjs-am-pagination"></ul>');
                 pagination.append('<li class="' + (formData.page == 1 ? 'active' : '') + '"><a class="' + (formData.page != 1 ? 'gjs-am-page-link' : '') + '">1</a></li>');
-                console.log(formData);
+
                 var prevOffset = (formData.page - 3);
                 var nextOffset = (formData.page + 3);
 
