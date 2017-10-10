@@ -118,6 +118,44 @@ body {
 }
 
 
+/* Asset Manager Filters */
+
+.gjs-am-add-asset .gjs-am-select-filters {
+    display: flex;
+    flex-direction: row;
+}
+
+.gjs-am-add-asset .gjs-am-select-filters>div {
+    flex: 1;
+    padding: 0 5px 10px;
+}
+
+.gjs-am-add-asset .gjs-am-select-filters>div:first-child {
+    padding-left: 0;
+}
+
+.gjs-am-add-asset .gjs-am-select-filters>div:last-child {
+    padding-right: 0;
+}
+
+.gjs-am-add-asset .gjs-fields .gjs-field {
+    padding: 5px 0 5px 5px;
+}
+
+.gjs-am-add-asset .gjs-fields .gjs-field select {
+    padding: 0;
+}
+
+.gjs-am-add-asset .gjs-fields .gjs-field select option {
+    background-color: transparent;
+}
+
+.gjs-am-add-asset .gjs-sm-label {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+
 /* .gjs-am-asset.gjs-am-asset-image .gjs-am-close {
     display: none !important;
 } */

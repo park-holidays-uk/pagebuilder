@@ -26,19 +26,11 @@ grapesjs.plugins.add('assets', (editor, options) => {
                 var data = JSON.parse(_data);
                 var assets = assetManager.getAll().models;
 
-                console.log(data);
-                console.log(assetManager);
-                console.log(assets.length, 'assets..');
-
-                var c = 0;
                 for (i = assets.length - 1; i >= 0; i--) {
                     if (assets[i]) {
-                        c++;
                         assetManager.remove(assets[i].get('src'));
                     }
                 }
-
-                console.log(c, 'assets removed..');
 
                 _.forEach(data.assets, function(a) {
                     assetManager.add({
@@ -47,11 +39,15 @@ grapesjs.plugins.add('assets', (editor, options) => {
                     });
                 });
 
-                console.log(data.assets.length, 'assets added..');
-                console.log(assetManager.getAll().models.length, 'assets in total..');
-
-
+                /* Repopulate filter options */
+                $('#gjs-am-filter-types').val(data.types);
+                $('#gjs-am-filter-tags').val(data.tags);
+                $('#gjs-am-filter-parks').val(data.parks);
                 $('#gjs-am-search-criteria').val(data.criteria);
+
+                $('#gjs-am-filter-types').trigger("change"); //.multiselect("refresh");
+                $('#gjs-am-filter-tags').trigger("change"); //.multiselect("refresh");
+                $('#gjs-am-filter-parks').trigger("change"); //.multiselect("refresh");
 
                 /* Pagination */
                 $('#gjs-am-pager').html('');
@@ -85,8 +81,18 @@ grapesjs.plugins.add('assets', (editor, options) => {
 
                 pagination.find('.gjs-am-page-link').on('click', function() {
                     var page = JSON.parse($(this).text());
+                    var types = $('#gjs-am-filter-types').val();
+                    var tags = $('#gjs-am-filter-tags').val();
+                    var parks = $('#gjs-am-filter-parks').val();
                     var criteria = $('#gjs-am-search-criteria').val();
-                    editor.runCommand('am-load-assets', { page: page, criteria: criteria });
+
+                    editor.runCommand('am-load-assets', {
+                        page: page,
+                        criteria: criteria,
+                        types: types,
+                        tags: tags,
+                        parks: parks
+                    });
                 });
 
                 $('#gjs-am-pager').html(pagination);
@@ -111,8 +117,20 @@ grapesjs.plugins.add('assets', (editor, options) => {
                     }).done(function(data) {
                         $('.' + amClassName).html(data);
                         $('#gjs-am-search-btn').on('click', function() {
+                            var types = $('#gjs-am-filter-types').val();
+                            var tags = $('#gjs-am-filter-tags').val();
+                            var parks = $('#gjs-am-filter-parks').val();
                             var criteria = $('#gjs-am-search-criteria').val();
-                            editor.runCommand('am-load-assets', { page: 1, criteria: criteria });
+
+                            console.log(types, tags, parks);
+
+                            editor.runCommand('am-load-assets', {
+                                page: 1,
+                                criteria: criteria,
+                                types: types,
+                                tags: tags,
+                                parks: parks
+                            });
                         });
                         editor.runCommand('am-load-assets', { page: 1 });
                     });

@@ -123,6 +123,24 @@ class PageBuilderController extends Controller
 							$query->where('path', 'like', '%.jpg')
 								->orWhere('path', 'like', '%.png');
 						});
+
+		if($request->types) {
+			$assets = $assets->where(function ($query) use($request) {
+                $query->whereIn('media_lookup_type', $request->types); 
+			});
+		} 
+
+		if($request->tags) {
+			$assets = $assets->where(function ($query) use($request) {
+                $query->whereIn('media_lookup_tag', $request->tags); 
+			});
+		} 
+
+		if($request->parks) {
+			$assets = $assets->where(function ($query) use($request) {
+                $query->where('media_lookup_type', 'App\Models\Parks\Park')->whereIn('media_lookup_id', $request->parks); 
+			});
+		} 
 		
 		if($request->criteria) { 
 			$assets = $assets->where(function ($query) use($request) {
@@ -135,7 +153,7 @@ class PageBuilderController extends Controller
 		
 		$pageCount = ceil($assets->count()/$perPage);
 		$skip = ($request->page-1) * $perPage;
-		$assets = $assets->skip($skip)->take($perPage)->get();
+		$assets = $assets->select('path', 'alternate_text')->skip($skip)->take($perPage)->get();
 
 		// ->whereIn('media_lookups.media_lookup_type', ['App\Models\Pages\Page'])->get();
 
@@ -144,7 +162,14 @@ class PageBuilderController extends Controller
 			return $image;
 		});
 
-		return collect(['criteria' => $request->criteria, 'page_count' => $pageCount, 'assets' => $assets])->toJson();
+		return collect([
+			'types' => $request->types,
+			'tags' => $request->tags,
+			'parks' => $request->parks,
+			'criteria' => $request->criteria, 
+			'page_count' => $pageCount, 
+			'assets' => $assets
+		])->toJson();
 	}
 
 	/*
