@@ -94,12 +94,13 @@
                 sectors: [
                     {
                         name: 'Extra',
-                        buildProps: ['background-image']
+                        buildProps: ['background']
                     }
                 ]
             },
 
             assetManager: {
+                modalTitle: 'Asset Manager',
                 autoAdd: 0,
                 noAssets: 'There are currently no available assets',
                 upload: 0,
