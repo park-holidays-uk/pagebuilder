@@ -118,10 +118,23 @@ class PageBuilderController extends Controller
 	public function getAssets(Request $request) 
 	{
 		$perPage = json_decode(config('pagebuilder.items_per_page'));
-		$assets = \DB::table('media')->leftJoin('media_lookups', 'media_lookups.media_id', '=', 'media.id');
+		$assets = \DB::table('media')->leftJoin('media_lookups', 'media_lookups.media_id', '=', 'media.id')
+						->where(function ($query) {
+							$query->where('path', 'like', '%.jpg')
+								->orWhere('path', 'like', '%.png');
+						});
+		
+		if($request->criteria) { 
+			$assets = $assets->where(function ($query) use($request) {
+                $query->where('keywords', 'like', '%'.$request->criteria.'%')
+					->orWhere('description', 'like', '%'.$request->criteria.'%')
+					->orWhere('alternate_text', 'like', '%'.$request->criteria.'%'); 
+			});
+			
+		}
+		
 		$pageCount = ceil($assets->count()/$perPage);
 		$skip = ($request->page-1) * $perPage;
-
 		$assets = $assets->skip($skip)->take($perPage)->get();
 
 		// ->whereIn('media_lookups.media_lookup_type', ['App\Models\Pages\Page'])->get();
@@ -131,7 +144,7 @@ class PageBuilderController extends Controller
 			return $image;
 		});
 
-		return collect(['page_count' => $pageCount, 'assets' => $assets])->toJson();
+		return collect(['criteria' => $request->criteria, 'page_count' => $pageCount, 'assets' => $assets])->toJson();
 	}
 
 	/*

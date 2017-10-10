@@ -24,24 +24,42 @@ grapesjs.plugins.add('assets', (editor, options) => {
                 data: formData
             }).done(function(_data) {
                 var data = JSON.parse(_data);
-                _.forEach(assetManager.getAll().models, function(_asset) {
-                    if (_asset) {
-                        assetManager.remove(_asset.get('src'));
-                    }
-                });
+                var assets = assetManager.getAll().models;
 
-                _.forEach(data.assets, function(_asset) {
+                console.log(data);
+                console.log(assetManager);
+                console.log(assets.length, 'assets..');
+
+                var c = 0;
+                for (i = assets.length - 1; i >= 0; i--) {
+                    if (assets[i]) {
+                        c++;
+                        assetManager.remove(assets[i].get('src'));
+                    }
+                }
+
+                console.log(c, 'assets removed..');
+
+                _.forEach(data.assets, function(a) {
                     assetManager.add({
-                        label: _asset.alternate_text,
-                        src: _asset.path,
+                        label: a.alternate_text,
+                        src: a.path,
                     });
                 });
+
+                console.log(data.assets.length, 'assets added..');
+                console.log(assetManager.getAll().models.length, 'assets in total..');
+
+
+                $('#gjs-am-search-criteria').val(data.criteria);
 
                 /* Pagination */
                 $('#gjs-am-pager').html('');
 
                 var pagination = $('<ul class="gjs-am-pagination"></ul>');
-                pagination.append('<li class="' + (formData.page == 1 ? 'active' : '') + '"><a class="' + (formData.page != 1 ? 'gjs-am-page-link' : '') + '">1</a></li>');
+                if (data.page_count > 0) {
+                    pagination.append('<li class="' + (formData.page == 1 ? 'active' : '') + '"><a class="' + (formData.page != 1 ? 'gjs-am-page-link' : '') + '">1</a></li>');
+                }
 
                 var prevOffset = (formData.page - 3);
                 var nextOffset = (formData.page + 3);
@@ -50,20 +68,25 @@ grapesjs.plugins.add('assets', (editor, options) => {
                 var ltpc1 = (nextOffset < data.page_count - 1);
 
                 var first = gt2 ? prevOffset : 2;
-                var last = ltpc1 ? nextOffset : data.page_count - 2;
+                var last = ltpc1 ? nextOffset : (data.page_count - 2) > first ? (data.page_count - 2) : (data.page_count - 1);
 
                 if (gt2) { pagination.append('<li><a>...</a></li>'); }
 
-                for (i = first; i <= last; i++) {
-                    pagination.append('<li class="' + (formData.page == i ? 'active' : '') + '"><a class="' + (formData.page != i ? 'gjs-am-page-link' : '') + '">' + i + '</a></li>');
+                if (data.page_count > 2) {
+                    for (i = first; i <= last; i++) {
+                        pagination.append('<li class="' + (formData.page == i ? 'active' : '') + '"><a class="' + (formData.page != i ? 'gjs-am-page-link' : '') + '">' + i + '</a></li>');
+                    }
                 }
 
                 if (ltpc1) { pagination.append('<li><a>...</a></li>'); }
-                pagination.append('<li class="' + (formData.page == data.page_count ? 'active' : '') + '"><a class="' + (formData.page != data.page_count ? 'gjs-am-page-link' : '') + '">' + data.page_count + '</a></li>');
+                if (data.page_count > 1) {
+                    pagination.append('<li class="' + (formData.page == data.page_count ? 'active' : '') + '"><a class="' + (formData.page != data.page_count ? 'gjs-am-page-link' : '') + '">' + data.page_count + '</a></li>');
+                }
 
                 pagination.find('.gjs-am-page-link').on('click', function() {
                     var page = JSON.parse($(this).text());
-                    editor.runCommand('am-load-assets', { page: page });
+                    var criteria = $('#gjs-am-search-criteria').val();
+                    editor.runCommand('am-load-assets', { page: page, criteria: criteria });
                 });
 
                 $('#gjs-am-pager').html(pagination);
@@ -87,6 +110,10 @@ grapesjs.plugins.add('assets', (editor, options) => {
                         url: opt.asset_manager_path
                     }).done(function(data) {
                         $('.' + amClassName).html(data);
+                        $('#gjs-am-search-btn').on('click', function() {
+                            var criteria = $('#gjs-am-search-criteria').val();
+                            editor.runCommand('am-load-assets', { page: 1, criteria: criteria });
+                        });
                         editor.runCommand('am-load-assets', { page: 1 });
                     });
                     break;
