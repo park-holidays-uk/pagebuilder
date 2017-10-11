@@ -14,6 +14,8 @@
 
     <div id="pbApp">
         <div id="gjs"></div>
+        <!-- The actual snackbar -->
+        <div id="snackbar">Some text some message..</div>
     </div>
 
     <!-- Vendor Scripts -->

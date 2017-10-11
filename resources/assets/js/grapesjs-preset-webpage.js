@@ -120,6 +120,15 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
                 });
             }
 
+            $(document).ajaxComplete(function(data, response) {
+                var segs = data.target.URL.split('/');
+                var id = segs[segs.length - 1];
+                var type = segs[segs.length - 2];
+
+                var message = ((response.status == 200) ? 'Successfully saved ' : 'Unable to save ') + type + ' id' + id;
+                editor.runCommand('open-snackbar', { message: message });
+            });
+
             editor.store();
         }
     });

@@ -56,6 +56,20 @@ grapesjs.plugins.add('modals', (editor, options) => {
      */
     var commands = editor.Commands;
 
+    commands.add('open-snackbar', {
+        run: function(editor, sender, options) {
+            // Get the snackbar DIV
+            var x = $("#snackbar");
+
+            x.html(options.message);
+            // Add the "show" class to DIV
+            x.addClass("show");
+
+            // After 3 seconds, remove the show class from DIV
+            setTimeout(function() { x.removeClass("show"); }, 3000);
+        }
+    });
+
     commands.add('open-layouts-modal', {
         run: function(editor) {
             layoutModal.show();
