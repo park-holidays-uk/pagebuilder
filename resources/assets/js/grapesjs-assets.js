@@ -40,14 +40,15 @@ grapesjs.plugins.add('assets', (editor, options) => {
                 });
 
                 /* Repopulate filter options */
+                // Required for paging
                 $('#gjs-am-filter-types').val(data.types);
                 $('#gjs-am-filter-tags').val(data.tags);
                 $('#gjs-am-filter-parks').val(data.parks);
                 $('#gjs-am-search-criteria').val(data.criteria);
 
-                $('#gjs-am-filter-types').trigger("change"); //.multiselect("refresh");
-                $('#gjs-am-filter-tags').trigger("change"); //.multiselect("refresh");
-                $('#gjs-am-filter-parks').trigger("change"); //.multiselect("refresh");
+                $('#gjs-am-filter-types').trigger("change");
+                $('#gjs-am-filter-tags').trigger("change");
+                $('#gjs-am-filter-parks').trigger("change");
 
                 /* Pagination */
                 $('#gjs-am-pager').html('');

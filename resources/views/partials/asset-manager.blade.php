@@ -19,9 +19,6 @@
                                 @endforeach
                             </select>
                         </span>
-                        <!-- <div class="gjs-sel-arrow">
-                            <div class="gjs-d-s-arrow"></div>
-                        </div> -->
                     </div>
                 
                 </div>    
@@ -45,9 +42,6 @@
                                 @endforeach
                             </select>
                         </span>
-                        <!-- <div class="gjs-sel-arrow">
-                            <div class="gjs-d-s-arrow"></div>
-                        </div> -->
                     </div>
                 
                 </div>    
@@ -71,9 +65,6 @@
                                 @endforeach
                             </select>
                         </span>
-                        <!-- <div class="gjs-sel-arrow">
-                            <div class="gjs-d-s-arrow"></div>
-                        </div> -->
                     </div>
                 
                 </div>    
