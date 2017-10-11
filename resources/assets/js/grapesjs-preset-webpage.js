@@ -88,6 +88,14 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
         }
     });
 
+    commands.add('disable-links', {
+        run: function(editor, sender) {
+            $('iframe.gjs-frame').contents().find('a').off('click').on('click', function(event) {
+                event.preventDefault();
+            });
+        }
+    });
+
     /** DEVICES **/
     commands.add('set-device-desktop', {
         run: function(editor) {
@@ -311,5 +319,11 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
             wrapper.attributes.droppable = false;
             wrapper.attributes.stylable = [];
         }
+
+        editor.runCommand('disable-links');
+    });
+
+    editor.on('component:add', function() {
+        editor.runCommand('disable-links');
     });
 });
