@@ -155,8 +155,6 @@ class PageBuilderController extends Controller
 		$skip = ($request->page-1) * $perPage;
 		$assets = $assets->select('path', 'alternate_text')->skip($skip)->take($perPage)->get();
 
-		// ->whereIn('media_lookups.media_lookup_type', ['App\Models\Pages\Page'])->get();
-
 		$assets->map(function($image) {
 			$image->path = config('pagebuilder.asset_path'). $image->path;
 			return $image;
@@ -182,7 +180,7 @@ class PageBuilderController extends Controller
 		
 		switch($type) {
 			case 'block': 
-				$record = Block::where('id', (int) $id)->where('is_layout', false)->first(); //->where('is_user_block', true)
+				$record = Block::where('id', (int) $id)->where('is_layout', false)->first();
 				break;
 			case 'layout': 
 				$record = Block::where('id', (int) $id)->where('is_layout', true)->first();

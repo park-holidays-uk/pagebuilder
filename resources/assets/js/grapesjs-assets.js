@@ -123,8 +123,6 @@ grapesjs.plugins.add('assets', (editor, options) => {
                             var parks = $('#gjs-am-filter-parks').val();
                             var criteria = $('#gjs-am-search-criteria').val();
 
-                            console.log(types, tags, parks);
-
                             editor.runCommand('am-load-assets', {
                                 page: 1,
                                 criteria: criteria,
