@@ -293,9 +293,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
     });
 
     // SELECTION CHANGE
-    editor.on('change:selectedComponent', function() {
-        var component = editor.getSelected();
-
+    editor.on('change:selectedComponent', function(editor, component) {
         if (component && typeof(component.get('wrapper')) === 'undefined') {
             if ($('#gjs-pn-settings').find('.gjs-trt-traits').html() != '') {
                 $('#gjs-pn-settings').removeClass('hidden');
