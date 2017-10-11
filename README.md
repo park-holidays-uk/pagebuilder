@@ -29,6 +29,13 @@ PAGEBUILDER_DOMAIN=phast.parkholidays.com
 PAGEBUILDER_ASSET_PATH=//parkholidays.s3-website-eu-west-1.amazonaws.com/assets/
 ```
 
+When ready run the migrations and seeders
+
+```
+php artisan migrate
+php artisan db:seed --class="ParkHolidays\PageBuilder\Database\Seeds\DatabaseSeeder"
+```
+
 ## Things To Know
 
 All layout blocks should be contained within a *DIV* element with the class *wrapper*. This will allow the use of both
@@ -42,7 +49,8 @@ fullwidth and non-fullwidth blocks in the page.
 * For all blocks and layouts, it will need to set the *attributes* field, with a JSON object that has minimum of 1 property, which must be the class property. This is used to display an icon within pagebuilder. see **Fig. PW2R**
 
 ### FIG. PW1R
-For different trait input types please refer to (https://github.com/artf/grapesjs/wiki/Traits)
+For different trait input types please refer to (https://github.com/artf/grapesjs/wiki/Traits).
+At present only type *text* is available.
 ```
 [
     {"property":"park_codes","type":"text", "value": ""},
@@ -66,7 +74,7 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 * Modulerise CSS and JavaScript.
 * Add support for SRCSET on images - *Once blocks with images have been added*
 * Add notifications on user and system events.
-* Add filtering options to Asset modal for media library.
+* Tweak filtering options for Asset modal to work better.
 * Add authentication to restrict access.
 
 ## Known Issues
