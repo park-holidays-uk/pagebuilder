@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Block extends Model
 {
+    protected $fillable = ['block_id'];
     protected $table = 'pagebuilder_blocks';
 
     public function group()
