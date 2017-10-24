@@ -6,7 +6,7 @@
         "name": "Mark Bailey",
         "email": "markbailey78@yahoo.co.uk"
     }],
-    "minimum-stability": "dev",
+    "minimum-stability": "dev-master",
     "require": {},
     "autoload": {
         "classmap": [
