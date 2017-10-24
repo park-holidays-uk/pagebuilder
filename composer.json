@@ -6,8 +6,6 @@
         "name": "Mark Bailey",
         "email": "markbailey78@yahoo.co.uk"
     }],
-    "minimum-stability": "v0.1.0-alpha",
-    "prefer-stable": true,
     "require": {},
     "autoload": {
         "classmap": [
