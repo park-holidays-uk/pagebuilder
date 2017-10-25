@@ -3,7 +3,8 @@
 */
 
 .gjs-dashed .wrapper,
-.gjs-dashed [class*="grid"] {
+.gjs-dashed [class*="grid"],
+.gjs-dashed form .form-dropzone {
     padding-top: 10px !important;
     padding-right: 10px !important;
     padding-bottom: 10px !important;
@@ -13,13 +14,20 @@
 }
 
 .gjs-dashed [class*="container"],
-.gjs-dashed [class*="col"] {
+.gjs-dashed [class*="col"],
+.gjs-dashed form .form-dropzone {
     min-height: 75px !important;
 }
 
 .gjs-dashed [class*="container"] {
     padding-top: 10px !important;
     padding-bottom: 10px !important;
+}
+
+.gjs-dashed form .form-dropzone:empty {
+    background-image: url(http://via.placeholder.com/350x75/ffffff?text=DROP+BLOCKS+HERE);
+    background-position: center center;
+    background-repeat: no-repeat;
 }
 
 
