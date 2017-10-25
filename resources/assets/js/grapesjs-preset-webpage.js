@@ -88,9 +88,14 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
         }
     });
 
-    commands.add('disable-links', {
+    commands.add('disable-page-redirects', {
         run: function(editor, sender) {
-            $('iframe.gjs-frame').contents().find('a').off('click').on('click', function(event) {
+            var iframe = $('iframe.gjs-frame').contents();
+            iframe.find('a').off('click').on('click', function(event) {
+                event.preventDefault();
+            });
+
+            iframe.find('form').off('submit').on('submit', function(event) {
                 event.preventDefault();
             });
         }
@@ -320,10 +325,10 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
             wrapper.attributes.stylable = [];
         }
 
-        editor.runCommand('disable-links');
+        editor.runCommand('disable-page-redirects');
     });
 
     editor.on('component:add', function() {
-        editor.runCommand('disable-links');
+        editor.runCommand('disable-page-redirects');
     });
 });
