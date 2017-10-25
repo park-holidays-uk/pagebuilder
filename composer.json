@@ -1,5 +1,5 @@
 {
-    "name": "park-holidays-uk/PageBuilder",
+    "name": "park-holidays-uk/pagebuilder",
     "description": "Page editor for Park Holidays staff",
     "type": "composer-plugin",
     "authors": [{
@@ -13,7 +13,7 @@
             "src/Models"
         ],
         "psr-4": {
-            "park-holidays-uk\\PageBuilder\\": "src"
+            "park-holidays-uk\\pagebuilder\\": "src"
         }
     },
     "extra": {
@@ -22,7 +22,7 @@
         },
         "laravel": {
             "providers": [
-                "park-holidays-uk\\PageBuilder\\PageBuilderServiceProvider"
+                "park-holidays-uk\\pagebuilder\\PageBuilderServiceProvider"
             ]
         }
     }
