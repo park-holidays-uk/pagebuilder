@@ -5,7 +5,7 @@ Route::group(['domain' => config('pagebuilder.domain')], function() {
     *   HTTP Routes
     */
 
-    Route::group(['prefix' => '/editor'], function() {
+    Route::group(['prefix' => config('pagebuilder.url_prefix')], function() {
         Route::get('/{type}/{id}', array('as' => 'pagebuilder.editor', 'uses' => 'PageBuilderController@editor'))
         ->where('type', 'block|layout|page');
     });

@@ -1,9 +1,9 @@
 <?php
 
 return [
-
     /** Domain Restriction **/
     'domain' => env('PAGEBUILDER_DOMAIN', ''), 
+    'url_prefix' => env('PAGEBUILDER_URLPREFIX', '/editor'), 
 
     /** Asset Manager **/
     'items_per_page' => env('PAGEBUILDER_AM_ITEMSPERPAGE', 100),
