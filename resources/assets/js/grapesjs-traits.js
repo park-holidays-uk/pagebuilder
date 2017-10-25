@@ -60,6 +60,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
         { 'name': 'button', 'is': 'tagName', 'value': ['BUTTON'] },
         { 'name': 'image', 'is': 'tagName', 'value': ['IMG'] },
         { 'name': 'div', 'is': 'tagName', 'value': ['DIV'] },
+        { 'name': 'form', 'is': 'tagName', 'value': ['FORM'] },
         /* DYNAMIC BLOCKS */
         {
             'name': 'dynamic block',
@@ -74,6 +75,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
         { 'name': 'column', 'is': 'className', 'value': 'col' },
         { 'name': 'background image', 'is': 'className', 'value': 'background-image' },
         { 'name': 'form dropzone', 'is': 'className', 'value': 'form-dropzone' },
+        { 'name': 'input group', 'is': 'className', 'value': 'input-group' },
     ];
 
     _.forEach(componentTypes, function(componentType) {
@@ -113,6 +115,18 @@ grapesjs.plugins.add('traits', (editor, options) => {
                         } else {
                             _traits = self.get('traits');
                         }
+                    } else if (self.get('tagName') == 'form') {
+                        var attrs = self.get('attributes');
+
+                        if (!attrs.action) {
+                            attrs.action = opt.form_action;
+                        }
+
+                        if (!attrs.method) {
+                            attrs.method = opt.form_method;
+                        }
+
+                        self.set('attributes', attrs);
                     }
 
                     this.set('traits', _traits);
@@ -221,7 +235,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
 
                 options.node.set('stylable', []);
                 options.node.set('draggable', (level == 0));
-                options.node.set('droppable', (options.node.view.el.className.indexOf('form-dropzone') >= 0) ? '.form-group .form-field' : false);
+                options.node.set('droppable', (options.node.view.el.className.indexOf('form-dropzone') >= 0) ? '.input-group' : false);
                 options.node.set('copyable', false);
                 options.node.set('resizable', false);
                 options.node.set('editable', false);
