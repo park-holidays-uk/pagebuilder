@@ -73,6 +73,12 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     var commands = editor.Commands;
 
     /** CLEAR CANVAS **/
+    commands.add('exit-app', {
+        run: function(editor, sender) {
+            window.location = '/';
+        }
+    });
+
     commands.add('empty-canvas', {
         run: function(editor, sender) {
             sender && sender.set('active', false);
@@ -198,11 +204,18 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
      */
 
     var panels = editor.Panels;
+    panels.addPanel({ id: 'default' });
     panels.addPanel({ id: 'options' });
 
     /*
      *   BUTTONS
      */
+    panels.addButton('default', [{
+        id: 'phast',
+        className: 'fa fa-sign-out',
+        command: 'exit-app',
+        attributes: { title: 'Exit to Phast' }
+    }]);
 
     panels.addButton('options', [{
             id: 'preview',
