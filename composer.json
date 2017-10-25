@@ -17,12 +17,5 @@
         "psr-4": {
             "pagebuilder\\": "src"
         }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "park-holidays-uk\\pagebuilder\\PageBuilderServiceProvider"
-            ]
-        }
     }
 }
