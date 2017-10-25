@@ -25,32 +25,33 @@ Route::group(['middleware' => ['web', 'auth']], function () {
             return view('pagebuilder::partials.asset-manager', ['viewModel' => $viewModel]);
         });
 
-        /*
-        *   Ajax Routers
-        */
+    });
+});
 
-        Route::group(['prefix' => '/ajax'], function() {
-            /** GET **/
-            Route::group(['prefix' => '/get'], function() {
-                /** ASSETS **/
-                Route::post('/assets', array('as' => 'pagebuilder.ajax.get.assets', 'uses' => 'PageBuilderController@getAssets'));
+/*
+*   Ajax Routers
+*/
 
-                /** BLOCKS **/
-                Route::get('/{type}/{includeUserDefined?}', array('as' => 'pagebuilder.ajax.get.blocks', 'uses' => 'PageBuilderController@getBlocks'))
-                ->where('type', 'blocks|layouts');
-            });
+Route::group(['prefix' => '/ajax'], function() {
+    /** GET **/
+    Route::group(['prefix' => '/get'], function() {
+        /** ASSETS **/
+        Route::post('/assets', array('as' => 'pagebuilder.ajax.get.assets', 'uses' => 'PageBuilderController@getAssets'));
 
-            /** LOAD **/
-            Route::group(['prefix' => '/load'], function() {
-                Route::get('/{type}/{id}', array('as' => 'pagebuilder.ajax.load', 'uses' => 'PageBuilderController@load'))
-                ->where('type', 'block|layout|page');
-            });
+        /** BLOCKS **/
+        Route::get('/{type}/{includeUserDefined?}', array('as' => 'pagebuilder.ajax.get.blocks', 'uses' => 'PageBuilderController@getBlocks'))
+        ->where('type', 'blocks|layouts');
+    });
 
-            /** STORE **/
-            Route::group(['prefix' => '/store'], function() {
-                Route::post('/{type}/{id}', array('as' => 'pagebuilder.ajax.store', 'uses' => 'PageBuilderController@store'))
-                ->where('type', 'block|layout|page');
-            });
-        });
+    /** LOAD **/
+    Route::group(['prefix' => '/load'], function() {
+        Route::get('/{type}/{id}', array('as' => 'pagebuilder.ajax.load', 'uses' => 'PageBuilderController@load'))
+        ->where('type', 'block|layout|page');
+    });
+
+    /** STORE **/
+    Route::group(['prefix' => '/store'], function() {
+        Route::post('/{type}/{id}', array('as' => 'pagebuilder.ajax.store', 'uses' => 'PageBuilderController@store'))
+        ->where('type', 'block|layout|page');
     });
 });
