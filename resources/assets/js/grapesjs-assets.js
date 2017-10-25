@@ -112,6 +112,8 @@ grapesjs.plugins.add('assets', (editor, options) => {
         if (content) {
             switch (content.className) {
                 case amClassName:
+                    $('.' + amClassName).html('');
+
                     $.ajax({
                         type: 'POST',
                         url: opt.asset_manager_path
