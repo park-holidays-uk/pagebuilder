@@ -41,6 +41,8 @@ php artisan db:seed --class="ParkHolidays\PageBuilder\Database\Seeds\DatabaseSee
 All layout blocks should be contained within a *DIV* element with the class *wrapper*. This will allow the use of both
 fullwidth and non-fullwidth blocks in the page.
 
+When creating FORM blocks, they must contain an empty DIV with the class *form-dropzone*. This be the only area a user can drop form field blocks into.
+
 ## PHAST Wizard Requirements
 
 * Must be able to create blocks & layouts as well as pages.
