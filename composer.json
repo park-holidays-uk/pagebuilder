@@ -17,9 +17,6 @@
         }
     },
     "extra": {
-        "branch-alias": {
-            "dev-master": "v0.1.0.alpha"
-        },
         "laravel": {
             "providers": [
                 "park-holidays-uk\\pagebuilder\\PageBuilderServiceProvider"
