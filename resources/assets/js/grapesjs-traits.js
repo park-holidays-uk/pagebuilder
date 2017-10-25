@@ -73,6 +73,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
         { 'name': 'grid', 'is': 'className', 'value': 'grid' },
         { 'name': 'column', 'is': 'className', 'value': 'col' },
         { 'name': 'background image', 'is': 'className', 'value': 'background-image' },
+        { 'name': 'form dropzone', 'is': 'className', 'value': 'form-dropzone' },
     ];
 
     _.forEach(componentTypes, function(componentType) {
@@ -220,7 +221,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
 
                 options.node.set('stylable', []);
                 options.node.set('draggable', (level == 0));
-                options.node.set('droppable', false);
+                options.node.set('droppable', (options.node.view.el.className.indexOf('form-dropzone') >= 0) ? '.form-group .form-field' : false);
                 options.node.set('copyable', false);
                 options.node.set('resizable', false);
                 options.node.set('editable', false);
