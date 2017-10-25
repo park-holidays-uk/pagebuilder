@@ -28,7 +28,7 @@ Once config has been published, add the following to the .ENV file and change th
 PAGEBUILDER_DOMAIN=phast.parkholidays.com
 PAGEBUILDER_URLPREFIX=/pagebuilder
 PAGEBUILDER_ASSET_PATH=//parkholidays.s3-website-eu-west-1.amazonaws.com/assets/
-PAGEBUILDER_FORM_ACTION=/FORM-SUBMIT-PATH-GOES-HERE
+PAGEBUILDER_FORM_ACTION=/form/handle
 PAGEBUILDER_FORM_METHOD=POST
 ```
 
