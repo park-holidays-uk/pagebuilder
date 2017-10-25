@@ -63,7 +63,9 @@
                 },
 
                 'traits': {
-                    mode: '{{ $viewModel->mode }}'
+                    mode: '{{ $viewModel->mode }}',
+                    form_action: '{{ config("pagebuilder.form_action") }}',
+                    form_method: '{{ config("pagebuilder.form_method") }}'
                 },
 
                 'assets': {
