@@ -13,10 +13,13 @@
             "src/Models"
         ],
         "psr-4": {
-            "PageBuilder\\": "src"
+            "park-holidays-uk\\PageBuilder\\": "src"
         }
     },
     "extra": {
+        "branch-alias": {
+            "dev-master": "v0.1.0.alpha"
+        },
         "laravel": {
             "providers": [
                 "park-holidays-uk\\PageBuilder\\PageBuilderServiceProvider"
