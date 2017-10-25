@@ -7,7 +7,7 @@ Page editor for PHAST CMS built using the GrapesJS framework...
 Run the following commands in the CLI
 
 ```
-composer require park-holidays-uk/PageBuilder
+composer require park-holidays-uk/pagebuilder
 ```
 
 Add the following to the App config 'providers'
