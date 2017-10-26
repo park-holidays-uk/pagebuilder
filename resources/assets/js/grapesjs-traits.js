@@ -46,7 +46,21 @@ grapesjs.plugins.add('traits', (editor, options) => {
         {
             'name': 'heading',
             'is': 'tagName',
-            'value': ['H1', 'H2', 'H3', 'H4', 'H5', 'H6']
+            'value': ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'],
+            // 'traits': [{
+            //     type: 'select',
+            //     label: 'Tag Name',
+            //     name: 'tagName',
+            //     options: [
+            //         { text: 'Heading 1', value: 'h1' },
+            //         { text: 'Heading 2', value: 'h2' },
+            //         { text: 'Heading 3', value: 'h3' },
+            //         { text: 'Heading 4', value: 'h4' },
+            //         { text: 'Heading 5', value: 'h5' },
+            //         { text: 'Heading 6', value: 'h6' },
+            //     ],
+            //     changeProp: 1
+            // }]
         },
         { 'name': 'paragraph', 'is': 'tagName', 'value': ['P'] },
         { 'name': 'text', 'is': 'tagName', 'value': ['SPAN'] },
@@ -79,7 +93,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
         { 'name': 'column', 'is': 'className', 'value': 'col' },
         { 'name': 'background image', 'is': 'className', 'value': 'background-image' },
         { 'name': 'form dropzone', 'is': 'className', 'value': 'form-dropzone' },
-        { 'name': 'input group', 'is': 'className', 'value': 'input-group' },
+        { 'name': 'input block', 'is': 'className', 'value': 'input-block' },
     ];
 
     _.forEach(componentTypes, function(componentType) {
@@ -146,10 +160,13 @@ grapesjs.plugins.add('traits', (editor, options) => {
 
                     for (i = 0; i <= _traits.length - 1; i++) {
                         var trait = _traits[i];
-                        self.listenTo(this, 'change:' + trait.name, function(obj) {
-                            self.property = Object.keys(obj.changed)[0];
-                            self.fixProperty();
-                        });
+                        // console.log(trait);
+                        if (trait) {
+                            self.listenTo(this, 'change:' + trait.name, function(obj) {
+                                self.property = Object.keys(obj.changed)[0];
+                                self.fixProperty();
+                            });
+                        }
                     };
 
                     if (self.get('type') == 'dynamic block') {
@@ -170,6 +187,28 @@ grapesjs.plugins.add('traits', (editor, options) => {
 
                 fixProperty() {
                     switch (this.property) {
+                        // case 'tagName':
+                        //     {
+                        //         var el = $('iframe.gjs-frame').contents().find(this.config.tagName + '#' + this.get('attributes').id);
+                        //         console.log(el);
+                        //         var outer = el[0].outerHTML;
+                        //         var replacementTag = this.changed[Object.keys(this.changed)[0]];
+
+                        //         console.log(replacementTag);
+
+                        //         // Replace opening tag
+                        //         var regex = new RegExp('<' + el[0].tagName, 'i');
+                        //         var newTag = outer.replace(regex, '<' + replacementTag);
+
+                        //         // Replace closing tag
+                        //         regex = new RegExp('</' + el[0].tagName, 'i');
+                        //         newTag = newTag.replace(regex, '</' + replacementTag);
+
+                        //         el.replaceWith(newTag);
+
+                        //         break;
+                        //     }
+
                         case 'stylable':
                             {
                                 editor.runCommand('fix-stylable-property', { node: this, thisNodeOnly: true });
@@ -286,6 +325,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
                     });
                 }
 
+                console.log(options.node);
                 editor.refresh();
             }
         }
