@@ -43,7 +43,11 @@ grapesjs.plugins.add('traits', (editor, options) => {
      */
     var componentTypes = [
         /* TAGS */
-        { 'name': 'heading', 'is': 'tagName', 'value': ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'] },
+        {
+            'name': 'heading',
+            'is': 'tagName',
+            'value': ['H1', 'H2', 'H3', 'H4', 'H5', 'H6']
+        },
         { 'name': 'paragraph', 'is': 'tagName', 'value': ['P'] },
         { 'name': 'text', 'is': 'tagName', 'value': ['SPAN'] },
         {
@@ -140,10 +144,13 @@ grapesjs.plugins.add('traits', (editor, options) => {
                         }
                     });
 
-                    self.listenTo(this, 'change:stylable', function() {
-                        self.property = 'stylable';
-                        self.fixProperty();
-                    });
+                    for (i = 0; i <= _traits.length - 1; i++) {
+                        var trait = _traits[i];
+                        self.listenTo(this, 'change:' + trait.name, function(obj) {
+                            self.property = Object.keys(obj.changed)[0];
+                            self.fixProperty();
+                        });
+                    };
 
                     if (self.get('type') == 'dynamic block') {
                         _.forEach(self.get('properties'), function(prop) {
@@ -162,9 +169,15 @@ grapesjs.plugins.add('traits', (editor, options) => {
                 },
 
                 fixProperty() {
-                    if (this.property == 'stylable') {
-                        editor.runCommand('fix-stylable-property', { node: this, thisNodeOnly: true });
+                    switch (this.property) {
+                        case 'stylable':
+                            {
+                                editor.runCommand('fix-stylable-property', { node: this, thisNodeOnly: true });
+                                break;
+                            }
                     }
+
+                    editor.refresh();
                 }
             }, {
                 isComponent: function(el) {
@@ -232,10 +245,11 @@ grapesjs.plugins.add('traits', (editor, options) => {
                 });
             } else {
                 var level = options.level || 0;
+                var className = options.node.view ? options.node.view.el.className : '';
 
                 options.node.set('stylable', []);
-                options.node.set('draggable', (level == 0));
-                options.node.set('droppable', (options.node.view.el.className.indexOf('form-dropzone') >= 0) ? '.input-group' : false);
+                options.node.set('draggable', (level == 0) ? true : ((className.indexOf('input-group') >= 0) ? '.form-dropzone' : false));
+                options.node.set('droppable', (className.indexOf('form-dropzone') >= 0) ? '.input-group' : false);
                 options.node.set('copyable', false);
                 options.node.set('resizable', false);
                 options.node.set('editable', false);
