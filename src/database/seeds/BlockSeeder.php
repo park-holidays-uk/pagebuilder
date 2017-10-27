@@ -21,7 +21,7 @@ class BlockSeeder extends Seeder
                 'block_group_id' => 1,
                 'block_id' => 'heading-one',
                 'label' => 'Heading 1',
-                'html' => '<h1 data-gjs-custom-name="Heading" data-gjs-editable="true">Heading</h1>',
+                'html' => '<h1 id="c001" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="true" data-gjs-resizable="false" data-gjs-editable="true" data-gjs-removable="true">Heading</h1>',
                 'attributes' => '{ "class": "gjs-fonts gjs-f-text" }',
                 'is_user_block' => false,              
             ],
@@ -29,16 +29,7 @@ class BlockSeeder extends Seeder
                 'block_group_id' => 1,
                 'block_id' => 'paragraph',
                 'label' => 'Paragraph',
-                'html' => '<p data-gjs-custom-name="Paragraph" data-gjs-editable="true">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis purus mi, 
-                            a lacinia nunc semper auctor. Nullam id dictum lacus. Sed dignissim eu sem in semper. 
-                            Nullam viverra, est rhoncus lobortis tristique, mi erat fermentum mauris, 
-                            ac laoreet mi magna sit amet nibh. Vestibulum vulputate nibh urna, 
-                            eget vestibulum dolor faucibus quis. Quisque consequat risus sed consectetur iaculis. 
-                            Cras non dapibus lorem. Pellentesque habitant morbi tristique senectus et netus et 
-                            malesuada fames ac turpis egestas. Nullam vulputate aliquet justo at lacinia. 
-                            Praesent pharetra varius velit. Nam eleifend consequat elit sit amet condimentum.
-                           </p>',
+                'html' => '<p id="c001" data-gjs-custom-name="Paragraph" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="true" data-gjs-resizable="false" data-gjs-editable="true" data-gjs-removable="true"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis purus mi, a lacinia nunc semper auctor. Nullam id dictum lacus. Sed dignissim eu sem in semper. Nullam viverra, est rhoncus lobortis tristique, mi erat fermentum mauris, ac laoreet mi magna sit amet nibh. Vestibulum vulputate nibh urna, eget vestibulum dolor faucibus quis. Quisque consequat risus sed consectetur iaculis. Cras non dapibus lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam vulputate aliquet justo at lacinia. Praesent pharetra varius velit. Nam eleifend consequat elit sit amet condimentum. </p>',
                 'attributes' => '{ "class": "fa fa-paragraph" }',
                 'is_user_block' => false,              
             ],
@@ -46,11 +37,7 @@ class BlockSeeder extends Seeder
                 'block_group_id' => 1,
                 'block_id' => 'text',
                 'label' => 'Text',
-                'html' => '<span data-gjs-custom-name="Text" data-gjs-editable="true">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed sem rutrum 
-                                lacus cursus viverra imperdiet id risus. Nulla massa mauris, venenatis eget 
-                                hendrerit a.
-                            </span>',
+                'html' => '<span id="c001" data-gjs-custom-name="Text" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed sem rutrum lacus cursus viverra imperdiet id risus. Nulla massa mauris, venenatis eget hendrerit a.</span>',
                 'attributes' => '{ "class": "fa fa-header" }',
                 'is_user_block' => false,              
             ],
@@ -58,10 +45,7 @@ class BlockSeeder extends Seeder
                 'block_group_id' => 1,
                 'block_id' => 'grid-two-columns',
                 'label' => '2 Columns',
-                'html' => '<div class="grid-2_md-2_sm-1_xs-1" data-gjs-custom-name="Row" data-gjs-droppable=".column">
-                                <div class="col" data-gjs-custom-name="Column" data-gjs-removable="false" data-gjs-copyable="false" data-gjs-draggable="false" data-gjs-stylable="false"></div>
-                                <div class="col" data-gjs-custom-name="Column" data-gjs-removable="false" data-gjs-copyable="false" data-gjs-draggable="false" data-gjs-stylable="false"></div>
-                            </div>',
+                'html' => '<div class="grid-2_md-2_sm-1_xs-1" id="c003" data-gjs-custom-name="Row" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="true" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true"><div class="col" id="c004" data-gjs-custom-name="Column" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div><div class="col" id="c005" data-gjs-custom-name="Column" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div></div>',
                 'attributes' => '{ "class": "gjs-fonts gjs-f-b2" }',
                 'is_user_block' => false,              
             ],
@@ -69,11 +53,7 @@ class BlockSeeder extends Seeder
                 'block_group_id' => 1,
                 'block_id' => 'grid-three-columns',
                 'label' => '3 Columns',
-                'html' => '<div class="grid-3_md-2_xs-1" data-gjs-custom-name="Row" data-gjs-droppable=".column">
-                                <div class="col" data-gjs-custom-name="Column" data-gjs-removable="false" data-gjs-copyable="false" data-gjs-draggable="false" data-gjs-stylable="false"></div>
-                                <div class="col" data-gjs-custom-name="Column" data-gjs-removable="false" data-gjs-copyable="false" data-gjs-draggable="false" data-gjs-stylable="false"></div>
-                                <div class="col" data-gjs-custom-name="Column" data-gjs-removable="false" data-gjs-copyable="false" data-gjs-draggable="false" data-gjs-stylable="false"></div>
-                            </div>',
+                'html' => '<div class="grid-3_md-2_xs-1" id="c004" data-gjs-custom-name="Row" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="true" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true"><div class="col" id="c005" data-gjs-custom-name="Column" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div><div class="col" id="c006" data-gjs-custom-name="Column" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div><div class="col" id="c007" data-gjs-custom-name="Column" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div></div>',
                 'attributes' => '{ "class": "gjs-fonts gjs-f-b3" }',
                 'is_user_block' => false,              
             ],
