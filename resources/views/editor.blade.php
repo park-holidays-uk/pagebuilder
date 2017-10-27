@@ -51,7 +51,8 @@
             pluginsOpts: {
                 'preset-webpage': {
                     id: {{ $viewModel->id }},
-                    mode: '{{ $viewModel->mode }}'
+                    mode: '{{ $viewModel->mode }}',
+                    storeUrl: '{{ $viewModel->url_store }}'
                 },
                 
                 'modals': {

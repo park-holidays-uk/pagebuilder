@@ -34,7 +34,7 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     var importBtn = document.createElement('button');
 
     var setNodeId = function(node, count = 1) {
-        node.attr('id', 'c' + opt.id + ((count > 99) ? count : ((count > 9) ? '0' : '00') + count));
+        node.attr('id', 'c' + ((count > 99) ? count : ((count > 9) ? '0' : '00') + count));
 
         $(node).children().each(function() {
             count++;
@@ -50,8 +50,9 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     importBtn.onclick = function() {
         var code = codeViewer.editor.getValue();
         editor.DomComponents.getWrapper().set('content', '');
+        var c = $('iframe.gjs-frame').contents().find('[data-highlightable]:not(#wrapper)').length;
 
-        var jQo = setNodeId($(code));
+        var jQo = setNodeId($(code), c);
         code = jQo[0].outerHTML;
         editor.setComponents(code);
 
@@ -139,13 +140,15 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
                 });
             }
 
-            $(document).ajaxComplete(function(data, response) {
-                var segs = data.target.URL.split('/');
-                var id = segs[segs.length - 1];
-                var type = segs[segs.length - 2];
+            $(document).ajaxComplete(function(event, request, settings) {
+                if (settings.url == opt.storeUrl) {
+                    var segs = settings.url.split('/');
+                    var id = segs[segs.length - 1];
+                    var type = segs[segs.length - 2];
 
-                var message = ((response.status == 200) ? 'Successfully saved ' : 'Unable to save ') + type + ' id' + id;
-                editor.runCommand('open-snackbar', { message: message });
+                    var message = ((request.status == 200) ? 'Successfully saved ' : 'Unable to save ') + type + ' id' + id;
+                    editor.runCommand('open-snackbar', { message: message });
+                }
             });
 
             editor.store();
