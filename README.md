@@ -79,8 +79,8 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 * Modulerise CSS and JavaScript.
 * Add support for SRCSET on images - *Once blocks with images have been added*
 * Tweak filtering options for Asset modal to work better.
-* Add authentication to restrict access.
 * Add any additional functionality required to support forms
+* Set up rights to particular routes.
 
 ## Known Issues
 
@@ -88,4 +88,3 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 * Mysterious glyph appearing in price point on advert-promo-three block.
 * If an element with a style associated to it is copied, both copies of the element refer to same style, preventing the elements being styled differently. - *Temporary solution would be to disable copying of elements*
 * Some blocks (i.e. Advert-Promo-Three) properties (Stylable, removable etc..) are being reset once dragged into the canvas.
-* Some text elements are no longer editable.
