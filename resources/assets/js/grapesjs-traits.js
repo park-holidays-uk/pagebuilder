@@ -43,38 +43,38 @@ grapesjs.plugins.add('traits', (editor, options) => {
      */
     var componentTypes = [
         /* TAGS */
-        {
-            'name': 'heading',
-            'is': 'tagName',
-            'value': ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'],
-            // 'traits': [{
-            //     type: 'select',
-            //     label: 'Tag Name',
-            //     name: 'tagName',
-            //     options: [
-            //         { text: 'Heading 1', value: 'h1' },
-            //         { text: 'Heading 2', value: 'h2' },
-            //         { text: 'Heading 3', value: 'h3' },
-            //         { text: 'Heading 4', value: 'h4' },
-            //         { text: 'Heading 5', value: 'h5' },
-            //         { text: 'Heading 6', value: 'h6' },
-            //     ],
-            //     changeProp: 1
-            // }]
-        },
-        { 'name': 'paragraph', 'is': 'tagName', 'value': ['P'] },
-        { 'name': 'text', 'is': 'tagName', 'value': ['SPAN'] },
-        {
-            'name': 'link',
-            'is': 'tagName',
-            'value': ['A'],
-            'traits': [{
-                type: 'text',
-                label: 'Href',
-                name: 'href',
-                placeholder: '#'
-            }]
-        },
+        // {
+        //     'name': 'heading',
+        //     'is': 'tagName',
+        //     'value': ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'],
+        //     // 'traits': [{
+        //     //     type: 'select',
+        //     //     label: 'Tag Name',
+        //     //     name: 'tagName',
+        //     //     options: [
+        //     //         { text: 'Heading 1', value: 'h1' },
+        //     //         { text: 'Heading 2', value: 'h2' },
+        //     //         { text: 'Heading 3', value: 'h3' },
+        //     //         { text: 'Heading 4', value: 'h4' },
+        //     //         { text: 'Heading 5', value: 'h5' },
+        //     //         { text: 'Heading 6', value: 'h6' },
+        //     //     ],
+        //     //     changeProp: 1
+        //     // }]
+        // },
+        // { 'name': 'paragraph', 'is': 'tagName', 'value': ['P'] },
+        // { 'name': 'text', 'is': 'tagName', 'value': ['SPAN'] },
+        // {
+        //     'name': 'link',
+        //     'is': 'tagName',
+        //     'value': ['A'],
+        //     'traits': [{
+        //         type: 'text',
+        //         label: 'Href',
+        //         name: 'href',
+        //         placeholder: '#'
+        //     }]
+        // },
         { 'name': 'button', 'is': 'tagName', 'value': ['BUTTON'] },
         { 'name': 'image', 'is': 'tagName', 'value': ['IMG'] },
         { 'name': 'div', 'is': 'tagName', 'value': ['DIV'] },
@@ -95,6 +95,8 @@ grapesjs.plugins.add('traits', (editor, options) => {
         { 'name': 'form dropzone', 'is': 'className', 'value': 'form-dropzone' },
         { 'name': 'input block', 'is': 'className', 'value': 'input-block' },
     ];
+
+    // componentTypes = [];
 
     _.forEach(componentTypes, function(componentType) {
 
@@ -152,15 +154,14 @@ grapesjs.plugins.add('traits', (editor, options) => {
                     // Listeners
                     self.listenTo(this, 'change:status', function() {
                         if (self.get('status') == '') {
-                            if (_.indexOf(['heading', 'paragraph', 'text', 'link'], self.get('type')) > -1) {
-                                self.view.el.setAttribute('contenteditable', false);
-                            }
+                            // if (_.indexOf(['heading', 'paragraph', 'text', 'link'], self.get('type')) > -1) {
+                            //     self.view.el.setAttribute('contenteditable', false);
+                            // }
                         }
                     });
 
                     for (i = 0; i <= _traits.length - 1; i++) {
                         var trait = _traits[i];
-                        // console.log(trait);
                         if (trait) {
                             self.listenTo(this, 'change:' + trait.name, function(obj) {
                                 self.property = Object.keys(obj.changed)[0];
@@ -241,12 +242,12 @@ grapesjs.plugins.add('traits', (editor, options) => {
                 },
 
                 doubleClicked(e) {
-                    if (_.indexOf(['heading', 'paragraph', 'text', 'link'], this.model.attributes.type) > -1) {
-                        var component = editor.getSelected();
-                        if (component.attributes.editable) {
-                            component.view.el.setAttribute('contenteditable', true);
-                        }
-                    }
+                    // if (_.indexOf(['heading', 'paragraph', 'text', 'link'], this.model.attributes.type) > -1) {
+                    //     var component = editor.getSelected();
+                    //     if (component.attributes.editable) {
+                    //         component.view.el.setAttribute('contenteditable', true);
+                    //     }
+                    // }
                 },
             }),
         });
