@@ -33,11 +33,11 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     var container = document.createElement('div');
     var importBtn = document.createElement('button');
 
-    var setNodeId = function(node, count = 1) {
+    var setNodeId = function(node, count = 0) {
+        count++;
         node.attr('id', 'c' + ((count > 99) ? count : ((count > 9) ? '0' : '00') + count));
 
         $(node).children().each(function() {
-            count++;
             setNodeId($(this), count);
         });
 
