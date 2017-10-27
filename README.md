@@ -88,4 +88,4 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 * Mysterious glyph appearing in price point on advert-promo-three block.
 * If an element with a style associated to it is copied, both copies of the element refer to same style, preventing the elements being styled differently. - *Temporary solution would be to disable copying of elements*
 * Some blocks (i.e. Advert-Promo-Three) properties (Stylable, removable etc..) are being reset once dragged into the canvas.
-* Changes to text elements are not being saved.
+* Some text elements are no longer editable.
