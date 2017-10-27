@@ -284,16 +284,19 @@ grapesjs.plugins.add('traits', (editor, options) => {
                     editor.runCommand('set-default-properties', { node: wrapperChild });
                 });
             } else {
-                var level = options.level || 0;
-                var className = options.node.view ? options.node.view.el.className : '';
+                var type = options.node.get('type');
+                if (type != 'text' && type != 'link') {
+                    var level = options.level || 0;
+                    var className = options.node.view ? options.node.view.el.className : '';
 
-                options.node.set('stylable', []);
-                options.node.set('draggable', (level == 0) ? true : ((className.indexOf('input-group') >= 0) ? '.form-dropzone' : false));
-                options.node.set('droppable', (className.indexOf('form-dropzone') >= 0) ? '.input-group' : false);
-                options.node.set('copyable', false);
-                options.node.set('resizable', false);
-                options.node.set('editable', false);
-                options.node.set('removable', (level == 0));
+                    options.node.set('stylable', []);
+                    options.node.set('draggable', (level == 0) ? true : ((className.indexOf('input-group') >= 0) ? '.form-dropzone' : false));
+                    options.node.set('droppable', (className.indexOf('form-dropzone') >= 0) ? '.input-group' : false);
+                    options.node.set('copyable', false);
+                    options.node.set('resizable', false);
+                    options.node.set('editable', false);
+                    options.node.set('removable', (level == 0));
+                }
 
                 if (options.node.view) {
                     level++;
