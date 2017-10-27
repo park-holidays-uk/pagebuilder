@@ -325,7 +325,6 @@ grapesjs.plugins.add('traits', (editor, options) => {
                     });
                 }
 
-                console.log(options.node);
                 editor.refresh();
             }
         }
