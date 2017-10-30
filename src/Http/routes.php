@@ -10,22 +10,21 @@ Route::group(['middleware' => ['web', 'auth']], function () {
             Route::get('/{type}/{id}', array('as' => 'pagebuilder.editor', 'uses' => 'PageBuilderController@editor'))
             ->where('type', 'block|layout|page');
         });
-
-        /*
-        *   Asset Manager Routes
-        */
-
-        Route::any(config('pagebuilder.asset_manager_path'), function() {
-            $viewModel = new \StdClass;
-
-            $viewModel->types = \DB::table('media_lookups')->select('media_lookup_type')->orderBy('media_lookup_type')->distinct()->get();
-            $viewModel->tags = \DB::table('media_lookups')->select('media_lookup_tag')->orderBy('media_lookup_tag')->where('media_lookup_tag', 'not like','%PDF%')->where('media_lookup_tag', 'not like', '%Video%')->distinct()->get();
-            $viewModel->parks = \DB::table('parks')->select('id', 'name')->orderBy('name')->get();
-
-            return view('pagebuilder::partials.asset-manager', ['viewModel' => $viewModel]);
-        });
-
     });
+});
+
+/*
+*   Asset Manager Routes
+*/
+
+Route::any(config('pagebuilder.asset_manager_path'), function() {
+    $viewModel = new \StdClass;
+
+    $viewModel->types = \DB::table('media_lookups')->select('media_lookup_type')->orderBy('media_lookup_type')->distinct()->get();
+    $viewModel->tags = \DB::table('media_lookups')->select('media_lookup_tag')->orderBy('media_lookup_tag')->where('media_lookup_tag', 'not like','%PDF%')->where('media_lookup_tag', 'not like', '%Video%')->distinct()->get();
+    $viewModel->parks = \DB::table('parks')->select('id', 'name')->orderBy('name')->get();
+
+    return view('pagebuilder::partials.asset-manager', ['viewModel' => $viewModel]);
 });
 
 /*
