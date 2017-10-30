@@ -16,7 +16,7 @@ class BlockSeeder extends Seeder
     {
         
         $blocks = collect([
-            /** Core Blocks **/
+            /** Text **/
             (object) [
                 'block_group_id' => 1,
                 'block_id' => 'heading-one',
@@ -41,6 +41,22 @@ class BlockSeeder extends Seeder
                 'attributes' => '{ "class": "fa fa-header" }',
                 'is_user_block' => false,              
             ],
+            /** Form **/
+            (object) [
+                'block_group_id' => 3,
+                'block_id' => 'form',
+                'label' => 'Form',
+                'html' => '<form id="c001" action="/form/handle" method="POST" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true">
+                                <input type="hidden" name="name" id="c002">
+                                <input type="hidden" name="actions" id="c003">
+                                <input type="hidden" name="emailto" id="c004">
+                                <div class="form-dropzone" id="c005"></div>
+                                <button class="btn btn-primary" type="submit" id="c006">Submit</button>
+                            </form>',
+                'attributes' => '{ "class": "" }',
+                'is_user_block' => false,              
+            ],
+            /** Grid **/
             (object) [
                 'block_group_id' => 1,
                 'block_id' => 'grid-two-columns',
