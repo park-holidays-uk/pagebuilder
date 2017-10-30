@@ -33,11 +33,11 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     var container = document.createElement('div');
     var importBtn = document.createElement('button');
 
-    var setNodeId = function(node, count = 0) {
-        count++;
+    var setNodeId = function(node, count = 1) {
         node.attr('id', 'c' + ((count > 99) ? count : ((count > 9) ? '0' : '00') + count));
 
         $(node).children().each(function() {
+            count++;
             setNodeId($(this), count);
         });
 
@@ -50,9 +50,9 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     importBtn.onclick = function() {
         var code = codeViewer.editor.getValue();
         editor.DomComponents.getWrapper().set('content', '');
-        var c = $('iframe.gjs-frame').contents().find('[data-highlightable]:not(#wrapper)').length;
+        // var c = $('iframe.gjs-frame').contents().find('[data-highlightable]:not(#wrapper)').length;
 
-        var jQo = setNodeId($(code), c);
+        var jQo = setNodeId($(code));
         code = jQo[0].outerHTML;
         editor.setComponents(code);
 
