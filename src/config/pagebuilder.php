@@ -13,7 +13,7 @@ return [
     /* Media */
     'media_path' => env('PAGEBUILDER_MEDIA_PATH', '/images/'), 
     /* Assets - CSS etc. */
-    'asset_prefix' => env('PAGEBUILDER_ASSET_PREFIX', '/'), 
+    'asset_path' => env('PAGEBUILDER_ASSET_PATH', '/dist/'), 
 
     /** Forms **/
     'form_action' => env('PAGEBUILDER_FORM_ACTION', '/'), 
