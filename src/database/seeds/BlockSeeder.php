@@ -177,6 +177,10 @@ class BlockSeeder extends Seeder
             $block->label = $item->label;
             $block->html_base64 = base64_encode($item->html);
             $block->attributes = $item->attributes;
+
+            if(isset($item->is_user_block)) { $block->is_user_block = $item->is_user_block; }#
+            if(isset($item->is_layout)) { $block->is_layout = $item->is_layout; }
+
             $block->save();
         });
     }
