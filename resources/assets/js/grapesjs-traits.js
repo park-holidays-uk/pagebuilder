@@ -76,15 +76,13 @@ grapesjs.plugins.add('traits', (editor, options) => {
         //     }]
         // },
         { 'name': 'button', 'is': 'tagName', 'value': ['BUTTON'] },
-        { 'name': 'image', 'is': 'tagName', 'value': ['IMG'] },
+        // { 'name': 'image', 'is': 'tagName', 'value': ['IMG'] },
         { 'name': 'div', 'is': 'tagName', 'value': ['DIV'] },
         { 'name': 'form', 'is': 'tagName', 'value': ['FORM'] },
+        { 'name': 'section', 'is': 'tagName', 'value': ['SECTION'] },
         /* DYNAMIC BLOCKS */
-        {
-            'name': 'dynamic block',
-            'is': 'tagName',
-            'value': ['DYNABLOCK']
-        },
+        { 'name': 'dynamic block', 'is': 'tagName', 'value': ['DYNABLOCK'] },
+        { 'name': 'server block', 'is': 'tagName', 'value': ['SERVERBLOCK'] },
         /* CLASSES */
         { 'name': 'wrapper', 'is': 'className', 'value': 'wrapper' },
         { 'name': 'container', 'is': 'className', 'value': 'container' },
