@@ -156,7 +156,7 @@ class PageBuilderController extends Controller
 		$assets = $assets->select('path', 'alternate_text')->skip($skip)->take($perPage)->get();
 
 		$assets->map(function($image) {
-			$image->path = config('pagebuilder.asset_path'). $image->path;
+			$image->path = config('pagebuilder.media_path'). $image->path;
 			return $image;
 		});
 
