@@ -81,21 +81,6 @@ class BlockSeeder extends Seeder
                 'attributes' => '{ "class": "gjs-fonts gjs-f-text" }',
                 'is_user_block' => false,              
             ],
-            /** Form **/
-            (object) [
-                'block_group_id' => 3,
-                'block_id' => 'form',
-                'label' => 'Form',
-                'html' => '<form id="c001" action="/form/handle" method="POST" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true">
-                                <input type="hidden" name="name" id="c002">
-                                <input type="hidden" name="actions" id="c003">
-                                <input type="hidden" name="emailto" id="c004">
-                                <div class="form-dropzone" id="c005"></div>
-                                <button class="btn btn-primary" type="submit" id="c006">Submit</button>
-                            </form>',
-                'attributes' => '{ "class": "" }',
-                'is_user_block' => false,              
-            ],
             /** Grid **/
             (object) [
                 'block_group_id' => 1,
@@ -112,6 +97,68 @@ class BlockSeeder extends Seeder
                 'html' => '<div class="grid-3_md-2_xs-1" id="c004" data-gjs-custom-name="Row" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="true" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true"><div class="col" id="c005" data-gjs-custom-name="Column" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div><div class="col" id="c006" data-gjs-custom-name="Column" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div><div class="col" id="c007" data-gjs-custom-name="Column" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div></div>',
                 'attributes' => '{ "class": "gjs-fonts gjs-f-b3" }',
                 'is_user_block' => false,              
+            ],
+            
+            /** Dynamic **/
+            (object) [
+                'block_group_id' => 2,
+                'block_id' => 'feefo-reviews',
+                'label' => 'Feefo Reviews',
+                'html' => '<dynablock data-view="feefo-reviews" id="c001" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true"></dynablock>',
+                'attributes' => '{ "class": "fa fa-commenting-o" }',
+                'is_user_block' => false,              
+            ],
+            (object) [
+                'block_group_id' => 2,
+                'block_id' => 'park-entertainment',
+                'label' => 'Park Entertainment',
+                'html' => '<dynablock data-view="park-entertainment" data-json="eyJwYXJrX2lkIjogMX0=" id="c8001" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true"></dynablock>',
+                'attributes' => '{ "class": "" }',
+                'is_user_block' => false,              
+            ],
+            (object) [
+                'block_group_id' => 2,
+                'block_id' => 'late-availability',
+                'label' => 'Late Availability',
+                'html' => '<dynablock data-view="late-availability" id="c001" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true"></dynablock>',
+                'attributes' => '{ "class": "" }',
+                'is_user_block' => false,              
+            ],
+            /** Form **/
+            (object) [
+                'block_group_id' => 3,
+                'block_id' => 'form',
+                'label' => 'Form',
+                'html' => '<form id="c001" action="/form/handle" method="POST" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true">
+                                <input type="hidden" name="name" id="c002">
+                                <input type="hidden" name="actions" id="c003">
+                                <input type="hidden" name="emailto" id="c004">
+                                <div class="form-dropzone" id="c005"></div>
+                                <button class="btn btn-primary" type="submit" id="c006">Submit</button>
+                            </form>',
+                'attributes' => '{ "class": "" }',
+                'is_user_block' => false,              
+            ],
+            /** Layouts **/
+            (object) [
+                'block_group_id' => 4,
+                'block_id' => 'full-width',
+                'label' => 'Full Width',
+                'html' => '<div class="fluid-container" id="c002" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div>',
+                'attributes' => '{ "class": "" }',
+                'is_user_block' => false, 
+                'is_layout' => true             
+            ],
+            (object) [
+                'block_group_id' => 4,
+                'block_id' => 'single-column',
+                'label' => 'Single Column',
+                'html' => '<div class="wrapper" id="c001" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false">
+                                <div class="container" id="c002" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div>
+                            </div>',
+                'attributes' => '{ "class": "" }',
+                'is_user_block' => false, 
+                'is_layout' => true             
             ],
         ]);
 
