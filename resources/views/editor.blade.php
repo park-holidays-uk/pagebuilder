@@ -77,8 +77,8 @@
             canvas: {
                 styles: [
                     // Park Holidays Stylesheets
-                    'http://www.parkholidays.dev/build/css/parkholidays/critical.css',
-                    'http://www.parkholidays.dev/build/css/parkholidays/non_critical.css',
+                    '/build/css/parkholidays/critical.css',
+                    '/build/css/parkholidays/non_critical.css',
                     'https://i.icomoon.io/public/342e837bbb/ParkHolidays/style.css',
                     // Page Builder Stylesheets
                     '{{ asset("parkholidays/pagebuilder/css/components.css") }}'
