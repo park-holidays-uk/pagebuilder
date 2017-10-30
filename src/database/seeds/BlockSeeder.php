@@ -102,30 +102,30 @@ class BlockSeeder extends Seeder
             ],
             
             /** Dynamic **/
-            (object) [
-                'block_group_id' => 2,
-                'block_id' => 'feefo-reviews',
-                'label' => 'Feefo Reviews',
-                'html' => '<dynablock data-view="feefo-reviews" id="c001" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true"></dynablock>',
-                'attributes' => '{ "class": "fa fa-commenting-o" }',
-                'is_user_block' => false,              
-            ],
-            (object) [
-                'block_group_id' => 2,
-                'block_id' => 'park-entertainment',
-                'label' => 'Park Entertainment',
-                'html' => '<dynablock data-view="park-entertainment" data-json="eyJwYXJrX2lkIjogMX0=" id="c8001" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true"></dynablock>',
-                'attributes' => '{ "class": "" }',
-                'is_user_block' => false,              
-            ],
-            (object) [
-                'block_group_id' => 2,
-                'block_id' => 'late-availability',
-                'label' => 'Late Availability',
-                'html' => '<dynablock data-view="late-availability" id="c001" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true"></dynablock>',
-                'attributes' => '{ "class": "" }',
-                'is_user_block' => false,              
-            ],
+            // (object) [
+            //     'block_group_id' => 2,
+            //     'block_id' => 'feefo-reviews',
+            //     'label' => 'Feefo Reviews',
+            //     'html' => '<dynablock data-view="feefo-reviews" id="c001" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true"></dynablock>',
+            //     'attributes' => '{ "class": "fa fa-commenting-o" }',
+            //     'is_user_block' => false,              
+            // ],
+            // (object) [
+            //     'block_group_id' => 2,
+            //     'block_id' => 'park-entertainment',
+            //     'label' => 'Park Entertainment',
+            //     'html' => '<dynablock data-view="park-entertainment" data-json="eyJwYXJrX2lkIjogMX0=" id="c8001" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true"></dynablock>',
+            //     'attributes' => '{ "class": "" }',
+            //     'is_user_block' => false,              
+            // ],
+            // (object) [
+            //     'block_group_id' => 2,
+            //     'block_id' => 'late-availability',
+            //     'label' => 'Late Availability',
+            //     'html' => '<dynablock data-view="late-availability" id="c001" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true"></dynablock>',
+            //     'attributes' => '{ "class": "" }',
+            //     'is_user_block' => false,              
+            // ],
 
             /** Form **/
             (object) [
@@ -142,7 +142,7 @@ class BlockSeeder extends Seeder
                 'attributes' => '{ "class": "" }',
                 'is_user_block' => false,              
             ],
-            
+
             /** Layouts **/
             (object) [
                 'block_group_id' => 4,
