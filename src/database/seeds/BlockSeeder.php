@@ -16,6 +16,25 @@ class BlockSeeder extends Seeder
     {
         
         $blocks = collect([
+            
+            /** Grid **/
+            (object) [
+                'block_group_id' => 1,
+                'block_id' => 'grid-two-columns',
+                'label' => '2 Columns',
+                'html' => '<div class="grid-2_md-2_sm-1_xs-1" id="c003" data-gjs-custom-name="Row" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="true" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true"><div class="col" id="c004" data-gjs-custom-name="Column" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div><div class="col" id="c005" data-gjs-custom-name="Column" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div></div>',
+                'attributes' => '{ "class": "gjs-fonts gjs-f-b2" }',
+                'is_user_block' => false,              
+            ],
+            (object) [
+                'block_group_id' => 1,
+                'block_id' => 'grid-three-columns',
+                'label' => '3 Columns',
+                'html' => '<div class="grid-3_md-2_xs-1" id="c004" data-gjs-custom-name="Row" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="true" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true"><div class="col" id="c005" data-gjs-custom-name="Column" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div><div class="col" id="c006" data-gjs-custom-name="Column" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div><div class="col" id="c007" data-gjs-custom-name="Column" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div></div>',
+                'attributes' => '{ "class": "gjs-fonts gjs-f-b3" }',
+                'is_user_block' => false,              
+            ],
+
             /** Text **/
             (object) [
                 'block_group_id' => 1,
@@ -81,23 +100,6 @@ class BlockSeeder extends Seeder
                 'attributes' => '{ "class": "gjs-fonts gjs-f-text" }',
                 'is_user_block' => false,              
             ],
-            /** Grid **/
-            (object) [
-                'block_group_id' => 1,
-                'block_id' => 'grid-two-columns',
-                'label' => '2 Columns',
-                'html' => '<div class="grid-2_md-2_sm-1_xs-1" id="c003" data-gjs-custom-name="Row" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="true" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true"><div class="col" id="c004" data-gjs-custom-name="Column" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div><div class="col" id="c005" data-gjs-custom-name="Column" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div></div>',
-                'attributes' => '{ "class": "gjs-fonts gjs-f-b2" }',
-                'is_user_block' => false,              
-            ],
-            (object) [
-                'block_group_id' => 1,
-                'block_id' => 'grid-three-columns',
-                'label' => '3 Columns',
-                'html' => '<div class="grid-3_md-2_xs-1" id="c004" data-gjs-custom-name="Row" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="true" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true"><div class="col" id="c005" data-gjs-custom-name="Column" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div><div class="col" id="c006" data-gjs-custom-name="Column" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div><div class="col" id="c007" data-gjs-custom-name="Column" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div></div>',
-                'attributes' => '{ "class": "gjs-fonts gjs-f-b3" }',
-                'is_user_block' => false,              
-            ],
             
             /** Dynamic **/
             (object) [
@@ -124,6 +126,7 @@ class BlockSeeder extends Seeder
                 'attributes' => '{ "class": "" }',
                 'is_user_block' => false,              
             ],
+
             /** Form **/
             (object) [
                 'block_group_id' => 3,
@@ -139,12 +142,15 @@ class BlockSeeder extends Seeder
                 'attributes' => '{ "class": "" }',
                 'is_user_block' => false,              
             ],
+            
             /** Layouts **/
             (object) [
                 'block_group_id' => 4,
                 'block_id' => 'full-width',
                 'label' => 'Full Width',
-                'html' => '<div class="fluid-container" id="c002" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div>',
+                'html' => '<div class="wrapper" id="c001" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false">
+                                <div class="fluid-container" id="c002" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div>
+                            </div>',
                 'attributes' => '{ "class": "" }',
                 'is_user_block' => false, 
                 'is_layout' => true             
