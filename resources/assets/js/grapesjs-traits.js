@@ -18,7 +18,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
 
     /** Editable Properties **/
     var properties = [
-        { 'name': 'stylable', 'label': 'Stylable', 'type': 'checkbox' },
+        { 'name': 'stylable_b', 'label': 'Stylable', 'type': 'checkbox' },
         { 'name': 'draggable', 'label': 'Draggable', 'type': 'checkbox' },
         { 'name': 'droppable', 'label': 'Droppable', 'type': 'checkbox' },
         { 'name': 'copyable', 'label': 'Copyable', 'type': 'checkbox' },
@@ -155,6 +155,9 @@ grapesjs.plugins.add('traits', (editor, options) => {
                             // if (_.indexOf(['heading', 'paragraph', 'text', 'link'], self.get('type')) > -1) {
                             //     self.view.el.setAttribute('contenteditable', false);
                             // }
+                        } else if (self.get('status') == 'selected') {
+                            self.set('stylable_b', self.get('stylable') == true ? true : false);
+                            console.log(self);
                         }
                     });
 
@@ -208,9 +211,11 @@ grapesjs.plugins.add('traits', (editor, options) => {
                         //         break;
                         //     }
 
-                        case 'stylable':
+                        case 'stylable_b':
                             {
-                                editor.runCommand('fix-stylable-property', { node: this, thisNodeOnly: true });
+                                this.set('stylable', this.get('stylable_b') == true ? true : []);
+                                console.log(this);
+                                // editor.runCommand('fix-stylable-property', { node: this, thisNodeOnly: true });
                                 break;
                             }
                     }
