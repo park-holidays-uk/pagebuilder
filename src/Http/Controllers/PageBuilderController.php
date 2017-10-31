@@ -99,15 +99,17 @@ class PageBuilderController extends Controller
 
 		if($blocks) {
 			$blocks->each(function($item, $key) use($data) { 
-				$html = ($item->dynamic) ? preg_replace("@\n@","", $this->setProperties($item)) : base64_decode($item->html_base64);
-
-				$data->push((object) [
-					'category' => $item->group->name,
-					'block_id' => $item->block_id,
-					'label' => $item->label,
-					'content' => $html,
-					'attributes' => $item->attributes					
-				]);
+				if($item->html_base64 != null && trim($item->html_base64) != '') {
+					$html = ($item->dynamic) ? preg_replace("@\n@","", $this->setProperties($item)) : base64_decode($item->html_base64);
+				
+					$data->push((object) [
+						'category' => $item->group->name,
+						'block_id' => $item->block_id,
+						'label' => $item->label,
+						'content' => $html,
+						'attributes' => $item->attributes					
+					]);
+				}
 			});
 		}
 
