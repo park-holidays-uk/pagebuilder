@@ -12,17 +12,31 @@ use App\Models\Media;
 
 class PageBuilderController extends Controller
 {
-	public function editor($type, $id)
+	public function editBlock($type, $id)
 	{
-		$viewModel = new \StdClass;
+		$viewModel = $this->getViewModel($type, $id);
 		$record = $this->getRecord($type, $id);
+		
+		return $record ? view('pagebuilder::editor', ['viewModel' => $viewModel]) : abort(404);
+	}
+
+	public function editPage($id)
+	{
+		$viewModel = $this->getViewModel('page', $id);
+		$record = $this->getRecord('page', $id);
+
+		return $record ? view('pagebuilder::editor', ['viewModel' => $viewModel]) : abort(404);
+	}
+
+	function getViewModel($type, $id) {
+		$viewModel = new \StdClass;
 		
 		$viewModel->url_store = '/ajax/store/'. $type .'/'. $id;
 		$viewModel->url_load = '/ajax/load/'. $type .'/'. $id;
 		$viewModel->id = $id;
 		$viewModel->mode = $type;
 
-		return $record ? view('pagebuilder::editor', ['viewModel' => $viewModel]) : abort(404);
+		return $viewModel;
 	}
 
 	/*
