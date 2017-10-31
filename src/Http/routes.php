@@ -8,10 +8,10 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
         Route::group(['prefix' => config('pagebuilder.url_prefix')], function() {
             Route::get('/page/{id}', array('as' => 'pagebuilder.editor.pages', 'uses' => 'PageBuilderController@editor'))
-            ->middleware('can:ACL_PHAST_SUPERUSER,ACL_PHAST_PARKHOLIDAYS_PAGES,ACL_PHAST_PARKHOLIDAYS_PAGES_CHANGE');
+            ->middleware('can:ACL_PHAST_PARKHOLIDAYS_PAGES');
 
             Route::get('/{type}/{id}', array('as' => 'pagebuilder.editor.blocks', 'uses' => 'PageBuilderController@editor'))
-            ->where('type', 'block|layout')->middleware('can:ACL_PHAST_SUPERUSER,ACL_PHAST_PAGEBUILDER_COMPONENTS,ACL_PHAST_PAGEBUILDER_COMPONENTS_CHANGE');
+            ->where('type', 'block|layout')->middleware('can:ACL_PHAST_PAGEBUILDER_COMPONENTS,ACL_PHAST_PAGEBUILDER_LAYOUTS');
         });
     });
 });
