@@ -293,7 +293,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
                     options.node.set('copyable', false);
                     options.node.set('resizable', false);
                     options.node.set('editable', false);
-                    options.node.set('removable', (level == 0));
+                    options.node.set('removable', (level == 0) && (type != 'server block'));
                 }
 
                 if (options.node.view) {
