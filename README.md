@@ -80,7 +80,6 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 * Add support for SRCSET on images - *Once blocks with images have been added*
 * Tweak filtering options for Asset modal to work better.
 * Add any additional functionality required to support forms
-* Set up rights to particular routes.
 
 ## Known Issues
 
