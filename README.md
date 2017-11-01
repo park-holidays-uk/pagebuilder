@@ -41,15 +41,14 @@ php artisan db:seed --class="ParkHolidays\PageBuilder\Database\Seeds\DatabaseSee
 
 ## Things To Know
 
-All layout blocks should be contained within a *DIV* element with the class *wrapper*. This will allow the use of both
-fullwidth and non-fullwidth blocks in the page.
+All layout blocks should be contained within a *DIV* element with the class *wrapper*. This will allow the use of both fullwidth and non-fullwidth blocks in the page.
 
 When creating FORM blocks, they must contain an empty DIV with the class *form-dropzone*. This be the only area a user can drop form field blocks into.
 
 ## PHAST Wizard Requirements
 
 * Must be able to create blocks & layouts as well as pages.
-* For dynamic blocks, it will need to pre-populate the *block_id* field with the filename of the view.
+* For dynamic blocks, it will need to pre-populate the *block_id* field.
 * For dynamic blocks, it will need to populate the *properties* field with a JSON object that is used to create dynamic traits (payload object). see **Fig. PW1R**
 * For all blocks and layouts, it will need to set the *attributes* field, with a JSON object that has minimum of 1 property, which must be the class property. This is used to display an icon within pagebuilder. see **Fig. PW2R**
 
@@ -77,9 +76,10 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 ## TODOS
 
 * Modulerise CSS and JavaScript.
-* Add support for SRCSET on images - *Once blocks with images have been added*
+* Add support for SRCSET on images. - *Need to work out how path will work*
 * Tweak filtering options for Asset modal to work better.
-* Add any additional functionality required to support forms
+* Clean up and refactor code for more efficiency.
+* Restyle to match the styling of PHAST.
 
 ## Known Issues
 
