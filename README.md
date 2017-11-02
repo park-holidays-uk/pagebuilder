@@ -2,7 +2,7 @@
 
 Page editor for PHAST CMS built using the GrapesJS framework...
 
-### Installing
+### New Installation
 
 Run the following commands in the CLI
 
@@ -19,7 +19,7 @@ ParkHolidays\PageBuilder\PageBuilderServiceProvider::class
 Don't forget to publish the config and assets..
 
 ```
-php artisan vendor:publish
+php artisan vendor:publish --provider="ParkHolidays\PageBuilder\PageBuilderServiceProvider" --force
 ```
 
 Once config has been published, add the following to the .ENV file and change the values appropriately
@@ -28,6 +28,7 @@ Once config has been published, add the following to the .ENV file and change th
 PAGEBUILDER_DOMAIN=phast.parkholidays.com
 PAGEBUILDER_URLPREFIX=/pagebuilder
 PAGEBUILDER_MEDIA_PATH=//parkholidays.s3-website-eu-west-1.amazonaws.com/assets/
+PAGEBUILDER_ASSET_PATH=/dist/
 PAGEBUILDER_FORM_ACTION=/form/handle
 PAGEBUILDER_FORM_METHOD=POST
 ```
@@ -38,6 +39,17 @@ When ready run the migrations and seeders
 php artisan migrate
 php artisan db:seed --class="ParkHolidays\PageBuilder\Database\Seeds\DatabaseSeeder"
 ```
+
+### Update Installation
+
+Run the following commands in the CLI
+
+```
+composer update
+```
+
+The publish the assets in the same way as the enw installation above.
+Check for any changes to ENV settings.
 
 ## Things To Know
 
