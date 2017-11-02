@@ -35,6 +35,7 @@ class PageBuilderController extends Controller
 		$viewModel->url_load = '/ajax/load/'. $type .'/'. $id;
 		$viewModel->id = $id;
 		$viewModel->mode = $type;
+		$viewModel->isSuperUser = session('superUser');
 
 		return $viewModel;
 	}
@@ -100,9 +101,9 @@ class PageBuilderController extends Controller
 			case 'blocks': 
 				$blocks = Block::where('is_layout', false);
 				if(!filter_var($includeUserDefined, FILTER_VALIDATE_BOOLEAN)) { 
-					$blocks->where('is_user_block', false)->orWhere('dynamic', true); 
+					$blocks->where('block_group_id', 1)->where('is_user_block', false)->where('dynamic', false); 
 				}
-				$blocks->get();
+				$blocks->orderBy('sort_order')->get();
 				break;
 			case 'layouts': 
 				$blocks = Block::where('is_layout', true)->get();
