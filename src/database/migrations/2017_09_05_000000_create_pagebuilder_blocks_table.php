@@ -26,9 +26,7 @@ class CreatePageBuilderBlocksTable extends Migration
 
             $table->string('properties', 1000)->nullable()->default(null);
             
-            $table->string('tag', 60)->nullable();
             $table->boolean('dynamic')->default(false);
-
             $table->boolean('is_user_block')->default(true);
             $table->boolean('is_layout')->default(false);
 
