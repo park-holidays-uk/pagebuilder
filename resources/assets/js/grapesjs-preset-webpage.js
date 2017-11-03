@@ -26,7 +26,7 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     config.showDevices = 0;
 
     /**  **/
-    var isPageMode = (opt.mode == 'page');
+    var isPageMode = (opt.record.type == 'page');
 
     /** IMPORTER **/
     var codeViewer = editor.CodeManager.getViewer('CodeMirror').clone();
@@ -141,7 +141,7 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
             }
 
             $(document).ajaxComplete(function(event, request, settings) {
-                if (settings.url == opt.storeUrl) {
+                if (settings.url == opt.storageManager.urlStore) {
                     var segs = settings.url.split('/');
                     var id = segs[segs.length - 1];
                     var type = segs[segs.length - 2];
@@ -156,7 +156,7 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     });
 
     /** IMPORT **/
-    if (opt.isSuperUser) {
+    if (opt.user.isSuperUser) {
         commands.add('html-import', {
             run: function(editor, sender) {
                 sender && sender.set('active', 0);
@@ -234,7 +234,7 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
         }
     ]);
 
-    if (opt.isSuperUser) {
+    if (opt.user.isSuperUser) {
         panels.addButton('options', [{
             id: 'import',
             className: 'fa fa-download',

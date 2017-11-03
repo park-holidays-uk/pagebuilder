@@ -35,92 +35,42 @@
     <!-- <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapesjs-components.js') }}"></script> -->
 
     <script type="text/javascript"> 
-        var editor = grapesjs.init({
-            container : '#gjs',
-            // autorender: 0,
-            fromElement: true,
-            showOffsets: true,
-            height: '100%',
-            
-            plugins: [
-                'preset-webpage',
-                'modals',
-                'blocks',
-                'assets',
-                'traits'//,
-                // 'components'
-            ],
-            
-            pluginsOpts: {
-                'preset-webpage': {
+        var _serverData = {
+                record: {
                     id: {{ $viewModel->id }},
-                    mode: '{{ $viewModel->mode }}',
-                    isSuperUser: {{ $viewModel->isSuperUser }},
-                    storeUrl: '{{ $viewModel->url_store }}'
+                    type: '{{ $viewModel->type }}'
                 },
-                
-                'modals': {
-                    mode: '{{ $viewModel->mode }}'
+                user: {
+                    isSuperUser: {{ $viewModel->isSuperUser }}
                 },
-
-                'blocks': {
-                    mode: '{{ $viewModel->mode }}'
+                forms: {
+                    action: '{{ config("pagebuilder.form_action") }}',
+                    method: '{{ config("pagebuilder.form_method") }}'
                 },
-
-                'traits': {
-                    mode: '{{ $viewModel->mode }}',
-                    form_action: '{{ config("pagebuilder.form_action") }}',
-                    form_method: '{{ config("pagebuilder.form_method") }}'
+                assetManager: {
+                    path: '{{ config("pagebuilder.asset_manager_path") }}',
+                    assetPath: '{{ config("pagebuilder.asset_path") }}',
                 },
-
-                'assets': {
-                    asset_manager_path: '{{ config("pagebuilder.asset_manager_path") }}'
+                storageManager: {
+                    urlLoad: '{{ $viewModel->url_load }}',
+                    urlStore: '{{ $viewModel->url_store }}'
                 }
-            },
-
-            canvas: {
+            };
+        
+        var _canvas = {
                 styles: [
                     // Park Holidays Stylesheets
-                    '{{ config("pagebuilder.asset_path") }}css/parkholidays/critical.css',
-                    '{{ config("pagebuilder.asset_path") }}css/parkholidays/non_critical.css',
+                    _serverData.assetManager.assetPath + 'css/parkholidays/critical.css',
+                    _serverData.assetManager.assetPath + 'css/parkholidays/non_critical.css',
                     'https://i.icomoon.io/public/342e837bbb/ParkHolidays/style.css',
                     // Page Builder Stylesheets
                     '{{ asset("parkholidays/pagebuilder/css/components.css") }}'
-                ]
-            },
-            
-            storageManager: {
-                type: 'remote',
-                autosave: false,
-                autoload: true,
-                stepsBeforeSave: 1,
-                storeComponents: true, 
-                urlStore: '{{ $viewModel->url_store }}',
-                urlLoad: '{{ $viewModel->url_load }}'
-            },
-
-            styleManager: {
-                sectors: [
-                    {
-                        name: 'Extra',
-                        buildProps: ['background']
-                    }
-                ]
-            },
-
-            assetManager: {
-                modalTitle: 'Asset Manager',
-                autoAdd: 0,
-                noAssets: 'There are currently no available assets',
-                upload: 0,
-                dropzone: 0,
-                dropzoneContent: ''
-            },
-
-            panels: {
-                defaults: []
-            }
-        });
+                ],
+                scripts: []
+            };
     </script>
+
+    
+    <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapesjs-initialise.js') }}"></script>
 </body>
 </html>

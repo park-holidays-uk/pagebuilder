@@ -34,7 +34,7 @@ class PageBuilderController extends Controller
 		$viewModel->url_store = '/ajax/store/'. $type .'/'. $id;
 		$viewModel->url_load = '/ajax/load/'. $type .'/'. $id;
 		$viewModel->id = $id;
-		$viewModel->mode = $type;
+		$viewModel->type = $type;
 		$viewModel->isSuperUser = session('superUser');
 
 		return $viewModel;

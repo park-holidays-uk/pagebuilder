@@ -13,7 +13,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
     var defaultView = defaultType.view;
 
     /**  **/
-    var isPageMode = (opt.mode == 'page');
+    var isPageMode = (opt.record.type == 'page');
     var traits = [];
 
     /** Editable Properties **/
@@ -96,6 +96,8 @@ grapesjs.plugins.add('traits', (editor, options) => {
 
     // componentTypes = [];
 
+    // console.log('DOM Components', domComponents);
+
     _.forEach(componentTypes, function(componentType) {
 
         domComponents.addType(componentType.name, {
@@ -137,11 +139,11 @@ grapesjs.plugins.add('traits', (editor, options) => {
                         var attrs = self.get('attributes');
 
                         if (!attrs.action) {
-                            attrs.action = opt.form_action;
+                            attrs.action = opt.forms.action;
                         }
 
                         if (!attrs.method) {
-                            attrs.method = opt.form_method;
+                            attrs.method = opt.forms.method;
                         }
 
                         self.set('attributes', attrs);
@@ -157,7 +159,6 @@ grapesjs.plugins.add('traits', (editor, options) => {
                             // }
                         } else if (self.get('status') == 'selected') {
                             self.set('stylable_b', self.get('stylable') == true ? true : false);
-                            console.log(self);
                         }
                     });
 
@@ -214,8 +215,8 @@ grapesjs.plugins.add('traits', (editor, options) => {
                         case 'stylable_b':
                             {
                                 this.set('stylable', this.get('stylable_b') == true ? true : []);
-                                console.log(this);
-                                // editor.runCommand('fix-stylable-property', { node: this, thisNodeOnly: true });
+                                // console.log(this);
+                                editor.runCommand('fix-stylable-property', { node: this, thisNodeOnly: true });
                                 break;
                             }
                     }
@@ -256,6 +257,26 @@ grapesjs.plugins.add('traits', (editor, options) => {
         });
 
     });
+
+    domComponents.addType('heading', {
+        model: defaultModel.extend({
+            init() {
+                console.log(this);
+                // this.set('isContentEditable', true);
+                if (this.view) {
+                    this.view.el.isContentEditable = true;
+                }
+            }
+        }, {
+            isComponent: function(el) {
+                if (el['className'] && el['className'].indexOf('h1') != -1) {
+                    return { type: 'heading' };
+                }
+            }
+        }),
+        view: defaultView.extend({})
+    });
+
 
     /*
      *   COMMANDS
@@ -381,5 +402,17 @@ grapesjs.plugins.add('traits', (editor, options) => {
             }
         }
     });
+
+    // editor.on('component:add', function(component) {
+    //     console.log('Component Add', component);
+    // });
+
+    // editor.on('storage:store', function(store) {
+    //     console.log('Storage Store', store);
+    // });
+
+    // editor.on('storage:error', function(error) {
+    //     console.log('Storage Error', error);
+    // });
 
 });

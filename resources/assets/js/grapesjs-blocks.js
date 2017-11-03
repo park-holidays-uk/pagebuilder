@@ -13,7 +13,7 @@ grapesjs.plugins.add('blocks', (editor, options) => {
     var modal = editor.Modal;
 
     /**  **/
-    var isPageMode = (opt.mode == 'page');
+    var isPageMode = (opt.record.type == 'page');
 
     /*
      *   Functions 
@@ -53,6 +53,7 @@ grapesjs.plugins.add('blocks', (editor, options) => {
         // block:drag:start
         // block:drag:move
         // block:drag:stop
+        // console.log('Block Drag Stop', model);
         editor.runCommand('fix-stylable-property', { node: model });
     });
 

@@ -116,7 +116,7 @@ grapesjs.plugins.add('assets', (editor, options) => {
 
                     $.ajax({
                         type: 'POST',
-                        url: opt.asset_manager_path
+                        url: opt.assetManager.path
                     }).done(function(data) {
                         $('.' + amClassName).html(data);
                         $('#gjs-am-search-btn').on('click', function() {

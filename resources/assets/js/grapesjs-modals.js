@@ -12,7 +12,7 @@ grapesjs.plugins.add('modals', (editor, options) => {
     var model = modal.getModel();
 
     /**  **/
-    var isPageMode = (opt.mode == 'page');
+    var isPageMode = (opt.record.type == 'page');
     var isCanvasEmpty;
 
     /** CUSTOM MODALS **/
