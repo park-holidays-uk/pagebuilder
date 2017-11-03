@@ -156,7 +156,7 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     });
 
     /** IMPORT **/
-    if (!isPageMode) {
+    if (opt.isSuperUser) {
         commands.add('html-import', {
             run: function(editor, sender) {
                 sender && sender.set('active', 0);
@@ -234,7 +234,7 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
         }
     ]);
 
-    if (!isPageMode) {
+    if (opt.isSuperUser) {
         panels.addButton('options', [{
             id: 'import',
             className: 'fa fa-download',
@@ -245,13 +245,13 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
 
     panels.addButton('options', [{
             id: 'undo',
-            className: 'fa fa-undo icon-undo',
+            className: 'fa fa-undo', // icon-undo
             command: 'undo',
             attributes: { title: 'Undo (CTRL/CMD + Z)' }
         },
         {
             id: 'redo',
-            className: 'fa fa-repeat icon-redo',
+            className: 'fa fa-repeat', // icon-redo
             command: 'redo',
             attributes: { title: 'Redo (CTRL/CMD + SHIFT + Z)' }
         },

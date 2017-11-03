@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="description" content="Page Builder">
-    <meta name="author" content="Mark Bailey">
+    <meta charset="utf-8" />
+    <meta name="description" content="Page Builder" />
+    <meta name="author" content="Mark Bailey" />
 
     <title>Editor | Page Builder</title>
     <link rel="stylesheet" href="{{ asset('parkholidays/pagebuilder/css/grapes.css') }}" />
@@ -32,6 +32,7 @@
     <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapesjs-blocks.js') }}"></script>
     <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapesjs-traits.js') }}"></script>
     <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapesjs-assets.js') }}"></script>
+    <!-- <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapesjs-components.js') }}"></script> -->
 
     <script type="text/javascript"> 
         var editor = grapesjs.init({
@@ -46,13 +47,15 @@
                 'modals',
                 'blocks',
                 'assets',
-                'traits'
+                'traits'//,
+                // 'components'
             ],
             
             pluginsOpts: {
                 'preset-webpage': {
                     id: {{ $viewModel->id }},
                     mode: '{{ $viewModel->mode }}',
+                    isSuperUser: {{ $viewModel->isSuperUser }},
                     storeUrl: '{{ $viewModel->url_store }}'
                 },
                 
@@ -80,6 +83,7 @@
                     // Park Holidays Stylesheets
                     '{{ config("pagebuilder.asset_path") }}css/parkholidays/critical.css',
                     '{{ config("pagebuilder.asset_path") }}css/parkholidays/non_critical.css',
+                    'https://i.icomoon.io/public/342e837bbb/ParkHolidays/style.css',
                     // Page Builder Stylesheets
                     '{{ asset("parkholidays/pagebuilder/css/components.css") }}'
                 ]
