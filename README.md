@@ -127,6 +127,11 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 * Add quality of life features and make existing features more user friendly.
 * Add support for more elements (Lists, videos, tables etc.)
 * Change the way styling works, so only certain styles can be applied to specific components / elements
+* Add support for multiple top level elements when importing HTML.
+* Change Trait input fields to multi-select dropdowns.
+* Add form input group blocks
+* Add ability to align and change style of buttons
+* Add ability to change url of iframe.
 
 ## Known Issues
 
