@@ -138,6 +138,44 @@ class BlockSeeder extends Seeder
                 'is_system_block' => true,
                 'sort_order' => 0            
             ],
+            (object) [
+                'block_group_id' => 1,
+                'block_id' => 'link',
+                'label' => 'Link',
+                'icon_class' => 'fa fa-link',
+                'html' => '<a>Lorem Ipsum</a>',
+                'is_system_block' => true,
+                'sort_order' => 0            
+            ],
+
+            /** Other Basic Elements **/
+            (object) [
+                'block_group_id' => 1,
+                'block_id' => 'image',
+                'label' => 'Image',
+                'icon_class' => 'gjs-fonts gjs-f-image',
+                'html' => '<img />',
+                'is_system_block' => true,
+                'sort_order' => 0            
+            ],
+            (object) [
+                'block_group_id' => 1,
+                'block_id' => 'html5-video',
+                'label' => 'Video',
+                'icon_class' => 'fa fa-youtube-play',
+                'html' => '<video></video>',
+                'is_system_block' => true,
+                'sort_order' => 0            
+            ],
+            (object) [
+                'block_group_id' => 1,
+                'block_id' => 'iframe',
+                'label' => 'iFrame',
+                'icon_class' => 'fa fa-youtube-play',
+                'html' => '<iframe></iframe>',
+                'is_system_block' => true,
+                'sort_order' => 0            
+            ],
 
             /** Form **/
             (object) [
