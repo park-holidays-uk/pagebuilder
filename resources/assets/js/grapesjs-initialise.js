@@ -1,17 +1,16 @@
-var editor = grapesjs.init({
+var options = {
     container: '#gjs',
-    // autorender: 0,
     fromElement: true,
     showOffsets: true,
     height: '100%',
 
     plugins: [
         'preset-webpage',
-        'modals',
+        'components',
         'blocks',
-        'assets',
-        'traits',
-        // 'components'
+        'modals',
+        // 'assets',
+        // 'traits'
     ],
 
     pluginsOpts: {
@@ -21,11 +20,16 @@ var editor = grapesjs.init({
             storageManager: _serverData.storageManager
         },
 
-        'modals': {
-            record: _serverData.record
+        'components': {
+            record: _serverData.record,
         },
 
         'blocks': {
+            url_prefix: _serverData.url_prefix
+        },
+
+        'modals': {
+            url_prefix: _serverData.url_prefix,
             record: _serverData.record
         },
 
@@ -51,14 +55,11 @@ var editor = grapesjs.init({
         stepsBeforeSave: 1,
         storeComponents: true,
         urlStore: _serverData.storageManager.urlStore,
-        urlLoad: _serverData.storageManager.urlLoad
-    },
-
-    styleManager: {
-        sectors: [{
-            name: 'Extra',
-            buildProps: ['background']
-        }]
+        urlLoad: _serverData.storageManager.urlLoad,
+        params: {
+            name: _serverData.record.name
+        },
+        contentTypeJson: true
     },
 
     assetManager: {
@@ -68,9 +69,19 @@ var editor = grapesjs.init({
         upload: 0,
         dropzone: 0,
         dropzoneContent: ''
-    },
-
-    panels: {
-        defaults: []
     }
-});
+};
+
+// Remove styling options for non Super Users
+if (!_serverData.user.isSuperUser) {
+    options.styleManager = {
+        sectors: [{
+            name: 'Decoration',
+            buildProps: ['background']
+        }]
+    };
+}
+
+
+// Initialise
+var editor = grapesjs.init(options);

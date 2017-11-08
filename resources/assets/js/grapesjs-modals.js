@@ -1,8 +1,9 @@
 /*export default*/
 grapesjs.plugins.add('modals', (editor, options) => {
 
-    var opt = options || {};
-    var config = editor.getConfig();
+    /*
+     *   VARIABLES 
+     */
 
     /** DOM WRAPPER **/
     var domComponents = editor.DomComponents;
@@ -12,7 +13,7 @@ grapesjs.plugins.add('modals', (editor, options) => {
     var model = modal.getModel();
 
     /**  **/
-    var isPageMode = (opt.record.type == 'page');
+    var isPageMode = (options.record.type == 'page');
     var isCanvasEmpty;
 
     /** CUSTOM MODALS **/
@@ -21,32 +22,32 @@ grapesjs.plugins.add('modals', (editor, options) => {
     layoutModal.call(function() {
 
         $.ajax({
-            url: '/ajax/get/layouts',
-        }).done(function(_data) {
-            var _layouts = JSON.parse(_data);
-            var container = document.createElement('div');
-            container.classList = 'gjs-blocks-c gjs-clickable-blocks';
+            url: options.url_prefix + '/ajax/get/layouts',
+        }).done(function(data) {
+            var layouts = JSON.parse(data);
+            var container = $('<div/>');
+            container.addClass('gjs-blocks-c gjs-clickable-blocks');
 
-            _.forEach(_layouts, function(_block) {
-                var block = document.createElement('div');
-                var label = document.createElement('div');
+            _.forEach(layouts, function(b) {
+                var block = $('<div/>');
+                var label = $('<div/>');
 
-                label.classList = 'gjs-block-label';
-                label.innerHTML = _block.label;
-                block.classList = 'gjs-block';
-                block.appendChild(label);
+                label.addClass('gjs-block-label');
+                label.html(b.label);
+                block.addClass('gjs-block');
+                block.append(label);
 
-                block.addEventListener('click', function() {
-                    editor.setComponents(_block.content);
+                block.on('click', function() {
+                    editor.setComponents(b.content);
                     editor.UndoManager.clear();
-                    editor.runCommand('fix-stylable-property');
+
                     modal.close();
                 });
 
-                container.appendChild(block);
+                container.append(block);
             });
 
-            layoutModal.setContent(container);
+            layoutModal.setContent(container[0]);
         });
 
     });
@@ -55,20 +56,6 @@ grapesjs.plugins.add('modals', (editor, options) => {
      *   COMMANDS
      */
     var commands = editor.Commands;
-
-    commands.add('open-snackbar', {
-        run: function(editor, sender, options) {
-            // Get the snackbar DIV
-            var x = $("#snackbar");
-
-            x.html(options.message);
-            // Add the "show" class to DIV
-            x.addClass("show");
-
-            // After 3 seconds, remove the show class from DIV
-            setTimeout(function() { x.removeClass("show"); }, 3000);
-        }
-    });
 
     commands.add('open-layouts-modal', {
         run: function(editor) {
@@ -79,13 +66,6 @@ grapesjs.plugins.add('modals', (editor, options) => {
     /*
      *   EVENTS
      */
-    editor.on('load', function() {
-        isCanvasEmpty = (domComponents.getComponents().length == 0);
-
-        if (isPageMode && isCanvasEmpty) {
-            editor.runCommand('open-layouts-modal');
-        }
-    });
 
     /** MODAL OPEN/CLOSE **/
     model.on('change:open', function(model) {
@@ -109,6 +89,7 @@ grapesjs.plugins.add('modals', (editor, options) => {
 /*
  *   MODAL CLASS 
  */
+
 class Modal {
     constructor(_modal, _name, _title, _content = null) {
         this.modal = _modal;

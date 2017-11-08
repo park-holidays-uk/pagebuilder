@@ -34,6 +34,10 @@ body {
     border-color: #fff;
 }
 
+#gjs-pn-commands .gjs-pn-buttons {
+    display: none !important;
+}
+
 
 /** CANVAS **/
 
@@ -71,9 +75,10 @@ body {
     width: 85%;
 }
 
-.gjs-clm-tags {
+
+/* .gjs-clm-tags {
     display: none;
-}
+} */
 
 
 /** Asset Manager **/
@@ -188,12 +193,17 @@ body {
 
 /** SETTINGS TRAITS **/
 
-#gjs-pn-settings .gjs-trt-trait .gjs-field.gjs-field-checkbox {
-    position: absolute;
-    right: 15px;
+.gjs-trt-trait {
+    position: relative;
 }
 
-#gjs-pn-settings .gjs-trt-trait .gjs-label {
+.gjs-trt-trait .gjs-field.gjs-field-checkbox {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+}
+
+.gjs-trt-trait .gjs-label {
     font-size: 14px;
 }
 

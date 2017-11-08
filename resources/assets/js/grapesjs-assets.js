@@ -1,7 +1,10 @@
 /*export default*/
 grapesjs.plugins.add('assets', (editor, options) => {
 
-    var opt = options || {};
+    /*
+     *   VARIABLES
+     */
+
     var stylePrefix = editor.getConfig().stylePrefix;
     var assetManager = editor.AssetManager;
     var commands = editor.Commands;
@@ -116,7 +119,7 @@ grapesjs.plugins.add('assets', (editor, options) => {
 
                     $.ajax({
                         type: 'POST',
-                        url: opt.assetManager.path
+                        url: options.assetManager.path
                     }).done(function(data) {
                         $('.' + amClassName).html(data);
                         $('#gjs-am-search-btn').on('click', function() {

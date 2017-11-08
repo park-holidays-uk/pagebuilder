@@ -5,125 +5,75 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
      *   VARIABLES
      */
 
-    var opt = options || {};
     var config = editor.getConfig();
     var stylePrefix = editor.getConfig().stylePrefix;
 
-    /** MANAGERS **/
-    var assetManager = editor.AssetManager;
-    // const amConfig = editor.AssetManager.getConfig();
-
-    // amConfig.upload = 0;
-    // amConfig.dropzone = 0;
-
-    /** MODAL **/
+    // Managers
+    var commands = editor.Commands;
+    var panels = editor.Panels;
     var modal = editor.Modal;
-
-    /** DOM WRAPPER **/
     var domComponents = editor.DomComponents;
     var wrapper = domComponents.getWrapper();
 
+    // Code Viewer
+    var codeViewer = editor.CodeManager.getViewer('CodeMirror').clone();
+
+    // Hide Default Controls for Devices
     config.showDevices = 0;
 
-    /**  **/
-    var isPageMode = (opt.record.type == 'page');
+    // Parameters
+    var isPageMode = (options.record.type == 'page');
 
-    /** IMPORTER **/
-    var codeViewer = editor.CodeManager.getViewer('CodeMirror').clone();
-    var container = document.createElement('div');
-    var importBtn = document.createElement('button');
+    // Elements
+    var importBtn = $('<button/>');
+    var container = $('<div/>');
 
-    var setNodeId = function(node, count = 1) {
-        node.attr('id', 'c' + ((count > 99) ? count : ((count > 9) ? '0' : '00') + count));
-
-        $(node).children().each(function() {
-            count++;
-            setNodeId($(this), count);
-        });
-
-        return node;
-    }
-
-    // Init import button
-    importBtn.innerHTML = 'Import';
-    importBtn.className = stylePrefix + 'btn-prim ' + stylePrefix + 'btn-import';
-    importBtn.onclick = function() {
-        var code = codeViewer.editor.getValue();
-        editor.DomComponents.getWrapper().set('content', '');
-        // var c = $('iframe.gjs-frame').contents().find('[data-highlightable]:not(#wrapper)').length;
-
-        var jQo = setNodeId($(code));
-        code = jQo[0].outerHTML;
-        editor.setComponents(code);
-
-        editor.runCommand('set-default-properties');
-
-        modal.close();
-    };
-
-    // Init code viewer
-    codeViewer.set({
-        codeName: 'htmlmixed',
-        theme: opt.codeViewerTheme || 'hopscotch',
-        readOnly: 0
-    });
 
     /*
      *   COMMANDS
      */
-    var commands = editor.Commands;
 
-    /** CLEAR CANVAS **/
+    /** Prevent Default Actions **/
+    commands.add('prevent-default', {
+        run: function(editor, sender) {
+            var elements = [
+                { tagName: 'a', events: ['click'] },
+                { tagName: 'form', events: ['submit'] }
+            ];
+
+            var iframe = $(editor.Canvas.getFrameEl()).contents();
+
+            elements.forEach(function(el) {
+                el.events.forEach(function(e) {
+                    iframe.find(el.tagName).off(e).on(e, function(event) {
+                        event.preventDefault();
+                    });
+                });
+            });
+        }
+    });
+
+    /** Exit Application **/
     commands.add('exit-app', {
         run: function(editor, sender) {
+            sender.set('active', 0);
             window.location = '/';
         }
     });
 
+    /** Clear Canvas **/
     commands.add('empty-canvas', {
-        run: function(editor, sender) {
-            sender && sender.set('active', false);
-            if (confirm('Are you sure to empty the canvas? \nYou will not be able to undo it.')) {
+        run: function(editor, sender, options) {
+            if (sender.cid) { sender && sender.set('active', false); }
+            if (options.skipConfirm || confirm('Are you sure to empty the canvas? \nYou will not be able to undo it.')) {
                 var comps = editor.DomComponents.clear();
                 editor.CssComposer.getAll().reset();
 
                 if (isPageMode) {
-                    editor.UndoManager.clear();
+                    // editor.UndoManager.clear();
                     editor.runCommand('open-layouts-modal');
                 }
             }
-        }
-    });
-
-    commands.add('disable-page-redirects', {
-        run: function(editor, sender) {
-            var iframe = $('iframe.gjs-frame').contents();
-            iframe.find('a').off('click').on('click', function(event) {
-                event.preventDefault();
-            });
-
-            iframe.find('form').off('submit').on('submit', function(event) {
-                event.preventDefault();
-            });
-        }
-    });
-
-    /** DEVICES **/
-    commands.add('set-device-desktop', {
-        run: function(editor) {
-            editor.setDevice('Desktop');
-        }
-    });
-
-    commands.add('set-device-tablet', {
-        run: function(editor) {
-            editor.setDevice('Tablet');
-        }
-    });
-
-    commands.add('set-device-mobile', {
-        run: function(editor) {
-            editor.setDevice('Mobile portrait');
         }
     });
 
@@ -131,32 +81,12 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     commands.add('save', {
         run: function(editor, sender) {
             sender.set('active', 0);
-
-            if (isPageMode) {
-                var components = domComponents.getComponents().models;
-
-                _.forEach(components, function(component) {
-                    editor.runCommand('remove-id-attribute', { node: component });
-                });
-            }
-
-            $(document).ajaxComplete(function(event, request, settings) {
-                if (settings.url == opt.storageManager.urlStore) {
-                    var segs = settings.url.split('/');
-                    var id = segs[segs.length - 1];
-                    var type = segs[segs.length - 2];
-
-                    var message = ((request.status == 200) ? 'Successfully saved ' : 'Unable to save ') + type + ' id' + id;
-                    editor.runCommand('open-snackbar', { message: message });
-                }
-            });
-
             editor.store();
         }
     });
 
     /** IMPORT **/
-    if (opt.user.isSuperUser) {
+    if (options.user.isSuperUser) {
         commands.add('html-import', {
             run: function(editor, sender) {
                 sender && sender.set('active', 0);
@@ -167,19 +97,22 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
 
                 // Init code viewer if not yet instantiated
                 if (!viewer) {
-                    var txtarea = document.createElement('textarea');
-                    var labelEl = document.createElement('div');
-                    labelEl.className = stylePrefix + 'import-label';
-                    labelEl.innerHTML = 'Paste here your HTML/CSS and click Import';
-                    container.appendChild(labelEl);
-                    container.appendChild(txtarea);
-                    container.appendChild(importBtn);
-                    codeViewer.init(txtarea);
+                    var txtarea = $('<textarea/>');
+                    var labelEl = $('<div/>');
+
+                    labelEl.addClass(stylePrefix + 'import-label');
+                    labelEl.html('Paste here your HTML/CSS and click Import');
+
+                    container.append(labelEl);
+                    container.append(txtarea);
+                    container.append(importBtn);
+
+                    codeViewer.init(txtarea[0]);
                     viewer = codeViewer.editor;
                 }
 
                 modal.setContent('');
-                modal.setContent(container);
+                modal.setContent(container[0]);
                 codeViewer.setContent('');
                 modal.open();
                 viewer.refresh();
@@ -202,17 +135,55 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
         }
     });
 
+    /** DEVICES **/
+    commands.add('set-device-desktop', {
+        run: function(editor) {
+            editor.setDevice('Desktop');
+        }
+    });
+
+    commands.add('set-device-tablet', {
+        run: function(editor) {
+            editor.setDevice('Tablet');
+        }
+    });
+
+    commands.add('set-device-mobile', {
+        run: function(editor) {
+            editor.setDevice('Mobile portrait');
+        }
+    });
+
+    /* SNACKBAR */
+    commands.add('open-snackbar', {
+        run: function(editor, sender, options) {
+            // Get the snackbar DIV
+            var x = $("#snackbar");
+            x.html(options.message);
+            // Add the "show" class to DIV
+            x.addClass("show");
+
+            // After 3 seconds, remove the show class from DIV
+            setTimeout(function() { x.removeClass("show"); }, 3000);
+        }
+    });
+
+
     /*
      *   PANELS
      */
 
-    var panels = editor.Panels;
-    panels.addPanel({ id: 'default' });
-    panels.addPanel({ id: 'options' });
+    var defaultPanel = panels.addPanel({ id: 'default' });
+    var panelDevices = panels.addPanel({ id: 'devices-c' });
+
 
     /*
-     *   BUTTONS
+     *   BUTTONS 
      */
+
+    var deviceBtns = panelDevices.get('buttons');
+
+    // Default Panel
     panels.addButton('default', [{
         id: 'phast',
         className: 'fa fa-sign-out',
@@ -220,29 +191,7 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
         attributes: { title: 'Exit to Phast' }
     }]);
 
-    panels.addButton('options', [{
-            id: 'preview',
-            className: 'fa fa-eye',
-            command: 'preview',
-            attributes: { title: 'Preview' }
-        },
-        {
-            id: 'save',
-            className: 'fa fa-floppy-o',
-            command: 'save',
-            attributes: { title: 'Save (CTRL/CMD + S)' }
-        }
-    ]);
-
-    if (opt.user.isSuperUser) {
-        panels.addButton('options', [{
-            id: 'import',
-            className: 'fa fa-download',
-            command: 'html-import',
-            attributes: { title: 'Import' }
-        }]);
-    }
-
+    // Options Panel
     panels.addButton('options', [{
             id: 'undo',
             className: 'fa fa-undo', // icon-undo
@@ -256,20 +205,30 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
             attributes: { title: 'Redo (CTRL/CMD + SHIFT + Z)' }
         },
         {
-            id: 'empty-canvas',
-            className: 'fa fa-trash',
-            command: 'empty-canvas',
-            attributes: { title: 'Empty Canvas' }
+            id: 'save',
+            className: 'fa fa-floppy-o',
+            command: 'save',
+            attributes: { title: 'Save (CTRL/CMD + S)' }
         },
     ]);
 
-    /*
-     *   DEVICES
-     */
+    if (options.user.isSuperUser) {
+        panels.addButton('options', [{
+            id: 'import',
+            className: 'fa fa-download',
+            command: 'html-import',
+            attributes: { title: 'Import' }
+        }]);
+    }
 
-    var panelDevices = panels.addPanel({ id: 'devices-c' });
-    var deviceBtns = panelDevices.get('buttons');
+    panels.addButton('options', [{
+        id: 'empty-canvas',
+        className: 'fa fa-trash',
+        command: 'empty-canvas',
+        attributes: { title: 'Empty Canvas' }
+    }, ]);
 
+    // Devices
     deviceBtns.add([{
             id: 'deviceDesktop',
             command: 'set-device-desktop',
@@ -292,59 +251,87 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     ]);
 
     /*
-     *   Views  
-     */
-
-    panels.addPanel({ id: 'views' });
-    panels.addPanel({ id: 'views-container' });
-
-    var styleBtn = panels.addButton('views', [{
-        id: 'open-styles',
-        className: 'fa fa-paint-brush',
-        command: 'open-sm',
-        attributes: { title: 'Open Style Manager' },
-        active: true,
-    }]);
-
-    panels.addButton('views', [{
-            id: 'open-tm',
-            className: 'fa fa-cog hidden',
-            command: 'open-tm',
-            attributes: { title: 'Open Traits' },
-            active: false,
-        },
-        {
-            id: 'open-layers',
-            className: 'fa fa-bars',
-            command: 'open-layers',
-            attributes: { title: 'Open Layer Manager' },
-            active: false,
-        },
-        {
-            id: 'open-blocks',
-            className: 'fa fa-th-large',
-            command: 'open-blocks',
-            attributes: { title: 'Open Blocks' },
-            active: false,
-        }
-    ]);
-
-    /*
      *   EVENTS
      */
 
     editor.on('load', function() {
-        editor.runCommand('sw-visibility');
-
         if (isPageMode) {
             wrapper.attributes.droppable = false;
             wrapper.attributes.stylable = [];
         }
 
-        editor.runCommand('disable-page-redirects');
+        /* RESTRICTIONS - Disable Features for Non Super Users */
+        if (options.user.isSuperUser) {
+            // Init code viewer
+            codeViewer.set({
+                codeName: 'htmlmixed',
+                theme: options.codeViewerTheme || 'hopscotch',
+                readOnly: 0
+            });
+
+            // Init import button
+            importBtn.html('Import');
+            importBtn.addClass(stylePrefix + 'btn-prim ' + stylePrefix + 'btn-import');
+            importBtn.on('click', function() {
+                var code = codeViewer.editor.getValue();
+                editor.runCommand('empty-canvas', { skipConfirm: true });
+                editor.setComponents(code);
+
+                modal.close();
+            });
+        } else {
+            // Hide Buttons
+            var hideButtons = [
+                { name: 'options', buttons: ['import'] }
+            ];
+
+            hideButtons.forEach(function(p) {
+                p.buttons.forEach(function(b) {
+                    var btn = panels.getButton(p.name, b);
+
+                    if (btn) {
+                        var className = btn.get('className') + ' hidden';
+                        btn.set('className', className);
+                    }
+                });
+            });
+
+            // Hide Styling Options
+            var hideStyles = [
+                '.gjs-clm-tags'
+            ];
+
+            hideStyles.forEach(function(s) {
+                $('#gjs-pn-views-container ' + s).addClass('hidden');
+            });
+        }
+
+        // IFrame
+        var encMeta = $('<meta/>');
+        encMeta.attr('charset', 'utf-8');
+        $(editor.Canvas.getFrameEl()).contents().find('head').append(encMeta);
+
+        // Run Commands
+        editor.runCommand('load-blocks', { excludeUserBlocks: !isPageMode });
+        editor.runCommand('prevent-default');
+
+        // If canvas empty and editting a page open Layouts modal
+        var isCanvasEmpty = (domComponents.getComponents().length == 0);
+        if (isPageMode && isCanvasEmpty) {
+            editor.runCommand('open-layouts-modal');
+        }
+
+        editor.trigger('change:selectedComponent');
     });
 
-    editor.on('component:add', function() {
-        editor.runCommand('disable-page-redirects');
+    // Storage
+    editor.on('storage:end', function(response) {
+        if (typeof response != 'undefined') {
+            response = JSON.parse(response);
+
+            if (response.status) {
+                editor.runCommand('open-snackbar', { message: response.message });
+            }
+        }
     });
 });

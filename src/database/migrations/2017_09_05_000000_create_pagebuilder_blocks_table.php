@@ -19,16 +19,17 @@ class CreatePageBuilderBlocksTable extends Migration
 
             $table->string('block_id')->nullable();
             $table->string('label');
+            $table->string('icon_class')->nullable();
             $table->mediumText('html_base64');
-            $table->mediumText('css_base64')->nullable()->default(null);;
-            $table->mediumText('gjs_components')->nullable()->default(null);
-            $table->string('attributes')->default('{ "class": "" }');
+            $table->mediumText('css_base64')->nullable();
+            $table->mediumText('gjs_components')->nullable();
 
-            $table->string('properties', 1000)->nullable()->default(null);
+            $table->string('payload_properties', 1000)->nullable();
             
-            $table->boolean('dynamic')->default(false);
-            $table->boolean('is_user_block')->default(true);
+            $table->boolean('is_dynamic')->default(false);
+            $table->boolean('is_system_block')->default(false);
             $table->boolean('is_layout')->default(false);
+            $table->integer('sort_order')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

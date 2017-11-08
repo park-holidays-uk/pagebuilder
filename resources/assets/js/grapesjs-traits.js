@@ -1,7 +1,10 @@
 /*export default*/
 grapesjs.plugins.add('traits', (editor, options) => {
 
-    var opt = options || {};
+    /*
+     *   VARIABLES
+     */
+
     var stylePrefix = editor.getConfig().stylePrefix;
 
     var panelManager = editor.Panels;
@@ -13,7 +16,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
     var defaultView = defaultType.view;
 
     /**  **/
-    var isPageMode = (opt.record.type == 'page');
+    var isPageMode = (options.record.type == 'page');
     var traits = [];
 
     /** Editable Properties **/
@@ -139,11 +142,11 @@ grapesjs.plugins.add('traits', (editor, options) => {
                         var attrs = self.get('attributes');
 
                         if (!attrs.action) {
-                            attrs.action = opt.forms.action;
+                            attrs.action = options.forms.action;
                         }
 
                         if (!attrs.method) {
-                            attrs.method = opt.forms.method;
+                            attrs.method = options.forms.method;
                         }
 
                         self.set('attributes', attrs);

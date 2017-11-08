@@ -24,6 +24,11 @@
     padding-bottom: 10px !important;
 }
 
+.gjs-dashed .fluid-container {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 .gjs-dashed form .form-dropzone:empty {
     background-image: url(http://via.placeholder.com/350x75/ffffff?text=DROP+BLOCKS+HERE);
     background-position: center center;

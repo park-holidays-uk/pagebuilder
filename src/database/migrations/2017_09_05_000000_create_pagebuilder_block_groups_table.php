@@ -16,7 +16,8 @@ class CreatePageBuilderBlockGroupsTable extends Migration
         Schema::create('pagebuilder_block_groups', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 60);
-            $table->smallInteger('sort')->nullable()->default(null);            
+            $table->boolean('is_system_group')->default(false);  
+            $table->smallInteger('sort_order')->nullable()->default(null);            
             $table->timestamps();
             $table->softDeletes();
         });

@@ -20,21 +20,49 @@ class BlockSeeder extends Seeder
             /** Grid **/
             (object) [
                 'block_group_id' => 1,
+                'block_id' => 'grid-1-columns',
+                'label' => '1 Columns',
+                'icon_class' => 'gjs-fonts gjs-f-b1',
+                'html' => '<div class="grid"><div class="col"></div></div>',
+                'is_system_block' => true,
+                'sort_order' => 0           
+            ],
+            (object) [
+                'block_group_id' => 1,
                 'block_id' => 'grid-two-columns',
                 'label' => '2 Columns',
-                'html' => '<div class="grid-2_md-2_sm-1_xs-1" id="c003" data-gjs-custom-name="Row" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="true" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true"><div class="col" id="c004" data-gjs-custom-name="Column" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div><div class="col" id="c005" data-gjs-custom-name="Column" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div></div>',
-                'gjs_components' => '[{"tagName":"div","type":"grid","removable":true,"draggable":true,"droppable":false,"badgable":true,"stylable":[],"highlightable":true,"copyable":true,"resizable":false,"editable":false,"layerable":true,"void":false,"state":"","status":"selected","content":"","icon":"","style":{},"attributes":{"id":"c003"},"classes":[{"name":"grid-2_md-2_sm-1_xs-1","label":"grid-2_md-2_sm-1_xs-1","type":"class","active":true,"private":false,"protected":false}],"script":"","traits":[{"type":"checkbox","label":"Stylable","name":"stylable","min":"","max":"","value":false,"default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Draggable","name":"draggable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Droppable","name":"droppable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Copyable","name":"copyable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Resizable","name":"resizable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Editable","name":"editable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Removable","name":"removable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]}],"custom-name":"Row","components":[{"tagName":"div","type":"column","removable":false,"draggable":false,"droppable":true,"badgable":true,"stylable":[],"highlightable":true,"copyable":false,"resizable":false,"editable":false,"layerable":true,"void":false,"state":"","status":"","content":"","icon":"","style":{},"attributes":{"id":"c004"},"classes":[{"name":"col","label":"col","type":"class","active":true,"private":false,"protected":false}],"script":"","traits":[{"type":"checkbox","label":"Stylable","name":"stylable","min":"","max":"","value":false,"default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Draggable","name":"draggable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Droppable","name":"droppable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Copyable","name":"copyable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Resizable","name":"resizable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Editable","name":"editable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Removable","name":"removable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]}],"custom-name":"Column","components":[],"open":false},{"tagName":"div","type":"column","removable":false,"draggable":false,"droppable":true,"badgable":true,"stylable":[],"highlightable":true,"copyable":false,"resizable":false,"editable":false,"layerable":true,"void":false,"state":"","status":"","content":"","icon":"","style":{},"attributes":{"id":"c005"},"classes":[{"name":"col","label":"col","type":"class","active":true,"private":false,"protected":false}],"script":"","traits":[{"type":"checkbox","label":"Stylable","name":"stylable","min":"","max":"","value":false,"default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Draggable","name":"draggable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Droppable","name":"droppable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Copyable","name":"copyable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Resizable","name":"resizable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Editable","name":"editable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Removable","name":"removable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]}],"custom-name":"Column","components":[],"open":false}],"open":0}]',
-                'attributes' => '{ "class": "gjs-fonts gjs-f-b2" }',
-                'is_user_block' => false,              
+                'icon_class' => 'gjs-fonts gjs-f-b2',
+                'html' => '<div class="grid-2_md-2_sm-1_xs-1">
+                    <div class="col"></div>
+                    <div class="col"></div>
+                </div>',
+                'is_system_block' => true,
+                'sort_order' => 0           
             ],
             (object) [
                 'block_group_id' => 1,
                 'block_id' => 'grid-three-columns',
                 'label' => '3 Columns',
-                'html' => '<div class="grid-3_md-2_xs-1" id="c004" data-gjs-custom-name="Row" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="true" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true"><div class="col" id="c005" data-gjs-custom-name="Column" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div><div class="col" id="c006" data-gjs-custom-name="Column" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div><div class="col" id="c007" data-gjs-custom-name="Column" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div></div>',
-                'gjs_components' => '[{"tagName":"div","type":"grid","removable":true,"draggable":true,"droppable":false,"badgable":true,"stylable":[],"highlightable":true,"copyable":true,"resizable":false,"editable":false,"layerable":true,"void":false,"state":"","status":"","content":"","icon":"","style":{},"attributes":{"id":"c004"},"classes":[{"name":"grid-3_md-2_xs-1","label":"grid-3_md-2_xs-1","type":"class","active":true,"private":false,"protected":false}],"script":"","traits":[{"type":"checkbox","label":"Stylable","name":"stylable","min":"","max":"","value":false,"default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Draggable","name":"draggable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Droppable","name":"droppable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Copyable","name":"copyable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Resizable","name":"resizable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Editable","name":"editable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Removable","name":"removable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]}],"custom-name":"Row","components":[{"tagName":"div","type":"column","removable":false,"draggable":false,"droppable":true,"badgable":true,"stylable":[],"highlightable":true,"copyable":false,"resizable":false,"editable":false,"layerable":true,"void":false,"state":"","status":"","content":"","icon":"","style":{},"attributes":{"id":"c005"},"classes":[{"name":"col","label":"col","type":"class","active":true,"private":false,"protected":false}],"script":"","traits":[{"type":"checkbox","label":"Stylable","name":"stylable","min":"","max":"","value":false,"default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Draggable","name":"draggable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Droppable","name":"droppable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Copyable","name":"copyable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Resizable","name":"resizable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Editable","name":"editable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Removable","name":"removable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]}],"custom-name":"Column","components":[],"open":false},{"tagName":"div","type":"column","removable":false,"draggable":false,"droppable":true,"badgable":true,"stylable":[],"highlightable":true,"copyable":false,"resizable":false,"editable":false,"layerable":true,"void":false,"state":"","status":"","content":"","icon":"","style":{},"attributes":{"id":"c006"},"classes":[{"name":"col","label":"col","type":"class","active":true,"private":false,"protected":false}],"script":"","traits":[{"type":"checkbox","label":"Stylable","name":"stylable","min":"","max":"","value":false,"default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Draggable","name":"draggable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Droppable","name":"droppable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Copyable","name":"copyable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Resizable","name":"resizable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Editable","name":"editable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Removable","name":"removable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]}],"custom-name":"Column","components":[],"open":false},{"tagName":"div","type":"column","removable":false,"draggable":false,"droppable":true,"badgable":true,"stylable":[],"highlightable":true,"copyable":false,"resizable":false,"editable":false,"layerable":true,"void":false,"state":"","status":"","content":"","icon":"","style":{},"attributes":{"id":"c007"},"classes":[{"name":"col","label":"col","type":"class","active":true,"private":false,"protected":false}],"script":"","traits":[{"type":"checkbox","label":"Stylable","name":"stylable","min":"","max":"","value":false,"default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Draggable","name":"draggable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Droppable","name":"droppable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Copyable","name":"copyable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Resizable","name":"resizable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Editable","name":"editable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Removable","name":"removable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]}],"custom-name":"Column","components":[],"open":false}],"open":0}]',
-                'attributes' => '{ "class": "gjs-fonts gjs-f-b3" }',
-                'is_user_block' => false,              
+                'icon_class' => 'gjs-fonts gjs-f-b3',
+                'html' => '<div class="grid-3_md-2_xs-1">
+                    <div class="col"></div>
+                    <div class="col"></div>
+                    <div class="col"></div>
+                </div>',
+                'is_system_block' => true,
+                'sort_order' => 0
+            ],
+            (object) [
+                'block_group_id' => 1,
+                'block_id' => 'grid-four-eight-columns',
+                'label' => '2 Columns 4/8',
+                'icon_class' => 'gjs-fonts gjs-f-b37',
+                'html' => '<div class="grid">
+                    <div class="col-4_xs-12"></div>
+                    <div class="col-8_xs-12"></div>
+                </div>',
+                'is_system_block' => true,
+                'sort_order' => 0           
             ],
 
             /** Text **/
@@ -42,145 +70,116 @@ class BlockSeeder extends Seeder
                 'block_group_id' => 1,
                 'block_id' => 'heading-one',
                 'label' => 'Heading 1',
-                'html' => '<h1 id="c001" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="true" data-gjs-resizable="false" data-gjs-editable="true" data-gjs-removable="true">Lorem Ipsum</h1>',
-                'gjs_components' => '[{"tagName":"h1","type":"text","removable":true,"draggable":true,"droppable":false,"badgable":true,"stylable":[],"highlightable":true,"copyable":true,"resizable":false,"editable":true,"layerable":true,"void":false,"state":"","status":"","content":"","icon":"","style":{},"attributes":{"id":"c001"},"classes":[],"script":"","traits":[{"type":"text","label":"","name":"id","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]},{"type":"text","label":"","name":"title","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]}],"components":[{"tagName":"","type":"textnode","removable":true,"draggable":true,"droppable":false,"badgable":true,"stylable":true,"highlightable":true,"copyable":true,"resizable":false,"editable":true,"layerable":true,"void":false,"state":"","status":"","content":"Lorem Ipsum","icon":"","style":{},"attributes":{},"classes":[],"script":"","traits":[{"type":"text","label":"","name":"id","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]},{"type":"text","label":"","name":"title","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]}],"components":[]}],"open":0,"custom-name":"Text"}]',
-                'attributes' => '{ "class": "fa fa-header" }',
-                'is_user_block' => false,              
+                'icon_class' => 'fa fa-header',
+                'html' => '<h1>Lorem Ipsum</h1>',
+                'is_system_block' => true,
+                'sort_order' => 0            
             ],
             (object) [
                 'block_group_id' => 1,
                 'block_id' => 'heading-two',
                 'label' => 'Heading 2',
-                'html' => '<h2 id="c001" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="true" data-gjs-resizable="false" data-gjs-editable="true" data-gjs-removable="true">Lorem Ipsum</h2>',
-                'gjs_components' => '[{"tagName":"h2","type":"text","removable":true,"draggable":true,"droppable":false,"badgable":true,"stylable":false,"highlightable":true,"copyable":true,"resizable":false,"editable":true,"layerable":true,"void":false,"state":"","status":"","content":"Lorem Ipsum","icon":"","style":{},"attributes":{"id":"c001"},"classes":[],"script":"","traits":[{"type":"text","label":"","name":"id","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]},{"type":"text","label":"","name":"title","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]}],"components":[]}]',
-                'attributes' => '{ "class": "fa fa-header" }',
-                'is_user_block' => false,              
+                'icon_class' => 'fa fa-header',
+                'html' => '<h2>Lorem Ipsum</h2>',
+                'is_system_block' => true,
+                'sort_order' => 0            
             ],
             (object) [
                 'block_group_id' => 1,
                 'block_id' => 'heading-three',
                 'label' => 'Heading 3',
-                'html' => '<h3 id="c001" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="true" data-gjs-resizable="false" data-gjs-editable="true" data-gjs-removable="true">Lorem Ipsum</h3>',
-                'gjs_components' => '[{"tagName":"h3","type":"text","removable":true,"draggable":true,"droppable":false,"badgable":true,"stylable":false,"highlightable":true,"copyable":true,"resizable":false,"editable":true,"layerable":true,"void":false,"state":"","status":"","content":"Lorem Ipsum","icon":"","style":{},"attributes":{"id":"c001"},"classes":[],"script":"","traits":[{"type":"text","label":"","name":"id","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]},{"type":"text","label":"","name":"title","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]}],"components":[]}]',
-                'attributes' => '{ "class": "fa fa-header" }',
-                'is_user_block' => false,              
+                'icon_class' => 'fa fa-header',
+                'html' => '<h3>Lorem Ipsum</h3>',
+                'is_system_block' => true,
+                'sort_order' => 0            
             ],
             (object) [
                 'block_group_id' => 1,
                 'block_id' => 'heading-four',
                 'label' => 'Heading 4',
-                'html' => '<h4 id="c001" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="true" data-gjs-resizable="false" data-gjs-editable="true" data-gjs-removable="true">Lorem Ipsum</h4>',
-                'gjs_components' => '[{"tagName":"h4","type":"text","removable":true,"draggable":true,"droppable":false,"badgable":true,"stylable":false,"highlightable":true,"copyable":true,"resizable":false,"editable":true,"layerable":true,"void":false,"state":"","status":"","content":"Lorem Ipsum","icon":"","style":{},"attributes":{"id":"c001"},"classes":[],"script":"","traits":[{"type":"text","label":"","name":"id","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]},{"type":"text","label":"","name":"title","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]}],"components":[]}]',
-                'attributes' => '{ "class": "fa fa-header" }',
-                'is_user_block' => false,              
+                'icon_class' => 'fa fa-header',
+                'html' => '<h4>Lorem Ipsum</h4>',
+                'is_system_block' => true,
+                'sort_order' => 0            
             ],
             (object) [
                 'block_group_id' => 1,
                 'block_id' => 'heading-five',
                 'label' => 'Heading 5',
-                'html' => '<h5 id="c001" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="true" data-gjs-resizable="false" data-gjs-editable="true" data-gjs-removable="true">Lorem Ipsum</h5>',
-                'gjs_components' => '[{"tagName":"h5","type":"text","removable":true,"draggable":true,"droppable":false,"badgable":true,"stylable":false,"highlightable":true,"copyable":true,"resizable":false,"editable":true,"layerable":true,"void":false,"state":"","status":"","content":"Lorem Ipsum","icon":"","style":{},"attributes":{"id":"c001"},"classes":[],"script":"","traits":[{"type":"text","label":"","name":"id","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]},{"type":"text","label":"","name":"title","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]}],"components":[]}]',
-                'attributes' => '{ "class": "fa fa-header" }',
-                'is_user_block' => false,              
+                'icon_class' => 'fa fa-header',
+                'html' => '<h5>Lorem Ipsum</h5>',
+                'is_system_block' => true,
+                'sort_order' => 0            
             ],
             (object) [
                 'block_group_id' => 1,
                 'block_id' => 'heading-six',
                 'label' => 'Heading 6',
-                'html' => '<h6 id="c001" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="true" data-gjs-resizable="false" data-gjs-editable="true" data-gjs-removable="true">Lorem Ipsum</h6>',
-                'gjs_components' => '[{"tagName":"h6","type":"text","removable":true,"draggable":true,"droppable":false,"badgable":true,"stylable":false,"highlightable":true,"copyable":true,"resizable":false,"editable":true,"layerable":true,"void":false,"state":"","status":"","content":"Lorem Ipsum","icon":"","style":{},"attributes":{"id":"c001"},"classes":[],"script":"","traits":[{"type":"text","label":"","name":"id","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]},{"type":"text","label":"","name":"title","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]}],"components":[]}]',
-                'attributes' => '{ "class": "fa fa-header" }',
-                'is_user_block' => false,              
+                'icon_class' => 'fa fa-header',
+                'html' => '<h6>Lorem Ipsum</h6>',
+                'is_system_block' => true,
+                'sort_order' => 0            
             ],
             (object) [
                 'block_group_id' => 1,
                 'block_id' => 'paragraph',
                 'label' => 'Paragraph',
-                'html' => '<p id="c001" data-gjs-custom-name="Paragraph" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="true" data-gjs-resizable="false" data-gjs-editable="true" data-gjs-removable="true"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis purus mi, a lacinia nunc semper auctor. Nullam id dictum lacus. Sed dignissim eu sem in semper. Nullam viverra, est rhoncus lobortis tristique, mi erat fermentum mauris, ac laoreet mi magna sit amet nibh. Vestibulum vulputate nibh urna, eget vestibulum dolor faucibus quis. Quisque consequat risus sed consectetur iaculis. Cras non dapibus lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam vulputate aliquet justo at lacinia. Praesent pharetra varius velit. Nam eleifend consequat elit sit amet condimentum. </p>',
-                'gjs_components' => '[{"tagName":"p","type":"text","removable":true,"draggable":true,"droppable":false,"badgable":true,"stylable":true,"highlightable":true,"copyable":true,"resizable":false,"editable":true,"layerable":true,"void":false,"state":"","status":"selected","content":" Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis purus mi, a lacinia nunc semper auctor. Nullam id dictum lacus. Sed dignissim eu sem in semper. Nullam viverra, est rhoncus lobortis tristique, mi erat fermentum mauris, ac laoreet mi magna sit amet nibh. Vestibulum vulputate nibh urna, eget vestibulum dolor faucibus quis. Quisque consequat risus sed consectetur iaculis. Cras non dapibus lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam vulputate aliquet justo at lacinia. Praesent pharetra varius velit. Nam eleifend consequat elit sit amet condimentum. ","icon":"","style":{},"attributes":{"id":"c001"},"classes":[],"script":"","traits":[{"type":"text","label":"","name":"id","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]},{"type":"text","label":"","name":"title","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]}],"components":[]}]',
-                'attributes' => '{ "class": "fa fa-paragraph" }',
-                'is_user_block' => false,              
+                'icon_class' => 'fa fa-paragraph',
+                'html' => '<p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis purus mi, a lacinia nunc semper auctor. Nullam id dictum lacus. Sed dignissim eu sem in semper. Nullam viverra, est rhoncus lobortis tristique, mi erat fermentum mauris, ac laoreet mi magna sit amet nibh. Vestibulum vulputate nibh urna, eget vestibulum dolor faucibus quis. Quisque consequat risus sed consectetur iaculis. Cras non dapibus lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam vulputate aliquet justo at lacinia. Praesent pharetra varius velit. Nam eleifend consequat elit sit amet condimentum. </p>',
+                'is_system_block' => true,
+                'sort_order' => 0            
             ],
             (object) [
                 'block_group_id' => 1,
                 'block_id' => 'text',
                 'label' => 'Text',
-                'html' => '<span id="c001" data-gjs-custom-name="Text" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed sem rutrum lacus cursus viverra imperdiet id risus. Nulla massa mauris, venenatis eget hendrerit a.</span>',
-                'gjs_components' => '[{"tagName":"span","type":"text","removable":true,"draggable":true,"droppable":false,"badgable":true,"stylable":false,"highlightable":true,"copyable":false,"resizable":false,"editable":false,"layerable":true,"void":false,"state":"","status":"","content":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed sem rutrum lacus cursus viverra imperdiet id risus. Nulla massa mauris, venenatis eget hendrerit a.","icon":"","style":{},"attributes":{"id":"c001"},"classes":[],"script":"","traits":[{"type":"text","label":"","name":"id","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]},{"type":"text","label":"","name":"title","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]}],"custom-name":"Text","components":[]}]',
-                'attributes' => '{ "class": "gjs-fonts gjs-f-text" }',
-                'is_user_block' => false,              
+                'icon_class' => 'gjs-fonts gjs-f-text',
+                'html' => '<span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed sem rutrum lacus cursus viverra imperdiet id risus. Nulla massa mauris, venenatis eget hendrerit a.</span>',
+                'is_system_block' => true,
+                'sort_order' => 0            
             ],
-            
-            /** Dynamic **/
-            // (object) [
-            //     'block_group_id' => 2,
-            //     'block_id' => 'feefo-reviews',
-            //     'label' => 'Feefo Reviews',
-            //     'html' => '<dynablock data-view="feefo-reviews" id="c001" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true"></dynablock>',
-                // 'gjs_components' => '',
-            //     'attributes' => '{ "class": "fa fa-commenting-o" }',
-            //     'is_user_block' => false,              
-            // ],
-            // (object) [
-            //     'block_group_id' => 2,
-            //     'block_id' => 'park-entertainment',
-            //     'label' => 'Park Entertainment',
-            //     'html' => '<dynablock data-view="park-entertainment" data-json="eyJwYXJrX2lkIjogMX0=" id="c8001" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true"></dynablock>',
-                // 'gjs_components' => '',
-            //     'attributes' => '{ "class": "" }',
-            //     'is_user_block' => false,              
-            // ],
-            // (object) [
-            //     'block_group_id' => 2,
-            //     'block_id' => 'late-availability',
-            //     'label' => 'Late Availability',
-            //     'html' => '<dynablock data-view="late-availability" id="c001" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true"></dynablock>',
-                // 'gjs_components' => '',
-            //     'attributes' => '{ "class": "" }',
-            //     'is_user_block' => false,              
-            // ],
 
             /** Form **/
             (object) [
                 'block_group_id' => 3,
                 'block_id' => 'form',
                 'label' => 'Form',
-                'html' => '<form id="c001" action="/form/handle" method="POST" data-gjs-stylable="false" data-gjs-draggable="true" data-gjs-droppable="false" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="true">
-                                <input type="hidden" name="name" id="c002">
-                                <input type="hidden" name="actions" id="c003">
-                                <input type="hidden" name="emailto" id="c004">
-                                <div class="form-dropzone" id="c005"></div>
-                                <button class="btn btn-primary" type="submit" id="c006">Submit</button>
-                            </form>',
-                'gjs_components' => '[{"tagName":"form","type":"form","removable":true,"draggable":true,"droppable":false,"badgable":true,"stylable":[],"highlightable":true,"copyable":false,"resizable":false,"editable":false,"layerable":true,"void":false,"state":"","status":"","content":"","icon":"","style":{},"attributes":{"id":"c001","action":"/form/handle","method":"POST"},"classes":[],"script":"","traits":[{"type":"checkbox","label":"Stylable","name":"stylable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Draggable","name":"draggable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Droppable","name":"droppable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Copyable","name":"copyable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Resizable","name":"resizable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Editable","name":"editable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Removable","name":"removable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]}],"components":[{"tagName":"","type":"textnode","removable":true,"draggable":true,"droppable":false,"badgable":true,"stylable":true,"highlightable":true,"copyable":true,"resizable":false,"editable":true,"layerable":true,"void":false,"state":"","status":"","content":" ","icon":"","style":{},"attributes":{},"classes":[],"script":"","traits":[{"type":"text","label":"","name":"id","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]},{"type":"text","label":"","name":"title","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]}],"components":[]},{"tagName":"input","type":"","removable":true,"draggable":true,"droppable":true,"badgable":true,"stylable":true,"highlightable":true,"copyable":true,"resizable":false,"editable":false,"layerable":true,"void":true,"state":"","status":"","content":"","icon":"","style":{},"attributes":{"type":"hidden","name":"name","id":"c002"},"classes":[],"script":"","traits":[{"type":"text","label":"","name":"id","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]},{"type":"text","label":"","name":"title","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]}],"components":[],"open":false},{"tagName":"","type":"textnode","removable":true,"draggable":true,"droppable":false,"badgable":true,"stylable":true,"highlightable":true,"copyable":true,"resizable":false,"editable":true,"layerable":true,"void":false,"state":"","status":"","content":" ","icon":"","style":{},"attributes":{},"classes":[],"script":"","traits":[{"type":"text","label":"","name":"id","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]},{"type":"text","label":"","name":"title","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]}],"components":[]},{"tagName":"input","type":"","removable":true,"draggable":true,"droppable":true,"badgable":true,"stylable":true,"highlightable":true,"copyable":true,"resizable":false,"editable":false,"layerable":true,"void":true,"state":"","status":"","content":"","icon":"","style":{},"attributes":{"type":"hidden","name":"actions","id":"c003"},"classes":[],"script":"","traits":[{"type":"text","label":"","name":"id","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]},{"type":"text","label":"","name":"title","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]}],"components":[],"open":false},{"tagName":"","type":"textnode","removable":true,"draggable":true,"droppable":false,"badgable":true,"stylable":true,"highlightable":true,"copyable":true,"resizable":false,"editable":true,"layerable":true,"void":false,"state":"","status":"","content":" ","icon":"","style":{},"attributes":{},"classes":[],"script":"","traits":[{"type":"text","label":"","name":"id","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]},{"type":"text","label":"","name":"title","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]}],"components":[]},{"tagName":"input","type":"","removable":true,"draggable":true,"droppable":true,"badgable":true,"stylable":true,"highlightable":true,"copyable":true,"resizable":false,"editable":false,"layerable":true,"void":true,"state":"","status":"","content":"","icon":"","style":{},"attributes":{"type":"hidden","name":"emailto","id":"c004"},"classes":[],"script":"","traits":[{"type":"text","label":"","name":"id","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]},{"type":"text","label":"","name":"title","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]}],"components":[],"open":false},{"tagName":"","type":"textnode","removable":true,"draggable":true,"droppable":false,"badgable":true,"stylable":true,"highlightable":true,"copyable":true,"resizable":false,"editable":true,"layerable":true,"void":false,"state":"","status":"","content":" ","icon":"","style":{},"attributes":{},"classes":[],"script":"","traits":[{"type":"text","label":"","name":"id","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]},{"type":"text","label":"","name":"title","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]}],"components":[]},{"tagName":"div","type":"form dropzone","removable":true,"draggable":true,"droppable":true,"badgable":true,"stylable":[],"highlightable":true,"copyable":true,"resizable":false,"editable":false,"layerable":true,"void":false,"state":"","status":"","content":"","icon":"","style":{},"attributes":{"id":"c005"},"classes":[{"name":"form-dropzone","label":"form-dropzone","type":"class","active":true,"private":false,"protected":false}],"script":"","traits":[{"type":"checkbox","label":"Stylable","name":"stylable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Draggable","name":"draggable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Droppable","name":"droppable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Copyable","name":"copyable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Resizable","name":"resizable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Editable","name":"editable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Removable","name":"removable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]}],"components":[],"open":false,"custom-name":"Form dropzone"},{"tagName":"","type":"textnode","removable":true,"draggable":true,"droppable":false,"badgable":true,"stylable":true,"highlightable":true,"copyable":true,"resizable":false,"editable":true,"layerable":true,"void":false,"state":"","status":"","content":" ","icon":"","style":{},"attributes":{},"classes":[],"script":"","traits":[{"type":"text","label":"","name":"id","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]},{"type":"text","label":"","name":"title","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]}],"components":[]},{"tagName":"button","type":"button","removable":true,"draggable":true,"droppable":true,"badgable":true,"stylable":[],"highlightable":true,"copyable":true,"resizable":false,"editable":false,"layerable":true,"void":false,"state":"","status":"","content":"Submit","icon":"","style":{},"attributes":{"type":"submit","id":"c006"},"classes":[{"name":"btn","label":"btn","type":"class","active":true,"private":false,"protected":false},{"name":"btn-primary","label":"btn-primary","type":"class","active":true,"private":false,"protected":false}],"script":"","traits":[{"type":"checkbox","label":"Stylable","name":"stylable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Draggable","name":"draggable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Droppable","name":"droppable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Copyable","name":"copyable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Resizable","name":"resizable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Editable","name":"editable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Removable","name":"removable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]}],"components":[],"open":false,"custom-name":"Button"},{"tagName":"","type":"textnode","removable":true,"draggable":true,"droppable":false,"badgable":true,"stylable":true,"highlightable":true,"copyable":true,"resizable":false,"editable":true,"layerable":true,"void":false,"state":"","status":"","content":" ","icon":"","style":{},"attributes":{},"classes":[],"script":"","traits":[{"type":"text","label":"","name":"id","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]},{"type":"text","label":"","name":"title","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]}],"components":[]}],"open":1,"custom-name":"Form"}]',
-                'attributes' => '{ "class": "" }',
-                'is_user_block' => false,              
+                'icon_class' => null,
+                'html' => '<form action="/form/handle" method="POST">
+                    <input type="hidden" name="name">
+                    <input type="hidden" name="actions">
+                    <input type="hidden" name="emailto">
+                    <div class="form-dropzone"></div>
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </form>',
+                'is_system_block' => true,
+                'sort_order' => 0           
             ],
 
             /** Layouts **/
             (object) [
                 'block_group_id' => 4,
-                'block_id' => 'full-width',
-                'label' => 'Full Width',
-                'html' => '<div class="wrapper" id="c001" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false">
-                                <div class="fluid-container" id="c002" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div>
-                            </div>',
-                'gjs_components' => '[{"tagName":"div","type":"wrapper","removable":false,"draggable":false,"droppable":true,"badgable":true,"stylable":[],"highlightable":true,"copyable":false,"resizable":false,"editable":false,"layerable":true,"void":false,"state":"","status":"","content":"","icon":"","style":{},"attributes":{"id":"c001"},"classes":[{"name":"wrapper","label":"wrapper","type":"class","active":true,"private":false,"protected":false}],"script":"","traits":[{"type":"checkbox","label":"Stylable","name":"stylable","min":"","max":"","value":false,"default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Draggable","name":"draggable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Droppable","name":"droppable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Copyable","name":"copyable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Resizable","name":"resizable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Editable","name":"editable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Removable","name":"removable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]}],"components":[{"tagName":"","type":"textnode","removable":true,"draggable":true,"droppable":false,"badgable":true,"stylable":true,"highlightable":true,"copyable":true,"resizable":false,"editable":true,"layerable":true,"void":false,"state":"","status":"","content":" ","icon":"","style":{},"attributes":{},"classes":[],"script":"","traits":[{"type":"text","label":"","name":"id","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]},{"type":"text","label":"","name":"title","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]}],"components":[]},{"tagName":"div","type":"container","removable":false,"draggable":false,"droppable":true,"badgable":true,"stylable":[],"highlightable":true,"copyable":false,"resizable":false,"editable":false,"layerable":true,"void":false,"state":"","status":"","content":"","icon":"","style":{},"attributes":{"id":"c002"},"classes":[{"name":"fluid-container","label":"fluid-container","type":"class","active":true,"private":false,"protected":false}],"script":"","traits":[{"type":"checkbox","label":"Stylable","name":"stylable","min":"","max":"","value":false,"default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Draggable","name":"draggable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Droppable","name":"droppable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Copyable","name":"copyable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Resizable","name":"resizable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Editable","name":"editable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Removable","name":"removable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]}],"components":[],"open":false,"custom-name":"Container"},{"tagName":"","type":"textnode","removable":true,"draggable":true,"droppable":false,"badgable":true,"stylable":true,"highlightable":true,"copyable":true,"resizable":false,"editable":true,"layerable":true,"void":false,"state":"","status":"","content":" ","icon":"","style":{},"attributes":{},"classes":[],"script":"","traits":[{"type":"text","label":"","name":"id","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]},{"type":"text","label":"","name":"title","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]}],"components":[]}],"open":0,"custom-name":"Wrapper"}]',
-                'attributes' => '{ "class": "" }',
-                'is_user_block' => false, 
-                'is_layout' => true             
+                'block_id' => 'fluid-layout',
+                'label' => 'Fluid',
+                'icon_class' => null,
+                'html' => '<div class="wrapper">
+                    <div class="fluid-container"></div>
+                </div>',
+                'is_system_block' => true, 
+                'is_layout' => true,
+                'sort_order' => 0             
             ],
             (object) [
                 'block_group_id' => 4,
-                'block_id' => 'single-column',
-                'label' => 'Single Column',
-                'html' => '<div class="wrapper" id="c001" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false">
-                                <div class="container" id="c002" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-droppable="true" data-gjs-copyable="false" data-gjs-resizable="false" data-gjs-editable="false" data-gjs-removable="false"></div>
-                            </div>',
-                'gjs_components' => '[{"tagName":"div","type":"wrapper","removable":false,"draggable":false,"droppable":true,"badgable":true,"stylable":[],"highlightable":true,"copyable":false,"resizable":false,"editable":false,"layerable":true,"void":false,"state":"","status":"selected","content":"","icon":"","style":{},"attributes":{"id":"c001"},"classes":[{"name":"wrapper","label":"wrapper","type":"class","active":true,"private":false,"protected":false}],"script":"","traits":[{"type":"checkbox","label":"Stylable","name":"stylable","min":"","max":"","value":false,"default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Draggable","name":"draggable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Droppable","name":"droppable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Copyable","name":"copyable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Resizable","name":"resizable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Editable","name":"editable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Removable","name":"removable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]}],"components":[{"tagName":"","type":"textnode","removable":true,"draggable":true,"droppable":false,"badgable":true,"stylable":true,"highlightable":true,"copyable":true,"resizable":false,"editable":true,"layerable":true,"void":false,"state":"","status":"","content":" ","icon":"","style":{},"attributes":{},"classes":[],"script":"","traits":[{"type":"text","label":"","name":"id","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]},{"type":"text","label":"","name":"title","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]}],"components":[]},{"tagName":"div","type":"container","removable":false,"draggable":false,"droppable":true,"badgable":true,"stylable":[],"highlightable":true,"copyable":false,"resizable":false,"editable":false,"layerable":true,"void":false,"state":"","status":"","content":"","icon":"","style":{},"attributes":{"id":"c002"},"classes":[{"name":"container","label":"container","type":"class","active":true,"private":false,"protected":false}],"script":"","traits":[{"type":"checkbox","label":"Stylable","name":"stylable","min":"","max":"","value":false,"default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Draggable","name":"draggable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Droppable","name":"droppable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Copyable","name":"copyable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Resizable","name":"resizable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Editable","name":"editable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]},{"type":"checkbox","label":"Removable","name":"removable","min":"","max":"","value":"","default":"","placeholder":"","changeProp":1,"options":[]}],"components":[],"open":false,"custom-name":"Container"},{"tagName":"","type":"textnode","removable":true,"draggable":true,"droppable":false,"badgable":true,"stylable":true,"highlightable":true,"copyable":true,"resizable":false,"editable":true,"layerable":true,"void":false,"state":"","status":"","content":" ","icon":"","style":{},"attributes":{},"classes":[],"script":"","traits":[{"type":"text","label":"","name":"id","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]},{"type":"text","label":"","name":"title","min":"","max":"","value":"","default":"","placeholder":"eg. Text here","changeProp":0,"options":[]}],"components":[]}],"open":0,"custom-name":"Wrapper"}]',
-                'attributes' => '{ "class": "" }',
-                'is_user_block' => false, 
-                'is_layout' => true             
+                'block_id' => 'non-fluid-layout',
+                'label' => 'Non Fluid',
+                'icon_class' => null,
+                'html' => '<div class="wrapper">
+                    <div class="container"></div>
+                </div>',
+                'is_system_block' => true, 
+                'is_layout' => true,
+                'sort_order' => 0             
             ],
         ]);
 
@@ -191,11 +190,11 @@ class BlockSeeder extends Seeder
             $block->block_group_id = $item->block_group_id;
             $block->block_id = $item->block_id;
             $block->label = $item->label;
+            $block->icon_class = $item->icon_class;
             $block->html_base64 = base64_encode($item->html);
-            $block->gjs_components = $item->gjs_components;
-            $block->attributes = $item->attributes;
 
-            if(isset($item->is_user_block)) { $block->is_user_block = $item->is_user_block; }#
+            if(isset($item->gjs_components)) { $block->gjs_components = $item->gjs_components; }
+            if(isset($item->is_system_block)) { $block->is_system_block = $item->is_system_block; }
             if(isset($item->is_layout)) { $block->is_layout = $item->is_layout; }
 
             $block->save();

@@ -1,60 +1,50 @@
 /*export default*/
 grapesjs.plugins.add('blocks', (editor, options) => {
 
-    var opt = options || {};
-    var config = editor.getConfig();
-    var blockManager = editor.BlockManager;
-    var panels = editor.Panels;
-    /** DOM WRAPPER **/
-    var domComponents = editor.DomComponents;
-    var wrapper = domComponents.getWrapper();
-
-    /** MODALS **/
-    var modal = editor.Modal;
-
-    /**  **/
-    var isPageMode = (opt.record.type == 'page');
-
     /*
-     *   Functions 
+     *   VARIABLES 
      */
 
-    var loadBlocks = function(_includeUserDefined = true) {
-        $('.gjs-block-categories .gjs-block-category').css('display', 'none');
-        $.ajax({
-            url: '/ajax/get/blocks/' + _includeUserDefined,
-        }).done(function(_data) {
-            var _blocks = JSON.parse(_data);
+    // Managers
+    var opt = options || {};
+    var commands = editor.Commands;
+    var blockManager = editor.BlockManager;
 
-            _.forEach(_blocks, function(_block) {
-                blockManager.add(_block.block_id, {
-                    label: _block.label,
-                    category: _block.category,
-                    content: _block.content,
-                    attributes: JSON.parse(_block.attributes),
+
+    /*
+     *   COMMANDS
+     */
+
+    commands.add('load-blocks', {
+        run: function(editor, sender, options) {
+            blockManager.getAll().reset();
+
+            $.ajax({
+                url: opt.url_prefix + '/ajax/get/blocks/' + options.excludeUserBlocks,
+            }).done(function(data) {
+                var blocks = JSON.parse(data);
+
+                _.forEach(blocks, function(block) {
+                    blockManager.add(block.block_id, {
+                        label: block.label,
+                        category: block.category,
+                        content: block.content,
+                        attributes: JSON.parse(block.attributes),
+                    });
                 });
             });
-        });
-    };
+        }
+    });
+
 
     /*
      *   Events
      */
 
-    editor.on('load', function() {
-        if (isPageMode) {
-            loadBlocks();
-        } else {
-            loadBlocks(false);
-        }
-    });
-
-    editor.on('block:drag:stop', function(model) {
-        // block:drag:start
-        // block:drag:move
-        // block:drag:stop
-        // console.log('Block Drag Stop', model);
-        editor.runCommand('fix-stylable-property', { node: model });
-    });
+    // editor.on('block:drag:stop', function(model) {
+    //     // block:drag:start
+    //     // block:drag:move
+    //     // block:drag:stop
+    // });
 
 });
