@@ -4,6 +4,7 @@
 
 .gjs-dashed .wrapper,
 .gjs-dashed [class*="grid"],
+.gjs-dashed form,
 .gjs-dashed form .form-dropzone {
     padding-top: 10px !important;
     padding-right: 10px !important;
