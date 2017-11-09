@@ -8,7 +8,6 @@ var options = {
         'preset-webpage',
         'components',
         'blocks',
-        'modals',
         // 'assets',
         // 'traits'
     ],
@@ -22,15 +21,11 @@ var options = {
 
         'components': {
             record: _serverData.record,
+            forms: _serverData.forms
         },
 
         'blocks': {
             url_prefix: _serverData.url_prefix
-        },
-
-        'modals': {
-            url_prefix: _serverData.url_prefix,
-            record: _serverData.record
         },
 
         'traits': {

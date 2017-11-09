@@ -28,7 +28,6 @@
     
     <!-- Custom Scripts -->
     <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapesjs-preset-webpage.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapesjs-modals.js') }}"></script>
     <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapesjs-blocks.js') }}"></script>
     <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapesjs-traits.js') }}"></script>
     <script type="text/javascript" src="{{ asset('parkholidays/pagebuilder/js/grapesjs-assets.js') }}"></script>

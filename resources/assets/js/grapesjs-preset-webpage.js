@@ -65,14 +65,9 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     commands.add('empty-canvas', {
         run: function(editor, sender, options) {
             if (sender.cid) { sender && sender.set('active', false); }
-            if (options.skipConfirm || confirm('Are you sure to empty the canvas? \nYou will not be able to undo it.')) {
+            if (options.skipConfirm || confirm('Are you sure to empty the canvas?')) {
                 var comps = editor.DomComponents.clear();
                 editor.CssComposer.getAll().reset();
-
-                if (isPageMode) {
-                    // editor.UndoManager.clear();
-                    editor.runCommand('open-layouts-modal');
-                }
             }
         }
     });
@@ -256,8 +251,8 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
 
     editor.on('load', function() {
         if (isPageMode) {
-            wrapper.attributes.droppable = false;
-            wrapper.attributes.stylable = [];
+            // wrapper.set('droppable', true /*['.container', '.fluid-container', '.dynamic-block']*/ );
+            wrapper.set('stylable', []);
         }
 
         /* RESTRICTIONS - Disable Features for Non Super Users */
@@ -314,12 +309,6 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
         // Run Commands
         editor.runCommand('load-blocks', { excludeUserBlocks: !isPageMode });
         editor.runCommand('prevent-default');
-
-        // If canvas empty and editting a page open Layouts modal
-        var isCanvasEmpty = (domComponents.getComponents().length == 0);
-        if (isPageMode && isCanvasEmpty) {
-            editor.runCommand('open-layouts-modal');
-        }
 
         editor.trigger('change:selectedComponent');
     });
