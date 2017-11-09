@@ -20,6 +20,10 @@ grapesjs.plugins.add('components', (editor, options) => {
     var textModel = textType.model;
     var textView = textType.view;
 
+    var linkType = domComponents.getType('link');
+    var linkModel = linkType.model;
+    var linkView = linkType.view;
+
     // Parameters
     var isPageMode = (options.record.type == 'page');
 
@@ -143,25 +147,11 @@ grapesjs.plugins.add('components', (editor, options) => {
 
                 // Listener -- Change container class between Fluid and Non-fluid
                 self.listenTo(self, 'change:fluid', function(component, value) {
-                    // var parentModel = this.sm;
-                    // const sm = parentModel.get('SelectorManager');
-                    // var compClasses = component.get('classes');
-
                     var prevClass = value ? classes.normal : classes.fluid;
                     var newClass = value ? classes.fluid : classes.normal;
 
                     editor.runCommand('remove-class', { component: self, classes: [prevClass] });
                     editor.runCommand('add-class', { component: self, classes: [newClass] });
-
-                    // compClasses.forEach(element => {
-                    //     if (element.id == prevClass) {
-                    //         compClasses.remove(element);
-                    //     }
-                    // });
-
-                    // var classModel = sm.add({ name: newClass, label: newClass });
-                    // compClasses.add(classModel);
-                    // parentModel.trigger('targetClassAdded');
                 });
             }
         }, {
@@ -240,6 +230,73 @@ grapesjs.plugins.add('components', (editor, options) => {
                 return this;
             },
         })
+    });
+
+    // Link
+    domComponents.addType('link', {
+        model: linkModel.extend({
+            defaults: Object.assign({}, linkModel.prototype.defaults, {
+                stylable: [],
+                // draggable: true,
+                // droppable: false,
+                // copyable: true,
+                // resizable: false,
+                // editable: false,
+                // removable: true,
+            }),
+            init() {
+                // Initialise code
+                var self = this;
+                var traits = self.get('traits').models;
+
+                alignmentTraits.forEach(trait => {
+                    traits.push(trait);
+                });
+
+                buttonStyleTraits.forEach(trait => {
+                    traits.push(trait);
+                });
+
+                self.set('traits', traits);
+
+                // Button Styles
+                var buttonSize = self.get(buttonProperties.size);
+                var buttonStyle = self.get(buttonProperties.style);
+                var buttonOutline = self.get(buttonProperties.outline);
+                var buttonBlock = self.get(buttonProperties.block);
+                var buttonFlat = self.get(buttonProperties.flat);
+
+                if (!buttonSize) { self.set(buttonProperties.size, ''); }
+                if (!buttonStyle) { self.set(buttonProperties.style, ''); }
+                if (!buttonOutline) { self.set(buttonProperties.is_outline, false); }
+                if (!buttonBlock) { self.set(buttonProperties.is_block, false); }
+                if (!buttonFlat) { self.set(buttonProperties.is_flat, false); }
+
+                // Listeners -- Button style traits
+                for (var key in buttonProperties) {
+                    if (buttonProperties.hasOwnProperty(key)) {
+                        self.listenTo(self, 'change:' + buttonProperties[key], function(component, value) {
+                            editor.runCommand('set-button-style', { component: component });
+                        });
+                    }
+                }
+
+                // Listener -- ALignment
+                self.listenTo(self, 'change:self_alignment', function(component, value) {
+                    editor.runCommand('set-alignment', { component: component, align: value });
+                });
+
+                editor.runCommand('set-button-style', { component: self });
+            }
+        }, {
+            isComponent: function(el) {
+                if (el.tagName == 'A') {
+                    return { type: 'link' };
+                }
+            },
+        }),
+
+        view: linkView
     });
 
     // Button
@@ -510,7 +567,7 @@ grapesjs.plugins.add('components', (editor, options) => {
     commands.add('set-alignment', {
         run: function(editor, sender, options) {
             var alignClasses = [
-                'd-block', 'ml-0', 'ml-auto', 'mr-0', 'mr-auto', 'mx-auto'
+                'd-block', 'd-inline-block', 'd-table', 'ml-0', 'ml-auto', 'mr-0', 'mr-auto', 'mx-auto'
             ];
 
             // Remove Old CLasses
@@ -518,7 +575,16 @@ grapesjs.plugins.add('components', (editor, options) => {
 
             // Add New Clasess
             if (options.align != '') {
-                var newClasses = ['d-block'];
+                var newClasses = [];
+
+                switch (options.component.get('type')) {
+                    case 'link':
+                        newClasses.push('d-table');
+                        break;
+                    case 'button':
+                        newClasses.push('d-block');
+                        break;
+                }
 
                 switch (options.align) {
                     case 'left':
