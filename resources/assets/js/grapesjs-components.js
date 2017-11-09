@@ -934,7 +934,7 @@ grapesjs.plugins.add('components', (editor, options) => {
         smBtn.set('disable', invalidComponent || disableSM);
         tmBtn.set('disable', invalidComponent || disableTM);
 
-        if ((invalidComponent || disableSM || disableTM) && (smBtn.get('active') || tmBtn.get('active'))) {
+        if (invalidComponent || (disableSM && smBtn.get('active')) || (disableTM && tmBtn.get('active'))) {
             var lmBtn = panels.getButton('views', 'open-layers');
             lmBtn.set('active', true);
         }
