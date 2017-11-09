@@ -3,9 +3,12 @@
 namespace ParkHolidays\PageBuilder\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Block extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = ['block_id'];
     protected $table = 'pagebuilder_blocks';
 
