@@ -164,6 +164,22 @@ grapesjs.plugins.add('blocks', (editor, options) => {
                 attributes: { class: '' }, // NO ICON
             });
 
+            // Input
+            blockManager.add('input-form-field', {
+                label: 'Input Field',
+                category: 'Forms',
+                content: '<label>Lorem Ipsum</label><input class="input" />',
+                attributes: { class: '' }, // NO ICON
+            });
+
+            // Select
+            blockManager.add('select-form-field', {
+                label: 'Select Field',
+                category: 'Forms',
+                content: '<label>Lorem Ipsum</label><select class="select"></select>',
+                attributes: { class: '' }, // NO ICON
+            });
+
             // Button
             blockManager.add('button', {
                 label: 'Button',
