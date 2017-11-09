@@ -81,27 +81,12 @@ class PageBuilderController extends Controller
 	}
 
 	/** Get Blocks **/
-	public function getBlocks($type, $excludeUserDefined = false) 
+	public function getBlocks() 
 	{
-		$blocks = null;
-
-		switch($type) {
-			case 'blocks': 
-				$blocks = Block::where('is_layout', false);
-				if(filter_var($excludeUserDefined, FILTER_VALIDATE_BOOLEAN)) { 
-					$blocks->where('is_system_block', true); 
-				}
-				$blocks->orderBy('is_system_block', 'desc');
-				break;
-			case 'layouts': 
-				$blocks = Block::where('is_layout', true);
-				break;
-		}
-
+		$blocks = Block::orderBy('block_group_id')->orderBy('sort_order')->get();;
 		$data = collect([]);
 
 		if($blocks) {
-			$blocks->orderBy('block_group_id')->orderBy('sort_order')->get();
 			$blocks->each(function($item, $key) use($data) { 
 				if($item->html_base64 != null && trim($item->html_base64) != '') {
 					$html = ($item->is_dynamic) ? preg_replace("@\n@","", $this->setPayloadProperties($item)) : base64_decode($item->html_base64);
@@ -144,10 +129,7 @@ class PageBuilderController extends Controller
 		
 		switch($type) {
 			case 'block': 
-				$record = Block::where('id', (int) $id)->where('is_layout', false)->first();
-				break;
-			case 'layout': 
-				$record = Block::where('id', (int) $id)->where('is_layout', true)->first();
+				$record = Block::find((int)$id);
 				break;
 			case 'page': 
 				$record = Page::find((int)$id);

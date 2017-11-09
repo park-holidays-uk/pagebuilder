@@ -42,20 +42,19 @@ Route::group(['prefix' => config('pagebuilder.url_prefix')], function() {
             Route::post('/assets', array('as' => 'pagebuilder.ajax.get.assets', 'uses' => 'PageBuilderController@getAssets'));
 
             /** BLOCKS **/
-            Route::get('/{type}/{excludeUserDefined?}', array('as' => 'pagebuilder.ajax.get.blocks', 'uses' => 'PageBuilderController@getBlocks'))
-            ->where('type', 'blocks|layouts');
+            Route::get('/blocks', array('as' => 'pagebuilder.ajax.get.blocks', 'uses' => 'PageBuilderController@getBlocks'));
         });
 
         /** LOAD **/
         Route::group(['prefix' => '/load'], function() {
             Route::get('/{type}/{id}', array('as' => 'pagebuilder.ajax.load', 'uses' => 'PageBuilderController@load'))
-            ->where('type', 'block|layout|page');
+            ->where('type', 'block|page');
         });
 
         /** STORE **/
         Route::group(['prefix' => '/store'], function() {
             Route::post('/{type}/{id}', array('as' => 'pagebuilder.ajax.store', 'uses' => 'PageBuilderController@store'))
-            ->where('type', 'block|layout|page');
+            ->where('type', 'block|page');
         });
     });
 });
