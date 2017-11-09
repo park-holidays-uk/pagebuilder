@@ -37,6 +37,7 @@
     background-image: url(http://via.placeholder.com/350x75/ffffff?text=DROP+BLOCKS+HERE);
     background-position: center center;
     background-repeat: no-repeat;
+    background-size: contain;
 }
 
 .gjs-dashed .wrapper:empty,
