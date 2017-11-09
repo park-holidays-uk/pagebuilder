@@ -262,9 +262,9 @@ grapesjs.plugins.add('components', (editor, options) => {
                 // Button Styles
                 var buttonSize = self.get(buttonProperties.size);
                 var buttonStyle = self.get(buttonProperties.style);
-                var buttonOutline = self.get(buttonProperties.outline);
-                var buttonBlock = self.get(buttonProperties.block);
-                var buttonFlat = self.get(buttonProperties.flat);
+                var buttonOutline = self.get(buttonProperties.is_outline);
+                var buttonBlock = self.get(buttonProperties.is_block);
+                var buttonFlat = self.get(buttonProperties.is_flat);
 
                 if (!buttonSize) { self.set(buttonProperties.size, ''); }
                 if (!buttonStyle) { self.set(buttonProperties.style, ''); }
@@ -332,9 +332,9 @@ grapesjs.plugins.add('components', (editor, options) => {
                 // Button Styles
                 var buttonSize = self.get(buttonProperties.size);
                 var buttonStyle = self.get(buttonProperties.style);
-                var buttonOutline = self.get(buttonProperties.outline);
-                var buttonBlock = self.get(buttonProperties.block);
-                var buttonFlat = self.get(buttonProperties.flat);
+                var buttonOutline = self.get(buttonProperties.is_outline);
+                var buttonBlock = self.get(buttonProperties.is_block);
+                var buttonFlat = self.get(buttonProperties.is_flat);
 
                 if (!buttonSize) { self.set(buttonProperties.size, ''); }
                 if (!buttonStyle) { self.set(buttonProperties.style, 'default'); }
@@ -366,14 +366,7 @@ grapesjs.plugins.add('components', (editor, options) => {
             },
         }),
 
-        view: textView.extend({
-            // The render() should return 'this'
-            render: function() {
-                // Extend the original render method
-                textType.view.prototype.render.apply(this, arguments);
-                return this;
-            },
-        })
+        view: textView
     });
 
     // Form
@@ -402,6 +395,270 @@ grapesjs.plugins.add('components', (editor, options) => {
             isComponent: function(el) {
                 if (el.tagName == 'FORM') {
                     return { type: 'form' };
+                }
+            },
+        }),
+
+        view: defaultView
+    });
+
+    // Input Box
+    domComponents.addType('input', {
+        model: defaultModel.extend({
+            defaults: Object.assign({}, defaultModel.prototype.defaults, {
+                stylable: [],
+                // draggable: true,
+                // droppable: false,
+                // copyable: true,
+                // resizable: false,
+                // editable: false,
+                // removable: true,
+                traits: [{
+                    type: 'text',
+                    name: 'name',
+                    label: 'Name',
+                    placeholder: 'Enter field name..'
+                }, {
+                    type: 'text',
+                    name: 'placeholder',
+                    label: 'Placeholder',
+                    placeholder: 'Enter placeholder text..'
+                }, {
+                    type: 'text',
+                    name: 'value',
+                    label: 'Value',
+                    placeholder: 'Enter a default value..'
+                }, {
+                    type: 'checkbox',
+                    name: 'required',
+                    label: 'Required'
+                }]
+            })
+        }, {
+            isComponent: function(el) {
+                if (el.tagName == 'INPUT' && el.type != 'checkbox' && el.type != 'radio') {
+                    return { type: 'input' };
+                }
+            },
+        }),
+
+        view: defaultView
+    });
+
+    // Select Box
+    domComponents.addType('select', {
+        model: defaultModel.extend({
+            defaults: Object.assign({}, defaultModel.prototype.defaults, {
+                stylable: [],
+                // draggable: true,
+                // droppable: false,
+                // copyable: true,
+                // resizable: false,
+                // editable: false,
+                // removable: true,
+                traits: [{
+                    type: 'text',
+                    name: 'name',
+                    label: 'Name',
+                    placeholder: 'Enter field name..'
+                }, {
+                    type: 'text',
+                    name: 'size',
+                    label: 'Size',
+                    value: 1,
+                    min: 1,
+                    max: 10
+                }, {
+                    type: 'checkbox',
+                    name: 'multiple',
+                    label: 'Multiple',
+                    changeProp: 1
+                }, {
+                    type: 'checkbox',
+                    name: 'required',
+                    label: 'Required'
+                }]
+            }),
+            init() {
+                // Initialise code
+                var self = this;
+
+                // Listener -- Multiple
+                self.listenTo(self, 'change:multiple', function(component, value) {
+                    var attrs = component.get('attributes');
+
+                    if (value) {
+                        attrs.multiple = 'multiple';
+                    } else {
+                        delete attrs.multiple;
+                    }
+
+                    component.set('attributes', attrs);
+                    domComponents.render();
+                });
+            }
+        }, {
+            isComponent: function(el) {
+                if (el.tagName == 'SELECT') {
+                    return { type: 'select' };
+                }
+            },
+        }),
+
+        view: defaultView
+    });
+
+    // Select Box
+    domComponents.addType('option', {
+        model: defaultModel.extend({
+            defaults: Object.assign({}, defaultModel.prototype.defaults, {
+                stylable: [],
+                // draggable: true,
+                // droppable: false,
+                // copyable: true,
+                // resizable: false,
+                // editable: false,
+                // removable: true,
+                traits: [{
+                    type: 'text',
+                    name: 'content',
+                    label: 'Text',
+                    placeholder: 'Enter the text.',
+                    changeProp: 1
+                }, {
+                    type: 'text',
+                    name: 'value',
+                    label: 'Value',
+                    placeholder: 'Enter the value.'
+                }, {
+                    type: 'checkbox',
+                    name: 'is_selected',
+                    label: 'Selected',
+                    changeProp: 1
+                }, {
+                    type: 'checkbox',
+                    name: 'is_disabled',
+                    label: 'Disabled',
+                    changeProp: 1
+                }]
+            }),
+            init() {
+                // Initialise code
+                var self = this;
+
+                // Listener -- Content
+                self.listenTo(self, 'change:content', function(component, value) {
+                    domComponents.render();
+                });
+
+                // Listener -- Selected
+                self.listenTo(self, 'change:is_selected', function(component, value) {
+                    var attrs = component.get('attributes');
+
+                    if (value) {
+                        attrs.selected = 'selected';
+                    } else {
+                        delete attrs.selected;
+                    }
+
+                    component.set('attributes', attrs);
+                    domComponents.render();
+                });
+
+                // Listener -- Selected
+                self.listenTo(self, 'change:is_disabled', function(component, value) {
+                    var attrs = component.get('attributes');
+
+                    if (value) {
+                        attrs.disabled = 'disabled';
+                    } else {
+                        delete attrs.disabled;
+                    }
+
+                    component.set('attributes', attrs);
+                    domComponents.render();
+                });
+            }
+        }, {
+            isComponent: function(el) {
+                if (el.tagName == 'OPTION') {
+                    return { type: 'option' };
+                }
+            },
+        }),
+
+        view: defaultView
+    });
+
+    // Input Box
+    domComponents.addType('checkbox', {
+        model: defaultModel.extend({
+            defaults: Object.assign({}, defaultModel.prototype.defaults, {
+                stylable: [],
+                // draggable: true,
+                // droppable: false,
+                // copyable: true,
+                // resizable: false,
+                // editable: false,
+                // removable: true,
+                traits: [{
+                    type: 'text',
+                    name: 'name',
+                    label: 'Name',
+                    placeholder: 'Enter field name..'
+                }, {
+                    type: 'text',
+                    name: 'value',
+                    label: 'Value',
+                    placeholder: 'Enter the value..'
+                }, {
+                    type: 'checkbox',
+                    name: 'required',
+                    label: 'Required'
+                }]
+            })
+        }, {
+            isComponent: function(el) {
+                if (el.tagName == 'INPUT' && el.type == 'checkbox') {
+                    return { type: 'checkbox' };
+                }
+            },
+        }),
+
+        view: defaultView
+    });
+
+    // Radio Button
+    domComponents.addType('radio button', {
+        model: defaultModel.extend({
+            defaults: Object.assign({}, defaultModel.prototype.defaults, {
+                stylable: [],
+                // draggable: true,
+                // droppable: false,
+                // copyable: true,
+                // resizable: false,
+                // editable: false,
+                // removable: true,
+                traits: [{
+                    type: 'text',
+                    name: 'name',
+                    label: 'Name',
+                    placeholder: 'Enter field name..'
+                }, {
+                    type: 'text',
+                    name: 'value',
+                    label: 'Value',
+                    placeholder: 'Enter the value..'
+                }, {
+                    type: 'checkbox',
+                    name: 'required',
+                    label: 'Required'
+                }]
+            })
+        }, {
+            isComponent: function(el) {
+                if (el.tagName == 'INPUT' && el.type == 'radio') {
+                    return { type: 'radio button' };
                 }
             },
         }),
@@ -509,12 +766,12 @@ grapesjs.plugins.add('components', (editor, options) => {
         model: defaultModel.extend({
             defaults: Object.assign({}, defaultModel.prototype.defaults, {
                 stylable: [],
-                // draggable: false,
+                draggable: false,
                 droppable: false,
                 copyable: false,
                 resizable: false,
                 editable: false,
-                // removable: false,
+                removable: false,
 
             })
         }, {
@@ -602,15 +859,12 @@ grapesjs.plugins.add('components', (editor, options) => {
 
                 editor.runCommand('add-class', { component: options.component, classes: newClasses });
             }
-
-            console.log('Set Alignment', options.align);
         }
     });
 
     /** Set Button Style **/
     commands.add('set-button-style', {
         run: function(editor, sender, options) {
-            console.log(options.component);
             var button = {
                 size: options.component.get(buttonProperties.size),
                 style: options.component.get(buttonProperties.style),
