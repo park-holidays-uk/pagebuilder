@@ -114,8 +114,37 @@ grapesjs.plugins.add('components', (editor, options) => {
     }];
 
     /*
-     *   COMPONENTS
+     *   COMPONENT TYPES
      */
+
+    // TEXT
+    domComponents.addType('text', {
+        model: textModel.extend({
+            defaults: Object.assign({}, textModel.prototype.defaults, {
+                stylable: true,
+                // draggable: true,
+                // droppable: true,
+                // copyable: false,
+                // resizable: false,
+                // editable: false,
+                // removable: false,
+            }),
+            init() {
+                // Initialise code
+                var self = this;
+            }
+        }, {
+            isComponent: function(el) {
+                var regex = /\b(SPAN|P|H\d{1})\b/g;
+                if (regex.test(el.tagName)) {
+                    return { type: 'text' };
+                }
+            },
+        }),
+
+        view: textView
+    });
+
 
     // Container
     domComponents.addType('container', {
@@ -954,12 +983,14 @@ grapesjs.plugins.add('components', (editor, options) => {
         console.log('Component Selected Changed', component);
 
         var isWrapper = component ? (component.get('wrapper') == 1 || component.get('type') == 'wrapper') : false;
-        var disableSM = component ? (component.get('stylable')) : false;
+        var disableSM = component ? (!component.get('stylable')) : false;
         var disableTM = component ? (component.get('traits').length == 0) : false;
         var invalidComponent = (isWrapper || !component);
 
         var smBtn = panels.getButton('views', 'open-sm');
         var tmBtn = panels.getButton('views', 'open-tm');
+
+        console.log(disableSM);
 
         smBtn.set('disable', invalidComponent || disableSM);
         tmBtn.set('disable', invalidComponent || disableTM);
