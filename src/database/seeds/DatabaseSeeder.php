@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
         \DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
         $this->call(BlockGroupSeeder::class);
-        $this->call(BlockSeeder::class);
+        // $this->call(BlockSeeder::class);
 
         \DB::statement('SET FOREIGN_KEY_CHECKS=1');
 

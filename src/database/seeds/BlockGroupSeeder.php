@@ -16,7 +16,7 @@ class BlockGroupSeeder extends Seeder
     {
         \DB::table('pagebuilder_block_groups')->truncate();
 
-        $groups = collect(['Basic', 'Dynamic', 'Forms', 'Layouts', 'Misc']);
+        $groups = collect(['Dynamic', 'Forms']);
 
         $groups->each(function($item, $key) {
             $group = new BlockGroup;
