@@ -9,7 +9,6 @@ var options = {
         'components',
         'blocks',
         // 'assets',
-        // 'traits'
     ],
 
     pluginsOpts: {
@@ -26,11 +25,6 @@ var options = {
 
         'blocks': {
             url_prefix: _serverData.url_prefix
-        },
-
-        'traits': {
-            record: _serverData.record,
-            forms: _serverData.forms
         },
 
         'assets': {
