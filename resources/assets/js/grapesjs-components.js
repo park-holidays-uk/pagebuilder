@@ -121,7 +121,7 @@ grapesjs.plugins.add('components', (editor, options) => {
     domComponents.addType('text', {
         model: textModel.extend({
             defaults: Object.assign({}, textModel.prototype.defaults, {
-                stylable: true,
+                stylable: ['typography'],
                 // draggable: true,
                 // droppable: true,
                 // copyable: false,
@@ -982,15 +982,14 @@ grapesjs.plugins.add('components', (editor, options) => {
     editor.on('change:selectedComponent', function(ed, component) {
         console.log('Component Selected Changed', component);
 
-        var isWrapper = component ? (component.get('wrapper') == 1 || component.get('type') == 'wrapper') : false;
-        var disableSM = component ? (!component.get('stylable')) : false;
+        var stylable = component ? component.get('stylable') : false;;
+        var isWrapper = component ? (component.get('wrapper') == 1) : false;
+        var disableSM = (stylable == false || stylable == []);
         var disableTM = component ? (component.get('traits').length == 0) : false;
-        var invalidComponent = (isWrapper || !component);
+        var invalidComponent = (isWrapper || !(component || editor.getSelected()));
 
         var smBtn = panels.getButton('views', 'open-sm');
         var tmBtn = panels.getButton('views', 'open-tm');
-
-        console.log(disableSM);
 
         smBtn.set('disable', invalidComponent || disableSM);
         tmBtn.set('disable', invalidComponent || disableTM);
@@ -998,6 +997,17 @@ grapesjs.plugins.add('components', (editor, options) => {
         if (invalidComponent || (disableSM && smBtn.get('active')) || (disableTM && tmBtn.get('active'))) {
             var lmBtn = panels.getButton('views', 'open-layers');
             lmBtn.set('active', true);
+        }
+
+        if (!disableSM /*&& !options.user.isSuperUser*/ ) {
+            $('#gjs-sm-sectors .gjs-sm-sector').css('display', 'none');
+
+            if (Array.isArray(stylable) && stylable.length > 0) {
+                stylable.forEach(function(sector) {
+                    $('#gjs-sm-' + sector).css('display', 'block');
+                    $('#gjs-sm-' + sector + ' .gjs-sm-property').css('display', 'block');
+                });
+            }
         }
     });
 });
