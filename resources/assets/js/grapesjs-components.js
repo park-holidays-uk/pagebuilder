@@ -414,6 +414,25 @@ grapesjs.plugins.add('components', (editor, options) => {
                 // editable: false,
                 // removable: true,
                 traits: [{
+                    type: 'select',
+                    name: 'type',
+                    label: 'Type',
+                    options: [
+                        { name: 'Colour', value: 'color' },
+                        { name: 'Date', value: 'date' },
+                        { name: 'Date Time', value: 'datetime-local' },
+                        { name: 'Email Address', value: 'email' },
+                        { name: 'Month', value: 'month' },
+                        { name: 'Number', value: 'number' },
+                        { name: 'Range', value: 'range' },
+                        { name: 'Search', value: 'search' },
+                        { name: 'Telephone', value: 'tel' },
+                        { name: 'Text', value: 'text' },
+                        { name: 'Time', value: 'time' },
+                        { name: 'URL', value: 'url' },
+                        { name: 'Week', value: 'week' },
+                    ]
+                }, {
                     type: 'text',
                     name: 'name',
                     label: 'Name',
@@ -433,7 +452,18 @@ grapesjs.plugins.add('components', (editor, options) => {
                     name: 'required',
                     label: 'Required'
                 }]
-            })
+            }),
+            init() {
+                // Initialise code
+                var self = this;
+                var attrs = self.get('attributes');
+
+                if (!attrs.type) {
+                    attrs.type = 'text';
+                }
+
+                self.set('attributes', attrs);
+            }
         }, {
             isComponent: function(el) {
                 if (el.tagName == 'INPUT' && el.type != 'checkbox' && el.type != 'radio') {
