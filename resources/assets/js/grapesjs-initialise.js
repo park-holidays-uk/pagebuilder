@@ -62,14 +62,14 @@ var options = {
 };
 
 // Remove styling options for non Super Users
-if (!_serverData.user.isSuperUser) {
-    options.styleManager = {
-        sectors: [{
-            name: 'Decoration',
-            buildProps: ['background']
-        }]
-    };
-}
+// if (!_serverData.user.isSuperUser) {
+//     options.styleManager = {
+//         sectors: [{
+//             name: 'Decoration',
+//             buildProps: ['background']
+//         }]
+//     };
+// }
 
 
 // Initialise
