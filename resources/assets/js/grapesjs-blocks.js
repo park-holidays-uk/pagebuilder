@@ -126,6 +126,14 @@ grapesjs.plugins.add('blocks', (editor, options) => {
                 attributes: { class: 'gjs-fonts gjs-f-text' }
             });
 
+            // Small Text
+            blockManager.add('small-text', {
+                label: 'Small Text',
+                category: 'Basic',
+                content: '<small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed sem rutrum lacus cursus viverra imperdiet id risus. Nulla massa mauris, venenatis eget hendrerit a.</small>',
+                attributes: { class: 'fa fa-font' }
+            });
+
             // Block Quote Text
             blockManager.add('blockquote-text', {
                 label: 'Quote',
