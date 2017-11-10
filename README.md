@@ -122,15 +122,10 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 * Modulerise CSS and JavaScript.
 * Add support for SRCSET on images. - *Need to work out how path will work*
 * Tweak filtering options for Asset modal to work better.
-* Clean up and refactor code for more efficiency.
 * Restyle to match the styling of PHAST.
-* Add quality of life features and make existing features more user friendly.
 * Add support for more elements (Lists, tables etc.)
-* Change the way styling works, so only certain styles can be applied to specific components / elements
-* Add support for multiple top level elements when importing HTML.
 * Change Trait input fields to multi-select dropdowns.
 * Add form input group blocks
-* Add ability to add margins and padding to grids / containers
 
 ## Known Issues
 
