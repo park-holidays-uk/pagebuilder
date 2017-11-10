@@ -191,7 +191,7 @@ grapesjs.plugins.add('blocks', (editor, options) => {
                 label: 'Form',
                 category: 'Forms',
                 content: '<form><input type="hidden" name="name"> <input type="hidden" name="actions"> <input type="hidden" name="emailto"><div class="form-dropzone"></div></form>',
-                attributes: { class: '' } // NO ICON
+                attributes: { class: 'fa fa-wpforms' } // NO ICON
             });
 
             // Input
