@@ -23,7 +23,7 @@ grapesjs.plugins.add('assets', (editor, options) => {
         run: function(editor, sender, formData) {
             $.ajax({
                 type: 'POST',
-                url: '/ajax/get/assets',
+                url: options.url_prefix + '/ajax/get/assets',
                 data: formData
             }).done(function(_data) {
                 var data = JSON.parse(_data);

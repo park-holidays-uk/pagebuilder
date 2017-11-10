@@ -105,6 +105,61 @@ class PageBuilderController extends Controller
 		return $data->toJson();
 	}
 
+	/** Get Assets **/
+	public function getAssets(Request $request) 
+	{
+		$perPage = json_decode(config('pagebuilder.items_per_page'));
+		$assets = \DB::table('media')->leftJoin('media_lookups', 'media_lookups.media_id', '=', 'media.id')
+						->where(function ($query) {
+							$query->where('path', 'like', '%.jpg')
+								->orWhere('path', 'like', '%.png');
+						});
+
+		if($request->types) {
+			$assets = $assets->where(function ($query) use($request) {
+                $query->whereIn('media_lookup_type', $request->types); 
+			});
+		} 
+
+		if($request->tags) {
+			$assets = $assets->where(function ($query) use($request) {
+                $query->whereIn('media_lookup_tag', $request->tags); 
+			});
+		} 
+
+		if($request->parks) {
+			$assets = $assets->where(function ($query) use($request) {
+                $query->where('media_lookup_type', 'App\Models\Parks\Park')->whereIn('media_lookup_id', $request->parks); 
+			});
+		} 
+		
+		if($request->criteria) { 
+			$assets = $assets->where(function ($query) use($request) {
+                $query->where('keywords', 'like', '%'.$request->criteria.'%')
+					->orWhere('description', 'like', '%'.$request->criteria.'%')
+					->orWhere('alternate_text', 'like', '%'.$request->criteria.'%'); 
+			});
+			
+		}
+		
+		$pageCount = ceil($assets->count()/$perPage);
+		$skip = ($request->page-1) * $perPage;
+		$assets = $assets->select('path', 'alternate_text')->skip($skip)->take($perPage)->get();
+
+		$assets->map(function($image) {
+			$image->path = config('pagebuilder.media_path'). $image->path;
+			return $image;
+		});
+
+		return collect([
+			'types' => $request->types,
+			'tags' => $request->tags,
+			'parks' => $request->parks,
+			'criteria' => $request->criteria, 
+			'page_count' => $pageCount, 
+			'assets' => $assets
+		])->toJson();
+	}
 
 	/*
 	*	Private Methods

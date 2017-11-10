@@ -8,7 +8,7 @@ var options = {
         'preset-webpage',
         'components',
         'blocks',
-        // 'assets',
+        'assets',
     ],
 
     pluginsOpts: {
@@ -20,6 +20,7 @@ var options = {
 
         'components': {
             record: _serverData.record,
+            user: _serverData.user,
             forms: _serverData.forms
         },
 
@@ -28,6 +29,7 @@ var options = {
         },
 
         'assets': {
+            url_prefix: _serverData.url_prefix,
             assetManager: _serverData.assetManager
         }
     },
