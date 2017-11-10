@@ -68,6 +68,7 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
             if (options.skipConfirm || confirm('Are you sure to empty the canvas?')) {
                 var comps = editor.DomComponents.clear();
                 editor.CssComposer.getAll().reset();
+                editor.runCommand('open-snackbar', { message: 'The canvas has been cleared!' });
             }
         }
     });
