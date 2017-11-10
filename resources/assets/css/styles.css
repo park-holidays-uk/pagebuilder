@@ -208,6 +208,25 @@ body {
 }
 
 
+/* Create Divider */
+
+.gjs-trt-trait .gjs-label:empty,
+.gjs-trt-trait .gjs-field-divider * {
+    display: none;
+}
+
+.gjs-trt-trait .gjs-field-divider {
+    width: 100%;
+    height: 1px;
+    /* margin: 10px; */
+}
+
+
+/* .gjs-trt-trait .gjs-label:empty~.gjs-field {
+    display: none;
+} */
+
+
 /** MODALS **/
 
 .gjs-mdl-dialog .gjs-mdl-header {
