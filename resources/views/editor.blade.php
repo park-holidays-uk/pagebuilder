@@ -6,9 +6,8 @@
     <meta name="author" content="Mark Bailey" />
 
     <title>{{ $viewModel->record->name }} | Edit {{ ucfirst($viewModel->record->type) }} | Page Builder</title>
-    <link rel="stylesheet" href="{{ asset('parkholidays/pagebuilder/css/grapes.css') }}" />
+    <link rel="stylesheet" href="{{ asset('parkholidays/pagebuilder/css/grapes.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('parkholidays/pagebuilder/css/styles.css') }}" />
-    <!-- <link rel="stylesheet" href="https://i.icomoon.io/public/342e837bbb/ParkHolidays/style.css" /> -->
 </head>
 
 <body>
