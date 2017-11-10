@@ -278,7 +278,7 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
         } else {
             // Hide Buttons
             var hideButtons = [
-                { name: 'options', buttons: ['import'] }
+                { name: 'options', buttons: ['import', 'export-template'] }
             ];
 
             hideButtons.forEach(function(p) {
@@ -287,6 +287,7 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
 
                     if (btn) {
                         var className = btn.get('className') + ' hidden';
+                        btn.set('disabled', true);
                         btn.set('className', className);
                     }
                 });
