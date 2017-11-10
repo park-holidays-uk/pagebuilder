@@ -130,6 +130,7 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 * Add support for multiple top level elements when importing HTML.
 * Change Trait input fields to multi-select dropdowns.
 * Add form input group blocks
+* Add ability to add margins and padding to grids / containers
 
 ## Known Issues
 
