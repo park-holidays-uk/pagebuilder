@@ -18,8 +18,10 @@ grapesjs.plugins.add('blocks', (editor, options) => {
     commands.add('load-blocks', {
         run: function(editor, sender, options) {
             blockManager.getAll().reset();
+            /*
+             *   BASIC
+             */
 
-            /* System Blocks */
             // Container
             blockManager.add('container', {
                 label: 'Container',
@@ -125,10 +127,10 @@ grapesjs.plugins.add('blocks', (editor, options) => {
             });
 
             // Block Quote Text
-            blockManager.add('quote-text', {
+            blockManager.add('blockquote-text', {
                 label: 'Quote',
                 category: 'Basic',
-                content: '<blockquote>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed sem rutrum lacus cursus viverra imperdiet id risus. Nulla massa mauris, venenatis eget hendrerit a.</blockquote>',
+                content: '<blockquote class="mx-0 my-4"> <i class="icon-quotes-round-up top"></i><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed sem rutrum lacus cursus viverra imperdiet id risus. Nulla massa mauris, venenatis eget hendrerit a.</p> <i class="icon-quotes-round-down bottom"></i><cite>Lorem Ipsum</cite> <small>Lorem Ipsum</small></blockquote>',
                 attributes: { class: 'fa fa-quote-right' }
             });
 
@@ -155,6 +157,26 @@ grapesjs.plugins.add('blocks', (editor, options) => {
                 content: '<video></video>',
                 attributes: { class: 'fa fa-youtube-play' }
             });
+
+            // Table
+            // blockManager.add('table', {
+            //     label: 'Table',
+            //     category: 'Basic',
+            //     content: '<table><thead><tr><th>Lorem Ipsum</th><th>Lorem Ipsum</th><th>Lorem Ipsum</th></tr></thead><tbody><tr><td>Lorem Ipsum</td><td>Lorem Ipsum</td><td>Lorem Ipsum</td></tr><tr><td>Lorem Ipsum</td><td>Lorem Ipsum</td><td>Lorem Ipsum</td></tr><tr><td>Lorem Ipsum</td><td>Lorem Ipsum</td><td>Lorem Ipsum</td></tr></tbody><tfoot><tr><td>Lorem Ipsum</td><td>Lorem Ipsum</td><td>Lorem Ipsum</td></tr></tfoot></table>',
+            //     attributes: { class: 'fa fa-table' }
+            // });
+
+            // Horizontal Rule
+            blockManager.add('horizontal-rule', {
+                label: 'Horizontal Rule',
+                category: 'Basic',
+                content: '<hr class="hr-separator"/>',
+                attributes: { class: 'fa fa-window-minimize' }
+            });
+
+            /*
+             *   FORMS
+             */
 
             // Form
             blockManager.add('form', {

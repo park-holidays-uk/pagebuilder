@@ -37,6 +37,43 @@ grapesjs.plugins.add('components', (editor, options) => {
     }
 
     // Shared Traits
+    var propertyTraits = [{
+        type: 'checkbox',
+        name: 'is_stylable',
+        label: 'Stylable',
+        changeProp: 1
+    }, {
+        type: 'checkbox',
+        name: 'draggable',
+        label: 'Draggable',
+        changeProp: 1
+    }, {
+        type: 'checkbox',
+        name: 'droppable',
+        label: 'Droppable',
+        changeProp: 1
+    }, {
+        type: 'checkbox',
+        name: 'copyable',
+        label: 'Copyable',
+        changeProp: 1
+    }, {
+        type: 'checkbox',
+        name: 'resizable',
+        label: 'Resizable',
+        changeProp: 1
+    }, {
+        type: 'checkbox',
+        name: 'editable',
+        label: 'Editable',
+        changeProp: 1
+    }, {
+        type: 'checkbox',
+        name: 'removable',
+        label: 'Removable',
+        changeProp: 1
+    }];
+
     var alignmentTraits = [{
         type: 'select',
         name: 'self_alignment',
@@ -113,15 +150,68 @@ grapesjs.plugins.add('components', (editor, options) => {
         changeProp: 1
     }];
 
+    var standardComponentTypes = [
+        { 'name': 'div', tagNames: ['DIV'] },
+        { 'name': 'section', tagNames: ['SECTION'] },
+    ];
+
     /*
      *   COMPONENT TYPES
      */
+
+    // Standard
+    standardComponentTypes.forEach(function(type) {
+        domComponents.addType(type.name, {
+            model: defaultModel.extend({
+                defaults: Object.assign({}, defaultModel.prototype.defaults, {
+                    stylable: [],
+                    // draggable: true,
+                    // droppable: true,
+                    // copyable: true,
+                    // resizable: false,
+                    // editable: false,
+                    // removable: true,
+                    traits: []
+                }),
+                init() {
+                    // Initialise code
+                    var self = this;
+
+                    if (options.user.isSuperUser) {
+                        self.set('traits', propertyTraits);
+
+                        // Listener -- Change is stylable
+                        self.listenTo(self, 'change:is_stylable', function(component, value) {
+                            component.set('stylable', (value ? true : []));
+                        });
+                    }
+
+                    // Listener -- Change container class between Fluid and Non-fluid
+                    self.listenTo(self, 'change:fluid', function(component, value) {
+                        var prevClass = value ? classes.normal : classes.fluid;
+                        var newClass = value ? classes.fluid : classes.normal;
+
+                        editor.runCommand('remove-class', { component: self, classes: [prevClass] });
+                        editor.runCommand('add-class', { component: self, classes: [newClass] });
+                    });
+                }
+            }, {
+                isComponent: function(el) {
+                    if (type.tagNames.indexOf(el.tagName) != -1) {
+                        return { type: type.name };
+                    }
+                },
+            }),
+
+            view: defaultView
+        });
+    });
 
     // TEXT
     domComponents.addType('text', {
         model: textModel.extend({
             defaults: Object.assign({}, textModel.prototype.defaults, {
-                stylable: ['typography'],
+                stylable: [],
                 // draggable: true,
                 // droppable: true,
                 // copyable: false,
@@ -132,6 +222,12 @@ grapesjs.plugins.add('components', (editor, options) => {
             init() {
                 // Initialise code
                 var self = this;
+
+                if (options.user.isSuperUser) {
+                    self.set('stylable', true);
+                } else {
+                    self.set('traits', []);
+                }
             }
         }, {
             isComponent: function(el) {
@@ -150,7 +246,7 @@ grapesjs.plugins.add('components', (editor, options) => {
     domComponents.addType('container', {
         model: defaultModel.extend({
             defaults: Object.assign({}, defaultModel.prototype.defaults, {
-                stylable: [],
+                stylable: ['dimension:margin.margin-top.margin-bottom'],
                 draggable: ['#wrapper'],
                 // droppable: true,
                 copyable: true,
@@ -173,6 +269,10 @@ grapesjs.plugins.add('components', (editor, options) => {
                 };
                 var isFluid = _.includes(self.config.classes, classes.fluid);
                 self.set('fluid', isFluid);
+
+                if (options.user.isSuperUser) {
+                    self.set('stylable', true);
+                }
 
                 // Listener -- Change container class between Fluid and Non-fluid
                 self.listenTo(self, 'change:fluid', function(component, value) {
@@ -199,15 +299,21 @@ grapesjs.plugins.add('components', (editor, options) => {
     domComponents.addType('grid', {
         model: defaultModel.extend({
             defaults: Object.assign({}, defaultModel.prototype.defaults, {
-                stylable: [],
+                stylable: ['dimension:margin.margin-top.margin-bottom'],
                 // draggable: false,
                 droppable: ['.' + stylePrefix + 'grd-cl'],
                 // copyable: false,
                 resizable: false,
                 editable: false,
                 // removable: false,
-
-            })
+            }),
+            init() {
+                // Initialise code
+                var self = this;
+                if (options.user.isSuperUser) {
+                    self.set('stylable', true);
+                }
+            }
         }, {
             isComponent: function(el) {
                 var regex = /\b(grid)([-]\d{1,2})?(([_]([a-z]{2})[-]\d{1,2}){1,3})?\b/g;
@@ -982,31 +1088,53 @@ grapesjs.plugins.add('components', (editor, options) => {
     editor.on('change:selectedComponent', function(ed, component) {
         console.log('Component Selected Changed', component);
 
-        var stylable = component ? component.get('stylable') : false;;
-        var isWrapper = component ? (component.get('wrapper') == 1) : false;
-        var disableSM = (stylable == false || stylable == []);
-        var disableTM = component ? (component.get('traits').length == 0) : false;
-        var invalidComponent = (isWrapper || !(component || editor.getSelected()));
+        if (!options.user.isSuperUser) {
+            var stylable = component ? component.get('stylable') : false;;
+            var isWrapper = component ? (component.get('wrapper') == 1) : false;
+            var disableSM = (stylable == false || stylable == []);
+            var disableTM = component ? (component.get('traits').length == 0) : false;
+            var invalidComponent = (isWrapper || !(component || editor.getSelected()));
 
-        var smBtn = panels.getButton('views', 'open-sm');
-        var tmBtn = panels.getButton('views', 'open-tm');
+            var smBtn = panels.getButton('views', 'open-sm');
+            var tmBtn = panels.getButton('views', 'open-tm');
 
-        smBtn.set('disable', invalidComponent || disableSM);
-        tmBtn.set('disable', invalidComponent || disableTM);
+            smBtn.set('disable', invalidComponent || disableSM);
+            tmBtn.set('disable', invalidComponent || disableTM);
 
-        if (invalidComponent || (disableSM && smBtn.get('active')) || (disableTM && tmBtn.get('active'))) {
-            var lmBtn = panels.getButton('views', 'open-layers');
-            lmBtn.set('active', true);
-        }
+            if (invalidComponent || (disableSM && smBtn.get('active')) || (disableTM && tmBtn.get('active'))) {
+                var lmBtn = panels.getButton('views', 'open-layers');
+                lmBtn.set('active', true);
+            }
 
-        if (!disableSM /*&& !options.user.isSuperUser*/ ) {
-            $('#gjs-sm-sectors .gjs-sm-sector').css('display', 'none');
+            if (!disableSM && Array.isArray(stylable)) {
+                $('#gjs-sm-sectors .gjs-sm-sector').css('display', 'none');
 
-            if (Array.isArray(stylable) && stylable.length > 0) {
-                stylable.forEach(function(sector) {
-                    $('#gjs-sm-' + sector).css('display', 'block');
-                    $('#gjs-sm-' + sector + ' .gjs-sm-property').css('display', 'block');
-                });
+                if (stylable.length > 0) {
+                    stylable.forEach(function(sector) {
+                        var segs = sector.split(':');
+                        var sectorName = segs[0];
+                        var sectorEl = $('#gjs-sm-' + sectorName);
+                        sectorEl.css('display', 'block');
+
+                        if (segs.length > 1) {
+                            for (var i = 1; i <= segs.length - 1; i++) {
+                                var propertySegs = segs[i].split('.');
+                                var parentProperty = propertySegs[0];
+                                var parentPropertyEl = sectorEl.find('#gjs-sm-' + parentProperty);
+                                parentPropertyEl.css('display', 'block');
+
+                                if (propertySegs.length > 1) {
+                                    parentPropertyEl.find('.gjs-sm-property').css('display', 'none');
+
+                                    for (var i = 1; i <= propertySegs.length - 1; i++) {
+                                        var childProperty = propertySegs[i];
+                                        parentPropertyEl.find('#gjs-sm-' + childProperty).css('display', 'block');
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
             }
         }
     });
