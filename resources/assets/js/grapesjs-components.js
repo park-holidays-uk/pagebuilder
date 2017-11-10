@@ -13,16 +13,9 @@ grapesjs.plugins.add('components', (editor, options) => {
 
     // Built In Types
     var defaultType = domComponents.getType('default');
-    var defaultModel = defaultType.model;
-    var defaultView = defaultType.view;
-
     var textType = domComponents.getType('text');
-    var textModel = textType.model;
-    var textView = textType.view;
-
     var linkType = domComponents.getType('link');
-    var linkModel = linkType.model;
-    var linkView = linkType.view;
+    var imageType = domComponents.getType('image');
 
     // Parameters
     var isPageMode = (options.record.type == 'page');
@@ -37,6 +30,8 @@ grapesjs.plugins.add('components', (editor, options) => {
     }
 
     // Shared Traits
+    var dividerTrait = [{ type: 'divider' }];
+
     var propertyTraits = [{
         type: 'checkbox',
         name: 'is_stylable',
@@ -194,33 +189,25 @@ grapesjs.plugins.add('components', (editor, options) => {
     // Standard
     standardComponentTypes.forEach(function(type) {
         domComponents.addType(type.name, {
-            model: defaultModel.extend({
-                defaults: Object.assign({}, defaultModel.prototype.defaults, {
+            model: defaultType.model.extend({
+                defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                     stylable: [],
-                    // draggable: true,
-                    // droppable: true,
-                    // copyable: true,
-                    // resizable: false,
-                    // editable: false,
-                    // removable: true,
                     traits: []
                 }),
                 init() {
                     // Initialise code
                     var self = this;
 
-                    var regex = /\b(c\d{1,})\b/g;
-                    var attrs = self.get('attributes');
-                    var oldId = attrs.id;
-
-                    attrs.id = this.cid;
-                    if (oldId && !regex.test(oldId)) { attrs['data-old-id'] = oldId; }
-                    self.set('attributes', attrs);
+                    // Run Commands
+                    if (!isPageMode) {
+                        editor.runCommand('set-id-attribute', { component: self });
+                    }
 
                     if (self.get('stylable') == false) { self.set('stylable', []); }
 
                     if (options.user.isSuperUser) {
                         self.set('traits', propertyTraits);
+                        self.set('is_stylable', true);
 
                         // Listener -- Change is stylable
                         self.listenTo(self, 'change:is_stylable', function(component, value) {
@@ -245,30 +232,36 @@ grapesjs.plugins.add('components', (editor, options) => {
                 },
             }),
 
-            view: defaultView
+            view: defaultType.view
         });
     });
 
     // TEXT
     domComponents.addType('text', {
-        model: textModel.extend({
-            defaults: Object.assign({}, textModel.prototype.defaults, {
-                stylable: ['color', 'text-align'],
-                // draggable: true,
-                // droppable: true,
-                // copyable: false,
-                // resizable: false,
-                // editable: false,
-                // removable: false,
+        model: textType.model.extend({
+            defaults: Object.assign({}, defaultType.model.prototype.defaults, {
+                stylable: [],
+                traits: []
             }),
             init() {
                 // Initialise code
                 var self = this;
+                var stylables = ['color', 'text-align', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'];
+                self.set('stylable', stylables);
 
                 if (options.user.isSuperUser) {
-                    self.set('stylable', true);
-                } else {
-                    self.set('traits', []);
+                    self.set('traits', propertyTraits);
+                    self.set('is_stylable', true);
+
+                    // Run Commands
+                    if (!isPageMode) {
+                        editor.runCommand('set-id-attribute', { component: self });
+                    }
+
+                    // Listener -- Change is stylable
+                    self.listenTo(self, 'change:is_stylable', function(component, value) {
+                        component.set('stylable', (value ? stylables : []));
+                    });
                 }
             }
         }, {
@@ -280,27 +273,20 @@ grapesjs.plugins.add('components', (editor, options) => {
             },
         }),
 
-        view: textView
+        view: textType.view
     });
 
 
     // Container
     domComponents.addType('container', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
-                stylable: [], //['margin', 'margin-top', 'margin-bottom'],
+        model: defaultType.model.extend({
+            defaults: Object.assign({}, defaultType.model.prototype.defaults, {
+                stylable: [],
                 draggable: ['#wrapper'],
-                // droppable: true,
                 copyable: true,
                 resizable: false,
                 editable: false,
-                removable: true,
-                traits: [{
-                    type: 'checkbox',
-                    name: 'fluid',
-                    label: 'Fluid',
-                    changeProp: 1
-                }].concat(marginTraits)
+                removable: true
             }),
             init() {
                 // Initialise code
@@ -311,6 +297,30 @@ grapesjs.plugins.add('components', (editor, options) => {
                 };
                 var isFluid = _.includes(self.config.classes, classes.fluid);
                 self.set('fluid', isFluid);
+
+                var traits = marginTraits.concat([{
+                    type: 'checkbox',
+                    name: 'fluid',
+                    label: 'Fluid',
+                    changeProp: 1
+                }]);
+
+                if (options.user.isSuperUser) {
+                    traits = traits.concat(dividerTrait).concat(propertyTraits);
+                    self.set('is_stylable', false);
+
+                    // Run Commands
+                    if (!isPageMode) {
+                        editor.runCommand('set-id-attribute', { component: self });
+                    }
+
+                    // Listener -- Change is stylable
+                    self.listenTo(self, 'change:is_stylable', function(component, value) {
+                        component.set('stylable', (value ? true : []));
+                    });
+                }
+
+                self.set('traits', traits);
 
                 // Listener -- Change container class between Fluid and Non-fluid
                 self.listenTo(self, 'change:fluid', function(component, value) {
@@ -340,20 +350,17 @@ grapesjs.plugins.add('components', (editor, options) => {
             },
         }),
 
-        view: defaultView
+        view: defaultType.view
     });
 
     // Grid
     domComponents.addType('grid', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
-                stylable: [], //['margin', 'margin-top', 'margin-bottom'],
-                // draggable: false,
+        model: defaultType.model.extend({
+            defaults: Object.assign({}, defaultType.model.prototype.defaults, {
+                stylable: [],
                 droppable: ['.' + stylePrefix + 'grd-cl'],
-                // copyable: false,
                 resizable: false,
                 editable: false,
-                // removable: false,
                 traits: marginTraits
             }),
             init() {
@@ -379,7 +386,7 @@ grapesjs.plugins.add('components', (editor, options) => {
             },
         }),
 
-        view: defaultView.extend({
+        view: defaultType.view.extend({
             // The render() should return 'this'
             render: function() {
                 // Extend the original render method
@@ -392,16 +399,12 @@ grapesjs.plugins.add('components', (editor, options) => {
 
     // COLUMN
     domComponents.addType('column', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
+        model: defaultType.model.extend({
+            defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                 stylable: [],
                 draggable: ['.' + stylePrefix + 'grd'],
-                // droppable: true,
-                // copyable: false,
                 resizable: false,
                 editable: false,
-                // removable: false,
-
             })
         }, {
             isComponent: function(el) {
@@ -412,7 +415,7 @@ grapesjs.plugins.add('components', (editor, options) => {
             },
         }),
 
-        view: defaultView.extend({
+        view: defaultType.view.extend({
             // The render() should return 'this'
             render: function() {
                 // Extend the original render method
@@ -425,28 +428,34 @@ grapesjs.plugins.add('components', (editor, options) => {
 
     // Link
     domComponents.addType('link', {
-        model: linkModel.extend({
-            defaults: Object.assign({}, linkModel.prototype.defaults, {
-                stylable: [],
-                // draggable: true,
-                // droppable: false,
-                // copyable: true,
-                // resizable: false,
-                // editable: false,
-                // removable: true,
+        model: linkType.model.extend({
+            defaults: Object.assign({}, linkType.model.prototype.defaults, {
+                stylable: []
             }),
             init() {
                 // Initialise code
                 var self = this;
                 var traits = self.get('traits').models;
 
-                alignmentTraits.forEach(trait => {
-                    traits.push(trait);
-                });
+                traits.concat(dividerTrait)
+                    .concat(alignmentTraits)
+                    .concat(dividerTrait)
+                    .concat(buttonStyleTraits);
 
-                buttonStyleTraits.forEach(trait => {
-                    traits.push(trait);
-                });
+                if (options.user.isSuperUser) {
+                    traits = traits.concat(dividerTrait).concat(propertyTraits);
+                    self.set('is_stylable', false);
+
+                    // Run Commands
+                    if (!isPageMode) {
+                        editor.runCommand('set-id-attribute', { component: self });
+                    }
+
+                    // Listener -- Change is stylable
+                    self.listenTo(self, 'change:is_stylable', function(component, value) {
+                        component.set('stylable', (value ? true : []));
+                    });
+                }
 
                 self.set('traits', traits);
 
@@ -487,30 +496,66 @@ grapesjs.plugins.add('components', (editor, options) => {
             },
         }),
 
-        view: linkView
+        view: linkType.view
+    });
+
+    // Image
+    domComponents.addType('image', {
+        model: imageType.model.extend({
+            defaults: Object.assign({}, imageType.model.prototype.defaults, {
+                stylable: []
+            }),
+            init() {
+                // Initialise code
+                var self = this;
+
+                if (options.user.isSuperUser) {
+                    var traits = self.get('traits').models;
+                    traits = traits.concat(dividerTrait).concat(propertyTraits);
+                    self.set('traits', traits);
+                    self.set('is_stylable', false);
+
+                    // Run Commands
+                    if (!isPageMode) {
+                        editor.runCommand('set-id-attribute', { component: self });
+                    }
+
+                    // Listener -- Change is stylable
+                    self.listenTo(self, 'change:is_stylable', function(component, value) {
+                        component.set('stylable', (value ? true : []));
+                    });
+                }
+            }
+        }, {
+            isComponent: function(el) {
+                if (el.tagName == 'IMG') {
+                    return { type: 'image' };
+                }
+            },
+        }),
+
+        view: imageType.view
     });
 
     // Button
     domComponents.addType('button', {
-        model: textModel.extend({
-            defaults: Object.assign({}, textModel.prototype.defaults, {
+        model: textType.model.extend({
+            defaults: Object.assign({}, textType.model.prototype.defaults, {
                 stylable: [],
-                // draggable: true,
-                // droppable: false,
-                // copyable: true,
-                // resizable: false,
-                // editable: false,
-                // removable: true,
                 traits: [{
-                    type: 'select',
-                    name: 'type',
-                    label: 'Type',
-                    options: [
-                        { name: 'Button', value: 'button' },
-                        { name: 'Submit', value: 'submit' },
-                        { name: 'Reset', value: 'reset' },
-                    ]
-                }].concat(alignmentTraits).concat(buttonStyleTraits)
+                        type: 'select',
+                        name: 'type',
+                        label: 'Type',
+                        options: [
+                            { name: 'Button', value: 'button' },
+                            { name: 'Submit', value: 'submit' },
+                            { name: 'Reset', value: 'reset' },
+                        ]
+                    }]
+                    .concat(dividerTrait)
+                    .concat(alignmentTraits)
+                    .concat(dividerTrait)
+                    .concat(buttonStyleTraits)
             }),
             init() {
                 // Initialise code
@@ -557,15 +602,14 @@ grapesjs.plugins.add('components', (editor, options) => {
             },
         }),
 
-        view: textView
+        view: textType.view
     });
 
     // Form
     domComponents.addType('form', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
+        model: defaultType.model.extend({
+            defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                 stylable: [],
-                // draggable: true,
                 droppable: false,
                 copyable: true,
                 resizable: false,
@@ -590,20 +634,38 @@ grapesjs.plugins.add('components', (editor, options) => {
             },
         }),
 
-        view: defaultView
+        view: defaultType.view
+    });
+
+    // Form Dropzone
+    domComponents.addType('form dropzone', {
+        model: defaultType.model.extend({
+            defaults: Object.assign({}, defaultType.model.prototype.defaults, {
+                stylable: [],
+                draggable: false,
+                droppable: true,
+                copyable: false,
+                resizable: false,
+                editable: false,
+                removable: false,
+                traits: []
+            })
+        }, {
+            isComponent: function(el) {
+                if (el.className == 'form-dropzone') {
+                    return { type: 'form dropzone' };
+                }
+            },
+        }),
+
+        view: defaultType.view
     });
 
     // Input Box
     domComponents.addType('input', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
+        model: defaultType.model.extend({
+            defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                 stylable: [],
-                // draggable: true,
-                // droppable: false,
-                // copyable: true,
-                // resizable: false,
-                // editable: false,
-                // removable: true,
                 traits: [{
                     type: 'select',
                     name: 'type',
@@ -663,20 +725,14 @@ grapesjs.plugins.add('components', (editor, options) => {
             },
         }),
 
-        view: defaultView
+        view: defaultType.view
     });
 
     // Select Box
     domComponents.addType('select', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
+        model: defaultType.model.extend({
+            defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                 stylable: [],
-                // draggable: true,
-                // droppable: false,
-                // copyable: true,
-                // resizable: false,
-                // editable: false,
-                // removable: true,
                 traits: [{
                     type: 'text',
                     name: 'name',
@@ -726,20 +782,14 @@ grapesjs.plugins.add('components', (editor, options) => {
             },
         }),
 
-        view: defaultView
+        view: defaultType.view
     });
 
     // Select Box
     domComponents.addType('option', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
+        model: defaultType.model.extend({
+            defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                 stylable: [],
-                // draggable: true,
-                // droppable: false,
-                // copyable: true,
-                // resizable: false,
-                // editable: false,
-                // removable: true,
                 traits: [{
                     type: 'text',
                     name: 'content',
@@ -808,20 +858,14 @@ grapesjs.plugins.add('components', (editor, options) => {
             },
         }),
 
-        view: defaultView
+        view: defaultType.view
     });
 
     // Input Box
     domComponents.addType('checkbox', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
+        model: defaultType.model.extend({
+            defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                 stylable: [],
-                // draggable: true,
-                // droppable: false,
-                // copyable: true,
-                // resizable: false,
-                // editable: false,
-                // removable: true,
                 traits: [{
                     type: 'text',
                     name: 'name',
@@ -846,20 +890,14 @@ grapesjs.plugins.add('components', (editor, options) => {
             },
         }),
 
-        view: defaultView
+        view: defaultType.view
     });
 
     // Radio Button
     domComponents.addType('radio button', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
+        model: defaultType.model.extend({
+            defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                 stylable: [],
-                // draggable: true,
-                // droppable: false,
-                // copyable: true,
-                // resizable: false,
-                // editable: false,
-                // removable: true,
                 traits: [{
                     type: 'text',
                     name: 'name',
@@ -884,22 +922,19 @@ grapesjs.plugins.add('components', (editor, options) => {
             },
         }),
 
-        view: defaultView
+        view: defaultType.view
     });
 
 
     // DYNAMIC BLOCKS
     domComponents.addType('dynamic block', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
+        model: defaultType.model.extend({
+            defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                 stylable: [],
-                // draggable: false,
                 droppable: false,
                 copyable: false,
                 resizable: false,
-                editable: false,
-                // removable: false,
-
+                editable: false
             }),
             init() {
                 var self = this;
@@ -914,6 +949,7 @@ grapesjs.plugins.add('components', (editor, options) => {
                 var datajson = {};
 
                 if (attrs['properties']) {
+                    if (traits != []) { traits = traits.concat(dividerTrait); }
                     // Take payload-properties and add to gjs_components
                     var properties = JSON.parse(atob(attrs['properties']));
                     self.set('properties', properties);
@@ -947,13 +983,7 @@ grapesjs.plugins.add('components', (editor, options) => {
 
                 if (!isPageMode) {
                     // Add Class
-                    var parentModel = self.sm;
-                    const sm = parentModel.get('SelectorManager');
-                    var compClasses = self.get('classes');
-
-                    var classModel = sm.add({ name: 'dynamic-block', label: 'dynamic-block' });
-                    compClasses.add(classModel);
-                    parentModel.trigger('targetClassAdded');
+                    editor.runCommand('add-class', { component: self, classes: ['dynamic-block'] });
                 }
 
                 // Listeners - Traits
@@ -979,13 +1009,13 @@ grapesjs.plugins.add('components', (editor, options) => {
             },
         }),
 
-        view: defaultView
+        view: defaultType.view
     });
 
     // SERVER BLOCKS
     domComponents.addType('server block', {
-        model: defaultModel.extend({
-            defaults: Object.assign({}, defaultModel.prototype.defaults, {
+        model: defaultType.model.extend({
+            defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                 stylable: [],
                 draggable: false,
                 droppable: false,
@@ -1003,12 +1033,25 @@ grapesjs.plugins.add('components', (editor, options) => {
             },
         }),
 
-        view: defaultView
+        view: defaultType.view
     });
 
     /*
      *   COMMANDS
      */
+
+    /** Add Remove Classes **/
+    commands.add('set-id-attribute', {
+        run: function(editor, sender, options) {
+            var regex = /\b(c\d{1,})\b/g;
+            var attrs = options.component.get('attributes');
+            var oldId = attrs.id;
+
+            attrs.id = options.component.cid;
+            if (oldId && !regex.test(oldId)) { attrs['data-old-id'] = oldId; }
+            options.component.set('attributes', attrs);
+        }
+    });
 
     /** Add Remove Classes **/
     commands.add('add-class', {
@@ -1041,7 +1084,7 @@ grapesjs.plugins.add('components', (editor, options) => {
         }
     });
 
-    /** Alignment **/
+    /** Margins **/
     commands.add('set-margin', {
         run: function(editor, sender, options) {
             var removeClasses = [];
