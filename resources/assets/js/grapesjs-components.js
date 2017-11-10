@@ -209,6 +209,16 @@ grapesjs.plugins.add('components', (editor, options) => {
                     // Initialise code
                     var self = this;
 
+                    var regex = /\b(c\d{1,})\b/g;
+                    var attrs = self.get('attributes');
+                    var oldId = attrs.id;
+
+                    attrs.id = this.cid;
+                    if (oldId && !regex.test(oldId)) { attrs['data-old-id'] = oldId; }
+                    self.set('attributes', attrs);
+
+                    if (self.get('stylable') == false) { self.set('stylable', []); }
+
                     if (options.user.isSuperUser) {
                         self.set('traits', propertyTraits);
 
