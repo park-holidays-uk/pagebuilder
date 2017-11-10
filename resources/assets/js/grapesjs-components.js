@@ -150,6 +150,38 @@ grapesjs.plugins.add('components', (editor, options) => {
         changeProp: 1
     }];
 
+    var marginTraits = [{
+        type: 'select',
+        name: 'margin_top_class',
+        label: 'Margin Top',
+        options: [
+            { name: 'No Margin', value: '' },
+            { name: 'Auto', value: 'mt-auto' },
+            { name: 'Zero', value: 'mt-0' },
+            { name: '0.25 REM', value: 'mt-1' },
+            { name: '0.5 REM', value: 'mt-2' },
+            { name: '1 REM', value: 'mt-3' },
+            { name: '1.5 REM', value: 'mt-4' },
+            { name: '3 REM', value: 'mt-5' }
+        ],
+        changeProp: 1
+    }, {
+        type: 'select',
+        name: 'margin_bottom_class',
+        label: 'Margin Bottom',
+        options: [
+            { name: 'No Margin', value: '' },
+            { name: 'Auto', value: 'mb-auto' },
+            { name: 'Zero', value: 'mb-0' },
+            { name: '0.25 REM', value: 'mb-1' },
+            { name: '0.5 REM', value: 'mb-2' },
+            { name: '1 REM', value: 'mb-3' },
+            { name: '1.5 REM', value: 'mb-4' },
+            { name: '3 REM', value: 'mb-5' }
+        ],
+        changeProp: 1
+    }];
+
     var standardComponentTypes = [
         { 'name': 'div', tagNames: ['DIV'] },
         { 'name': 'section', tagNames: ['SECTION'] },
@@ -211,7 +243,7 @@ grapesjs.plugins.add('components', (editor, options) => {
     domComponents.addType('text', {
         model: textModel.extend({
             defaults: Object.assign({}, textModel.prototype.defaults, {
-                stylable: [],
+                stylable: ['color', 'text-align'],
                 // draggable: true,
                 // droppable: true,
                 // copyable: false,
@@ -246,7 +278,7 @@ grapesjs.plugins.add('components', (editor, options) => {
     domComponents.addType('container', {
         model: defaultModel.extend({
             defaults: Object.assign({}, defaultModel.prototype.defaults, {
-                stylable: ['dimension:margin.margin-top.margin-bottom'],
+                stylable: [], //['margin', 'margin-top', 'margin-bottom'],
                 draggable: ['#wrapper'],
                 // droppable: true,
                 copyable: true,
@@ -258,7 +290,7 @@ grapesjs.plugins.add('components', (editor, options) => {
                     name: 'fluid',
                     label: 'Fluid',
                     changeProp: 1
-                }]
+                }].concat(marginTraits)
             }),
             init() {
                 // Initialise code
@@ -270,10 +302,6 @@ grapesjs.plugins.add('components', (editor, options) => {
                 var isFluid = _.includes(self.config.classes, classes.fluid);
                 self.set('fluid', isFluid);
 
-                if (options.user.isSuperUser) {
-                    self.set('stylable', true);
-                }
-
                 // Listener -- Change container class between Fluid and Non-fluid
                 self.listenTo(self, 'change:fluid', function(component, value) {
                     var prevClass = value ? classes.normal : classes.fluid;
@@ -281,6 +309,16 @@ grapesjs.plugins.add('components', (editor, options) => {
 
                     editor.runCommand('remove-class', { component: self, classes: [prevClass] });
                     editor.runCommand('add-class', { component: self, classes: [newClass] });
+                });
+
+                // Listener -- Margins
+                self.listenTo(self, 'change:margin_top_class', function(component, value) {
+                    editor.runCommand('set-margin', { component: self, margin: 'top', class: value });
+                });
+
+                // Listener -- Margins
+                self.listenTo(self, 'change:margin_bottom_class', function(component, value) {
+                    editor.runCommand('set-margin', { component: self, margin: 'bottom', class: value });
                 });
             }
         }, {
@@ -299,20 +337,28 @@ grapesjs.plugins.add('components', (editor, options) => {
     domComponents.addType('grid', {
         model: defaultModel.extend({
             defaults: Object.assign({}, defaultModel.prototype.defaults, {
-                stylable: ['dimension:margin.margin-top.margin-bottom'],
+                stylable: [], //['margin', 'margin-top', 'margin-bottom'],
                 // draggable: false,
                 droppable: ['.' + stylePrefix + 'grd-cl'],
                 // copyable: false,
                 resizable: false,
                 editable: false,
                 // removable: false,
+                traits: marginTraits
             }),
             init() {
                 // Initialise code
                 var self = this;
-                if (options.user.isSuperUser) {
-                    self.set('stylable', true);
-                }
+
+                // Listener -- Margins
+                self.listenTo(self, 'change:margin_top_class', function(component, value) {
+                    editor.runCommand('set-margin', { component: self, margin: 'top', class: value });
+                });
+
+                // Listener -- Margins
+                self.listenTo(self, 'change:margin_bottom_class', function(component, value) {
+                    editor.runCommand('set-margin', { component: self, margin: 'bottom', class: value });
+                });
             }
         }, {
             isComponent: function(el) {
@@ -986,6 +1032,39 @@ grapesjs.plugins.add('components', (editor, options) => {
     });
 
     /** Alignment **/
+    commands.add('set-margin', {
+        run: function(editor, sender, options) {
+            var removeClasses = [];
+            var topClasses = [
+                'mt-auto', 'mt-0', 'mt-1', 'mt-2', 'mt-3', 'mt-4', 'mt-5'
+            ];
+
+            var bottomClasses = [
+                'mb-auto', 'mb-0', 'mb-1', 'mb-2', 'mb-3', 'mb-4', 'mb-5'
+            ];
+
+            switch (options.margin) {
+                case 'top':
+                    removeClasses = topClasses;
+                    break;
+                case 'bottom':
+                    removeClasses = bottomClasses;
+                    break;
+            }
+
+            console.log(options.class);
+
+            // Remove Old CLasses
+            editor.runCommand('remove-class', { component: options.component, classes: removeClasses });
+
+            // Add New Clasess
+            if (options.class != '') {
+                editor.runCommand('add-class', { component: options.component, classes: [options.class] });
+            }
+        }
+    });
+
+    /** Alignment **/
     commands.add('set-alignment', {
         run: function(editor, sender, options) {
             var alignClasses = [
@@ -1104,37 +1183,6 @@ grapesjs.plugins.add('components', (editor, options) => {
             if (invalidComponent || (disableSM && smBtn.get('active')) || (disableTM && tmBtn.get('active'))) {
                 var lmBtn = panels.getButton('views', 'open-layers');
                 lmBtn.set('active', true);
-            }
-
-            if (!disableSM && Array.isArray(stylable)) {
-                $('#gjs-sm-sectors .gjs-sm-sector').css('display', 'none');
-
-                if (stylable.length > 0) {
-                    stylable.forEach(function(sector) {
-                        var segs = sector.split(':');
-                        var sectorName = segs[0];
-                        var sectorEl = $('#gjs-sm-' + sectorName);
-                        sectorEl.css('display', 'block');
-
-                        if (segs.length > 1) {
-                            for (var i = 1; i <= segs.length - 1; i++) {
-                                var propertySegs = segs[i].split('.');
-                                var parentProperty = propertySegs[0];
-                                var parentPropertyEl = sectorEl.find('#gjs-sm-' + parentProperty);
-                                parentPropertyEl.css('display', 'block');
-
-                                if (propertySegs.length > 1) {
-                                    parentPropertyEl.find('.gjs-sm-property').css('display', 'none');
-
-                                    for (var i = 1; i <= propertySegs.length - 1; i++) {
-                                        var childProperty = propertySegs[i];
-                                        parentPropertyEl.find('#gjs-sm-' + childProperty).css('display', 'block');
-                                    }
-                                }
-                            }
-                        }
-                    });
-                }
             }
         }
     });
