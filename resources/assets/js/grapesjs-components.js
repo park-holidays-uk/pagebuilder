@@ -4,6 +4,7 @@ grapesjs.plugins.add('components', (editor, options) => {
     /*
      *   VARIABLES
      */
+    var opt = options || {};
     var stylePrefix = editor.getConfig().stylePrefix;
 
     // Managers
@@ -203,17 +204,7 @@ grapesjs.plugins.add('components', (editor, options) => {
                         editor.runCommand('set-id-attribute', { component: self });
                     }
 
-                    if (self.get('stylable') == false) { self.set('stylable', []); }
-
-                    if (options.user.isSuperUser) {
-                        self.set('traits', propertyTraits);
-                        self.set('is_stylable', true);
-
-                        // Listener -- Change is stylable
-                        self.listenTo(self, 'change:is_stylable', function(component, value) {
-                            component.set('stylable', (value ? true : []));
-                        });
-                    }
+                    editor.runCommand('set-properties', { component: self });
 
                     // Listener -- Change container class between Fluid and Non-fluid
                     self.listenTo(self, 'change:fluid', function(component, value) {
@@ -247,21 +238,12 @@ grapesjs.plugins.add('components', (editor, options) => {
                 // Initialise code
                 var self = this;
                 var stylables = ['color', 'text-align', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'];
-                self.set('stylable', stylables);
 
-                if (options.user.isSuperUser) {
-                    self.set('traits', propertyTraits);
-                    self.set('is_stylable', true);
+                editor.runCommand('set-properties', { component: self, stylables: stylables });
 
-                    // Run Commands
-                    if (!isPageMode) {
-                        editor.runCommand('set-id-attribute', { component: self });
-                    }
-
-                    // Listener -- Change is stylable
-                    self.listenTo(self, 'change:is_stylable', function(component, value) {
-                        component.set('stylable', (value ? stylables : []));
-                    });
+                // Run Commands
+                if (!isPageMode) {
+                    editor.runCommand('set-id-attribute', { component: self });
                 }
             }
         }, {
@@ -285,7 +267,7 @@ grapesjs.plugins.add('components', (editor, options) => {
                 draggable: ['#wrapper'],
                 copyable: true,
                 resizable: false,
-                editable: false,
+                editable: true,
                 removable: true
             }),
             init() {
@@ -305,22 +287,12 @@ grapesjs.plugins.add('components', (editor, options) => {
                     changeProp: 1
                 }]);
 
-                if (options.user.isSuperUser) {
-                    traits = traits.concat(dividerTrait).concat(propertyTraits);
-                    self.set('is_stylable', false);
-
-                    // Run Commands
-                    if (!isPageMode) {
-                        editor.runCommand('set-id-attribute', { component: self });
-                    }
-
-                    // Listener -- Change is stylable
-                    self.listenTo(self, 'change:is_stylable', function(component, value) {
-                        component.set('stylable', (value ? true : []));
-                    });
+                // Run Commands
+                if (!isPageMode) {
+                    editor.runCommand('set-id-attribute', { component: self });
                 }
 
-                self.set('traits', traits);
+                editor.runCommand('set-properties', { component: self, traits: traits, allowDisablingTraits: true });
 
                 // Listener -- Change container class between Fluid and Non-fluid
                 self.listenTo(self, 'change:fluid', function(component, value) {
@@ -360,12 +332,18 @@ grapesjs.plugins.add('components', (editor, options) => {
                 stylable: [],
                 droppable: ['.' + stylePrefix + 'grd-cl'],
                 resizable: false,
-                editable: false,
-                traits: marginTraits
+                editable: true,
             }),
             init() {
                 // Initialise code
                 var self = this;
+
+                // Run Commands
+                if (!isPageMode) {
+                    editor.runCommand('set-id-attribute', { component: self });
+                }
+
+                editor.runCommand('set-properties', { component: self, traits: marginTraits, allowDisablingTraits: true });
 
                 // Listener -- Margins
                 self.listenTo(self, 'change:margin_top_class', function(component, value) {
@@ -405,7 +383,15 @@ grapesjs.plugins.add('components', (editor, options) => {
                 draggable: ['.' + stylePrefix + 'grd'],
                 resizable: false,
                 editable: false,
-            })
+            }),
+            init() {
+                editor.runCommand('set-properties', { component: self, traits: [] });
+
+                // Run Commands
+                if (!isPageMode) {
+                    editor.runCommand('set-id-attribute', { component: self });
+                }
+            }
         }, {
             isComponent: function(el) {
                 var regex = /\b(col)([-]\d{1,2})?(([_]([a-z]{2})[-]\d{1,2}){1,3})?\b/g;
@@ -436,28 +422,19 @@ grapesjs.plugins.add('components', (editor, options) => {
                 // Initialise code
                 var self = this;
                 var traits = self.get('traits').models;
+                self.set('stylable', self.get('is_stylable') ? true : []);
 
                 traits.concat(dividerTrait)
                     .concat(alignmentTraits)
                     .concat(dividerTrait)
                     .concat(buttonStyleTraits);
 
-                if (options.user.isSuperUser) {
-                    traits = traits.concat(dividerTrait).concat(propertyTraits);
-                    self.set('is_stylable', false);
+                editor.runCommand('set-properties', { component: self, traits: traits });
 
-                    // Run Commands
-                    if (!isPageMode) {
-                        editor.runCommand('set-id-attribute', { component: self });
-                    }
-
-                    // Listener -- Change is stylable
-                    self.listenTo(self, 'change:is_stylable', function(component, value) {
-                        component.set('stylable', (value ? true : []));
-                    });
+                // Run Commands
+                if (!isPageMode) {
+                    editor.runCommand('set-id-attribute', { component: self });
                 }
-
-                self.set('traits', traits);
 
                 // Button Styles
                 var buttonSize = self.get(buttonProperties.size);
@@ -503,27 +480,18 @@ grapesjs.plugins.add('components', (editor, options) => {
     domComponents.addType('image', {
         model: imageType.model.extend({
             defaults: Object.assign({}, imageType.model.prototype.defaults, {
-                stylable: []
+                stylable: [],
+                editable: true
             }),
             init() {
                 // Initialise code
                 var self = this;
 
-                if (options.user.isSuperUser) {
-                    var traits = self.get('traits').models;
-                    traits = traits.concat(dividerTrait).concat(propertyTraits);
-                    self.set('traits', traits);
-                    self.set('is_stylable', false);
+                editor.runCommand('set-properties', { component: self, traits: [self.get('traits').models[0]] });
 
-                    // Run Commands
-                    if (!isPageMode) {
-                        editor.runCommand('set-id-attribute', { component: self });
-                    }
-
-                    // Listener -- Change is stylable
-                    self.listenTo(self, 'change:is_stylable', function(component, value) {
-                        component.set('stylable', (value ? true : []));
-                    });
+                // Run Commands
+                if (!isPageMode) {
+                    editor.runCommand('set-id-attribute', { component: self });
                 }
             }
         }, {
@@ -1050,6 +1018,37 @@ grapesjs.plugins.add('components', (editor, options) => {
             attrs.id = options.component.cid;
             if (oldId && !regex.test(oldId)) { attrs['data-old-id'] = oldId; }
             options.component.set('attributes', attrs);
+        }
+    });
+
+    /** Set Properties **/
+    commands.add('set-properties', {
+        run: function(editor, sender, options) {
+            var self = options.component;
+            console.log(self);
+            var stylable = self.get('stylable');
+            var not_stylable = (stylable == false || stylable == []);
+
+            var traits = options.traits ? options.traits : [];
+
+            if (opt.user.isSuperUser) {
+                if (traits.length > 0) { traits = traits.concat(dividerTrait); }
+                traits = traits.concat(propertyTraits);
+
+                // Listener -- Change is stylable
+                self.listenTo(self, 'change:is_stylable', function(component, value) {
+                    component.set('stylable', (value ? (options.stylables ? options.stylables : true) : []));
+                });
+
+                var is_stylable = self.get('is_stylable');
+                if (typeof is_stylable === 'undefined') { self.set('is_stylable', !not_stylable); }
+            }
+
+            if (!opt.user.isSuperUser && !self.get('editable') && options.allowDisablingTraits) {
+                self.set('traits', []);
+            } else {
+                self.set('traits', traits);
+            }
         }
     });
 
