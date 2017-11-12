@@ -125,7 +125,7 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 * Restyle to match the styling of PHAST.
 * Add support for more elements (Lists, tables etc.)
 * Change Trait input fields to multi-select dropdowns.
-* Add form input group blocks
+* Replace multple grid blocks with customisable grids
 
 ## Known Issues
 
