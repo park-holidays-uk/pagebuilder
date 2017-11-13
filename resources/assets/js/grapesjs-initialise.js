@@ -19,6 +19,7 @@ var options = {
         },
 
         'components': {
+            url_prefix: _serverData.url_prefix,
             record: _serverData.record,
             user: _serverData.user,
             forms: _serverData.forms

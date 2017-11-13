@@ -232,6 +232,7 @@ grapesjs.plugins.add('components', (editor, options) => {
         model: textType.model.extend({
             defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                 stylable: [],
+                editable: true,
                 traits: []
             }),
             init() {
@@ -248,7 +249,7 @@ grapesjs.plugins.add('components', (editor, options) => {
             }
         }, {
             isComponent: function(el) {
-                var regex = /\b(SPAN|P|H\d{1})\b/g;
+                var regex = /\b(SPAN|P|H|SMALL|CINE\d{1})\b/g;
                 if (regex.test(el.tagName)) {
                     return { type: 'text' };
                 }
@@ -385,6 +386,7 @@ grapesjs.plugins.add('components', (editor, options) => {
                 editable: false,
             }),
             init() {
+                var self = this;
                 editor.runCommand('set-properties', { component: self, traits: [] });
 
                 // Run Commands
@@ -509,21 +511,7 @@ grapesjs.plugins.add('components', (editor, options) => {
     domComponents.addType('button', {
         model: textType.model.extend({
             defaults: Object.assign({}, textType.model.prototype.defaults, {
-                stylable: [],
-                traits: [{
-                        type: 'select',
-                        name: 'type',
-                        label: 'Type',
-                        options: [
-                            { name: 'Button', value: 'button' },
-                            { name: 'Submit', value: 'submit' },
-                            { name: 'Reset', value: 'reset' },
-                        ]
-                    }]
-                    .concat(dividerTrait)
-                    .concat(alignmentTraits)
-                    .concat(dividerTrait)
-                    .concat(buttonStyleTraits)
+                stylable: []
             }),
             init() {
                 // Initialise code
@@ -560,7 +548,23 @@ grapesjs.plugins.add('components', (editor, options) => {
                     editor.runCommand('set-alignment', { component: component, align: value });
                 });
 
+                var traits = [{
+                        type: 'select',
+                        name: 'type',
+                        label: 'Type',
+                        options: [
+                            { name: 'Button', value: 'button' },
+                            { name: 'Submit', value: 'submit' },
+                            { name: 'Reset', value: 'reset' },
+                        ]
+                    }]
+                    .concat(dividerTrait)
+                    .concat(alignmentTraits)
+                    .concat(dividerTrait)
+                    .concat(buttonStyleTraits);
+
                 editor.runCommand('set-button-style', { component: self });
+                editor.runCommand('set-properties', { component: self, traits: traits });
             }
         }, {
             isComponent: function(el) {
@@ -929,25 +933,30 @@ grapesjs.plugins.add('components', (editor, options) => {
                             type: property.type,
                             label: property.property.replace('_', ' '),
                             name: property.property.replace('_', ''),
+                            options: property.options || [],
                             value: property.value,
+                            multiple: property.multiple || false,
                             changeProp: 1
                         };
 
-                        traits.push(trait);
+                        trait.options = [{ text: 'Please select ' + (property.multiple ? 'atleast one' : 'one'), value: '', disabled: true }].concat(trait.options);
+
+                        // Ajax Load Options
 
                         datajson[property.property] = property.value;
                         self.set(property.property.replace('_', ''), property.value);
                     });
 
-                    attrs['data-json'] = btoa(JSON.stringify(datajson));
+
                 } else {
                     self.set('properties', {});
                 }
 
+                attrs['data-json'] = btoa(JSON.stringify(datajson));
                 if (!attrs['data-view']) { attrs['data-view'] = ''; }
 
                 self.set('attributes', attrs);
-                self.set('traits', traits);
+                editor.runCommand('set-properties', { component: self, traits: traits, disablePropertyTraits: true });
 
                 if (!isPageMode) {
                     // Add Class
@@ -990,9 +999,12 @@ grapesjs.plugins.add('components', (editor, options) => {
                 copyable: false,
                 resizable: false,
                 editable: false,
-                removable: false,
+                removable: true,
 
-            })
+            }),
+            icon() {
+                editor.runCommand('set-properties', { component: self });
+            }
         }, {
             isComponent: function(el) {
                 if (el.tagName == 'SERVERBLOCK') {
@@ -1025,13 +1037,12 @@ grapesjs.plugins.add('components', (editor, options) => {
     commands.add('set-properties', {
         run: function(editor, sender, options) {
             var self = options.component;
-            console.log(self);
             var stylable = self.get('stylable');
             var not_stylable = (stylable == false || stylable == []);
 
-            var traits = options.traits ? options.traits : [];
+            var traits = options.traits || [];
 
-            if (opt.user.isSuperUser) {
+            if (opt.user.isSuperUser && !options.disablePropertyTraits) {
                 if (traits.length > 0) { traits = traits.concat(dividerTrait); }
                 traits = traits.concat(propertyTraits);
 
@@ -1049,6 +1060,8 @@ grapesjs.plugins.add('components', (editor, options) => {
             } else {
                 self.set('traits', traits);
             }
+
+            console.log('Set Properties', self);
         }
     });
 
