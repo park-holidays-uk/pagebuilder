@@ -939,10 +939,45 @@ grapesjs.plugins.add('components', (editor, options) => {
                             changeProp: 1
                         };
 
-                        trait.options = [{ text: 'Please select ' + (property.multiple ? 'atleast one' : 'one'), value: '', disabled: true }].concat(trait.options);
+                        trait.options = [{ text: 'Please select ', value: '', disabled: true }].concat(trait.options);
 
                         // Ajax Load Options
+                        // if (property.dynamic_options) {
+                        //     /* Load Options */
+                        //     $.ajax({
+                        //             type: 'POST',
+                        //             url: opt.url_prefix + '/ajax/get/trait/options',
+                        //             dataType: 'json',
+                        //             data: {
+                        //                 connection: property.options_conenction,
+                        //                 table: property.options_table,
+                        //                 text_field: property.options_text_field,
+                        //                 value_field: property.options_value_field
+                        //             },
+                        //         })
+                        //         .done(function(data) {
+                        //             var options = options = data;
 
+                        //             options.forEach(function(option) {
+                        //                 trait.options.push(option);
+                        //             });
+
+                        //             traits.push(trait);
+
+                        //             datajson[property.property] = property.value;
+                        //             self.set(property.property.replace('_', ''), property.value);
+                        //             attrs['data-json'] = btoa(JSON.stringify(datajson));
+
+                        //             if (!attrs['data-view']) { attrs['data-view'] = ''; }
+                        //             self.set('attributes', attrs);
+
+                        //             editor.runCommand('set-properties', { component: self, traits: traits, disablePropertyTraits: true });
+                        //         });
+                        // } else {
+                        //     traits.push(trait);
+                        // }
+
+                        traits.push(trait);
                         datajson[property.property] = property.value;
                         self.set(property.property.replace('_', ''), property.value);
                     });
