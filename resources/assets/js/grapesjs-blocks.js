@@ -190,15 +190,23 @@ grapesjs.plugins.add('blocks', (editor, options) => {
             blockManager.add('form', {
                 label: 'Form',
                 category: 'Forms',
-                content: '<form><input type="hidden" name="name"> <input type="hidden" name="actions"> <input type="hidden" name="emailto"><div class="form-dropzone"></div></form>',
+                content: '<form><input type="hidden" name="name" placeholder="Form name" class="input" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-removable="false" /> <input type="hidden" name="actions" placeholder="Form actions" class="input" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-removable="false" /> <input type="hidden" name="emailto" placeholder="Email to" class="input" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-removable="false" /><div class="form-dropzone"></div></form>',
                 attributes: { class: 'fa fa-wpforms' } // NO ICON
+            });
+
+            // Hidden Input
+            blockManager.add('hidden-input-form-field', {
+                label: 'Hidden Input',
+                category: 'Forms',
+                content: '<input type="hidden" class="input" />',
+                attributes: { class: '' } // NO ICON
             });
 
             // Input
             blockManager.add('input-form-field', {
                 label: 'Input Field',
                 category: 'Forms',
-                content: '<label>Lorem Ipsum</label><input class="input" />',
+                content: '<label>Lorem Ipsum</label><input type="text" class="input" />',
                 attributes: { class: '' } // NO ICON
             });
 

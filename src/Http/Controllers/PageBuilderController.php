@@ -11,9 +11,11 @@ use App\Models\Pages\Page;
 use App\Models\Media;
 
 class PageBuilderController extends Controller
-{
+{	
 	public function editBlock($type, $id)
 	{
+		// session(['superUser' => 1]);
+		
 		$record = $this->getRecord($type, $id);
 		$viewModel = $this->getViewModel((object)['id' => $id, 'name' => ($record ? $record->label : ''), 'type' => $type]);
 		
@@ -22,6 +24,9 @@ class PageBuilderController extends Controller
 
 	public function editPage($id)
 	{
+        // $su = isset($_GET['su']) ? (int)$_GET['su'] : 1;
+		// session(['superUser' => $su]);
+		
 		$record = $this->getRecord('page', $id);
 		$viewModel = $this->getViewModel((object)['id' => $id, 'name' => ($record ? $record->name : ''), 'type' => 'page']);
 
@@ -61,8 +66,10 @@ class PageBuilderController extends Controller
 				$json = json_decode($request->get('gjs-components'), true);
 				
 				foreach($json as $object) {
-					$html = $this->setAttributes($object, $html);
+					$html = $this->setGrapesAttributes($object, $html);
 				}
+			} else {
+				$html = $this->setHiddenTypeAttributes($html);
 			}
 
 			// $html = preg_replace("@\n@","", $this->setInlineStyles($request->get('gjs-css'), $html)); 
@@ -80,10 +87,42 @@ class PageBuilderController extends Controller
 		}
 	}
 
+	/** Get Trait Options **/
+	public function getTraitOptions(Request $request) 
+	{
+		$connection = $request->get('connection');
+		$table = $request->get('table');
+		$text_field = $request->get('text_field');
+		$value_field = $request->get('value_field');
+
+		if($connection) {
+			$records = \DB::connection($connection)->table($table);
+		} else {
+			$records = \DB::table($table);
+		}
+		
+		$records->select($text_field . ' as name', $value_field . ' as value')
+				->orderBy('name')
+				->get();
+
+		$data = collect([]);
+
+		if($records) {
+			$records->each(function($item, $key) use($data) { 
+				$data->push((object) [
+					'name' => $item->name,
+					'value' => $item->value
+				]);
+			});
+		}
+
+		return $data->toJson();
+	}
+
 	/** Get Blocks **/
 	public function getBlocks() 
 	{
-		$blocks = Block::orderBy('block_group_id')->orderBy('sort_order')->get();;
+		$blocks = Block::orderBy('block_group_id')->orderBy('sort_order')->get();
 		$data = collect([]);
 
 		if($blocks) {
@@ -211,8 +250,43 @@ class PageBuilderController extends Controller
 		return $dom->saveHTML();
 	}
 
+	// Set Hidden Input Types
+	function setHiddenTypeAttributes($html) {
+		$dom = new \DOMDocument();
+		@$dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+		$xpath = new \DOMXPath($dom);
+
+		$elements = $xpath->query("//input[@data-hidden=\"hidden\"]");
+
+		foreach($elements as $element) {
+			$element->setAttribute('type','hidden');
+			$element->removeAttribute('readonly');
+			$element->removeAttribute('data-hidden');
+
+			if($element->hasAttribute('data-draggable')) { 
+				$draggable = $element->getAttribute('data-draggable');
+				$element->setAttribute('data-gjs-draggable', $draggable);
+				$element->removeAttribute('data-draggable');
+			}
+			
+			if($element->hasAttribute('data-copyable')) { 
+				$copyable = $element->getAttribute('data-copyable');
+				$element->setAttribute('data-gjs-copyable', $copyable);
+				$element->removeAttribute('data-copyable');
+			}
+
+			if($element->hasAttribute('data-removable')) { 
+				$removable = $element->getAttribute('data-removable');
+				$element->setAttribute('data-gjs-removable', $removable);
+				$element->removeAttribute('data-removable');
+			}
+		}
+
+		return $dom->saveHTML();
+	}
+
 	// Add GJS properties as attributes
-	function setAttributes($json, $html) {
+	function setGrapesAttributes($json, $html) {
 		$dom = new \DOMDocument();
 		@$dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 		$xpath = new \DOMXPath($dom);
@@ -237,7 +311,7 @@ class PageBuilderController extends Controller
 		
 		$html = $dom->saveHTML();
 		foreach($json['components'] as $component) {
-			$html = $this->setAttributes($component, $html);
+			$html = $this->setGrapesAttributes($component, $html);
 		}
 
 		return $html;

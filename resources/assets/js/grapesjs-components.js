@@ -17,6 +17,9 @@ grapesjs.plugins.add('components', (editor, options) => {
     var textType = domComponents.getType('text');
     var linkType = domComponents.getType('link');
     var imageType = domComponents.getType('image');
+    var tableType = domComponents.getType('table');
+    var tableRowType = domComponents.getType('row');
+    var tableCellType = domComponents.getType('cell');
 
     // Parameters
     var isPageMode = (options.record.type == 'page');
@@ -181,6 +184,14 @@ grapesjs.plugins.add('components', (editor, options) => {
     var standardComponentTypes = [
         { 'name': 'div', tagNames: ['DIV'] },
         { 'name': 'section', tagNames: ['SECTION'] },
+
+        // Temporary
+        { 'name': 'table', tagNames: ['TABLE'] },
+        { 'name': 'table row', tagNames: ['TR'] },
+        { 'name': 'table cell', tagNames: ['TH', 'TD'] },
+        { 'name': 'table header', tagNames: ['THEAD'] },
+        { 'name': 'table body', tagNames: ['TBODY'] },
+        { 'name': 'table footer', tagNames: ['TFOOT'] },
     ];
 
     /*
@@ -638,7 +649,13 @@ grapesjs.plugins.add('components', (editor, options) => {
         model: defaultType.model.extend({
             defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                 stylable: [],
-                traits: [{
+                droppable: false
+            }),
+            init() {
+                // Initialise code
+                var self = this;
+                var attrs = self.get('attributes');
+                var traits = [{
                     type: 'select',
                     name: 'type',
                     label: 'Type',
@@ -664,34 +681,49 @@ grapesjs.plugins.add('components', (editor, options) => {
                     placeholder: 'Enter field name..'
                 }, {
                     type: 'text',
-                    name: 'placeholder',
-                    label: 'Placeholder',
-                    placeholder: 'Enter placeholder text..'
-                }, {
-                    type: 'text',
                     name: 'value',
                     label: 'Value',
                     placeholder: 'Enter a default value..'
                 }, {
+                    type: 'text',
+                    name: 'placeholder',
+                    label: 'Placeholder',
+                    placeholder: 'Enter placeholder text..'
+                }, {
                     type: 'checkbox',
                     name: 'required',
                     label: 'Required'
-                }]
-            }),
-            init() {
-                // Initialise code
-                var self = this;
-                var attrs = self.get('attributes');
+                }];
 
-                if (!attrs.type) {
-                    attrs.type = 'text';
+                if (attrs.type == 'hidden' || !attrs.type) {
+                    delete attrs.type;
+                    attrs.readonly = 'readonly';
+                    attrs['data-hidden'] = 'hidden';
+                    self.set('custom-name', 'Hidden input');
+
+                    console.log(self.get('removable'));
+
+                    if (!self.get('removable')) {
+                        attrs['data-draggable'] = false;
+                        attrs['data-copyable'] = false;
+                        attrs['data-removable'] = false;
+
+                        traits = traits.filter(function(t) {
+                            return t.name == 'value';
+                        });
+                    } else {
+                        traits = traits.filter(function(t) {
+                            return t.name == 'name' || t.name == 'value';
+                        });
+                    }
                 }
 
+                self.set('traits', traits);
                 self.set('attributes', attrs);
             }
         }, {
             isComponent: function(el) {
-                if (el.tagName == 'INPUT' && el.type != 'checkbox' && el.type != 'radio') {
+                if (el.tagName == 'INPUT' && el.type != 'checkbox' && el.type != 'radio' /* && el.type != 'hidden'*/ ) {
                     return { type: 'input' };
                 }
             },
@@ -947,21 +979,24 @@ grapesjs.plugins.add('components', (editor, options) => {
                             changeProp: 1
                         };
 
-                        trait.options = [{ text: 'Please select ', value: '', disabled: true }].concat(trait.options);
+                        trait.options = [{ name: 'Please select ', value: '', disable: true }].concat(trait.options);
 
-                        // Ajax Load Options
+                        // var formData = {
+                        //     table: property.options_table,
+                        //     text_field: property.options_text_field,
+                        //     value_field: property.options_value_field
+                        // };
+
+                        // if (property.options_connection) { formData.connection = property.options_connection; }
+
+                        // // Ajax Load Options
                         // if (property.dynamic_options) {
                         //     /* Load Options */
                         //     $.ajax({
                         //             type: 'POST',
                         //             url: opt.url_prefix + '/ajax/get/trait/options',
                         //             dataType: 'json',
-                        //             data: {
-                        //                 connection: property.options_conenction,
-                        //                 table: property.options_table,
-                        //                 text_field: property.options_text_field,
-                        //                 value_field: property.options_value_field
-                        //             },
+                        //             data: formData,
                         //         })
                         //         .done(function(data) {
                         //             var options = options = data;
@@ -972,8 +1007,8 @@ grapesjs.plugins.add('components', (editor, options) => {
 
                         //             traits.push(trait);
 
-                        //             datajson[property.property] = property.value;
-                        //             self.set(property.property.replace('_', ''), property.value);
+                        //             datajson[property.name] = property.value;
+                        //             self.set(property.name, property.value);
                         //             attrs['data-json'] = btoa(JSON.stringify(datajson));
 
                         //             if (!attrs['data-view']) { attrs['data-view'] = ''; }
@@ -1089,7 +1124,7 @@ grapesjs.plugins.add('components', (editor, options) => {
 
                 // Listener -- Change is stylable
                 self.listenTo(self, 'change:is_stylable', function(component, value) {
-                    component.set('stylable', (value ? (options.stylables ? options.stylables : true) : []));
+                    component.set('stylable', value ? (options.stylables ? options.stylables : true) : []);
                 });
 
                 var is_stylable = self.get('is_stylable');
@@ -1101,8 +1136,6 @@ grapesjs.plugins.add('components', (editor, options) => {
             } else {
                 self.set('traits', traits);
             }
-
-            console.log('Set Properties', self);
         }
     });
 
@@ -1157,8 +1190,6 @@ grapesjs.plugins.add('components', (editor, options) => {
                     removeClasses = bottomClasses;
                     break;
             }
-
-            console.log(options.class);
 
             // Remove Old CLasses
             editor.runCommand('remove-class', { component: options.component, classes: removeClasses });
@@ -1272,7 +1303,6 @@ grapesjs.plugins.add('components', (editor, options) => {
     /* Selected Component Changed */
     editor.on('change:selectedComponent', function(ed, component) {
         console.log('Component Selected Changed', component);
-
         if (!options.user.isSuperUser) {
             var stylable = component ? component.get('stylable') : false;;
             var isWrapper = component ? (component.get('wrapper') == 1) : false;

@@ -49,3 +49,18 @@
 .gjs-dashed hr {
     height: 5px;
 }
+
+
+/* Hidden Input */
+
+input[data-hidden] {
+    display: none !important;
+}
+
+.gjs-dashed input[type="hidden"],
+.gjs-dashed input[data-hidden] {
+    display: inline-block !important;
+    border: 2px solid rgba(146, 23, 23, .5);
+    background-color: rgba(146, 23, 23, 0.25);
+    /* color: #fff !important; */
+}
