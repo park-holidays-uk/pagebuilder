@@ -96,11 +96,27 @@ When creating FORM blocks, they must contain an empty DIV with the class *form-d
 
 ### FIG. PW1R
 For different trait input types please refer to (https://github.com/artf/grapesjs/wiki/Traits).
-At present only type *text* is available.
+At present only type *text* and *select* is available.
 ```
 [
-    {"property":"parks","type":"select", "value": "", "multiple":true, dynamic_options:true, "options_connection":"CONNECTION","options_table":"TABLE","options_text_field":"FIELD","options_value_field":"FIELD"},
-    {"property":"rental_type","type":"text", "value": "1"}
+    {
+        "type":"select",
+        "name":"parks",
+        "label":"Parks", 
+        "value": "", 
+        "multiple":true, 
+        "dynamic_options":true, 
+        "options_connection":"CONNECTION",
+        "options_table":"TABLE",
+        "options_text_field":"FIELD",
+        "options_value_field":"FIELD"
+    },
+    {
+        "type":"text"
+        "name":"rental_type", 
+        "label":"Rental Type",
+        value": "1"
+    }
 ]
 ```
 

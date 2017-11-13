@@ -911,6 +911,7 @@ grapesjs.plugins.add('components', (editor, options) => {
             init() {
                 var self = this;
                 var attrs = self.get('attributes');
+                var properties = self.get('properties');
                 var traits = !isPageMode ? [{
                     type: 'text',
                     name: 'data-view',
@@ -920,19 +921,26 @@ grapesjs.plugins.add('components', (editor, options) => {
 
                 var datajson = {};
 
-                if (attrs['properties']) {
-                    if (traits != []) { traits = traits.concat(dividerTrait); }
+                if (!properties && attrs['properties']) {
                     // Take payload-properties and add to gjs_components
-                    var properties = JSON.parse(atob(attrs['properties']));
-                    self.set('properties', properties);
+                    properties = JSON.parse(atob(attrs['properties']));
                     delete attrs['properties'];
+                }
+
+                if (!self.get('properties')) {
+                    self.set('properties', properties || {});
+                }
+
+                if (properties) {
+                    if (traits != []) { traits = traits.concat(dividerTrait); }
+
 
                     // Create Dynamic Traits from Payload Properties
                     _.forEach(properties, function(property) {
                         var trait = {
                             type: property.type,
-                            label: property.property.replace('_', ' '),
-                            name: property.property.replace('_', ''),
+                            label: property.label || property.name,
+                            name: property.name,
                             options: property.options || [],
                             value: property.value,
                             multiple: property.multiple || false,
@@ -978,13 +986,12 @@ grapesjs.plugins.add('components', (editor, options) => {
                         // }
 
                         traits.push(trait);
-                        datajson[property.property] = property.value;
-                        self.set(property.property.replace('_', ''), property.value);
+
+                        if (!self.get(property.name)) {
+                            datajson[property.name] = property.value;
+                            self.set(property.name, property.value);
+                        }
                     });
-
-
-                } else {
-                    self.set('properties', {});
                 }
 
                 attrs['data-json'] = btoa(JSON.stringify(datajson));
@@ -1000,12 +1007,11 @@ grapesjs.plugins.add('components', (editor, options) => {
 
                 // Listeners - Traits
                 _.forEach(self.get('properties'), function(property) {
-                    var name = property.property.replace('_', '');
-                    self.listenTo(self, 'change:' + name, function() {
+                    self.listenTo(self, 'change:' + property.name, function() {
                         attrs = self.get('attributes');
 
                         var datajson = JSON.parse(atob(attrs['data-json']));
-                        datajson[property.property] = self.get(name);
+                        datajson[property.name] = self.get(property.name);
 
                         attrs['data-json'] = btoa(JSON.stringify(datajson));
                         self.set('attributes', attrs);
