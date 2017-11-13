@@ -320,7 +320,7 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
         if (typeof response != 'undefined') {
             response = JSON.parse(response);
 
-            if (response.status) {
+            if (response.message) {
                 editor.runCommand('open-snackbar', { message: response.message });
             }
         }
