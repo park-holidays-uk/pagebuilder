@@ -141,4 +141,6 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 * Mysterious glyph appearing in price point on advert-promo-three block.
 * If an element with a style associated to it is copied, both copies of the element refer to same style, preventing the elements being styled differently. - *Temporary solution would be to disable copying of elements*
 * Some blocks (i.e. Advert-Promo-Three) properties (Stylable, removable etc..) are being reset once dragged into the canvas.
-* Fix inability to make text into links..
+* When text blocks are emptied, after text is re-entered, the text or the block is duplicated.
+* When the trait *Checked* is changed for checkboxes and radion buttons, the prevent-default breaks for those elements.
+* Dynamic Block traits are unable to be changed once a page has been saved and reloaded.
