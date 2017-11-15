@@ -46,6 +46,9 @@ Route::group(['prefix' => config('pagebuilder.url_prefix')], function() {
 
             /** Trait Select Options **/
             Route::post('/trait/options', array('as' => 'pagebuilder.ajax.get.trait.options', 'uses' => 'PageBuilderController@getTraitOptions'));
+
+             /** Field Names **/
+             Route::post('/field/names', array('as' => 'pagebuilder.ajax.get.field.names', 'uses' => 'PageBuilderController@getFieldNames'));
         });
 
         /** LOAD **/

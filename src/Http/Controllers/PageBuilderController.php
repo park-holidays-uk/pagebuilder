@@ -5,6 +5,7 @@ namespace ParkHolidays\PageBuilder\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use ParkHolidays\PageBuilder\Models\FieldName;
 use ParkHolidays\PageBuilder\Models\Block;
 use ParkHolidays\PageBuilder\Models\Template;
 use App\Models\Pages\Page;
@@ -14,8 +15,6 @@ class PageBuilderController extends Controller
 {	
 	public function editBlock($type, $id)
 	{
-		// session(['superUser' => 1]);
-		
 		$record = $this->getRecord($type, $id);
 		$viewModel = $this->getViewModel((object)['id' => $id, 'name' => ($record ? $record->label : ''), 'type' => $type]);
 		
@@ -111,7 +110,37 @@ class PageBuilderController extends Controller
 			$records->each(function($item, $key) use($data) { 
 				$data->push((object) [
 					'name' => $item->name,
-					'value' => $item->value
+					'value' => (string)$item->value
+				]);
+			});
+		}
+
+		return $data->toJson();
+	}
+
+	/** Get Field Names **/
+	public function getFieldNames(Request $request) 
+	{
+		$excludeTypes = $request->get('exclude_types');
+		$includeTypes = $request->get('include_types');
+
+		$fieldNames = FieldName::select('name', 'label', 'type', 'values', 'copies')->orderBy('name');
+		
+		if($excludeTypes) { $fieldNames->whereNotIn('type', $excludeTypes); }
+		if($includeTypes) { $fieldNames->whereIn('type', $includeTypes); }
+
+		$fieldNames->get();
+
+		$data = collect([]);
+
+		if($fieldNames) {
+			$fieldNames->each(function($item, $key) use($data) { 
+				$data->push((object) [
+					'name' => $item->label,
+					'value' => $item->name,
+					'type' => $item->type,
+					'values' => $item->values,
+					'copies' => $item->copies
 				]);
 			});
 		}
