@@ -181,6 +181,52 @@ grapesjs.plugins.add('components', (editor, options) => {
         changeProp: 1
     }];
 
+    var inputTraits = [{
+        type: 'text',
+        name: 'value',
+        label: 'Value',
+        placeholder: 'Enter a default value..'
+    }, {
+        type: 'text',
+        name: 'placeholder',
+        label: 'Placeholder',
+        placeholder: 'Enter placeholder text..'
+    }, {
+        type: 'checkbox',
+        name: 'required',
+        label: 'Required'
+    }];
+
+    var inputTypeTrait = {
+        type: 'select',
+        name: 'type',
+        label: 'Type',
+        options: [
+            // { name: 'Colour', value: 'color' },
+            { name: 'Date', value: 'date' },
+            { name: 'Date Time', value: 'datetime-local' },
+            { name: 'Email Address', value: 'email' },
+            // { name: 'Month', value: 'month' },
+            { name: 'Number', value: 'number' },
+            // { name: 'Range', value: 'range' },
+            // { name: 'Search', value: 'search' },
+            { name: 'Telephone', value: 'tel' },
+            { name: 'Text', value: 'text' },
+            { name: 'Time', value: 'time' },
+            { name: 'URL', value: 'url' },
+            // { name: 'Week', value: 'week' },
+        ]
+    };
+
+    var customNameTrait = {
+        type: 'text',
+        name: 'name',
+        label: 'Name',
+        placeholder: 'Enter a custom name..'
+    };
+
+    var customNameLabel = customNameTrait.label;
+
     var standardComponentTypes = [
         { 'name': 'div', tagNames: ['DIV'] },
         { 'name': 'section', tagNames: ['SECTION'] },
@@ -193,6 +239,7 @@ grapesjs.plugins.add('components', (editor, options) => {
         { 'name': 'table body', tagNames: ['TBODY'] },
         { 'name': 'table footer', tagNames: ['TFOOT'] },
     ];
+
 
     /*
      *   COMPONENT TYPES
@@ -242,25 +289,29 @@ grapesjs.plugins.add('components', (editor, options) => {
     domComponents.addType('text', {
         model: textType.model.extend({
             defaults: Object.assign({}, defaultType.model.prototype.defaults, {
-                stylable: [],
+                stylable: ['color', 'text-align', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'],
                 editable: true,
                 traits: []
             }),
             init() {
                 // Initialise code
                 var self = this;
-                var stylables = ['color', 'text-align', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'];
+                if (self.get('tagName') == 'label') {
+                    self.set('custom-name', 'Label');
+                } else {
+                    var stylables = ['color', 'text-align', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'];
 
-                editor.runCommand('set-properties', { component: self, stylables: stylables });
+                    editor.runCommand('set-properties', { component: self, stylables: stylables });
 
-                // Run Commands
-                if (!isPageMode) {
-                    editor.runCommand('set-id-attribute', { component: self });
+                    // Run Commands
+                    if (!isPageMode) {
+                        editor.runCommand('set-id-attribute', { component: self });
+                    }
                 }
             }
         }, {
             isComponent: function(el) {
-                var regex = /\b(SPAN|P|H|SMALL|CINE\d{1})\b/g;
+                var regex = /\b(SPAN|P|H|SMALL|CINE|LABEL\d{1})\b/g;
                 if (regex.test(el.tagName)) {
                     return { type: 'text' };
                 }
@@ -499,13 +550,31 @@ grapesjs.plugins.add('components', (editor, options) => {
             init() {
                 // Initialise code
                 var self = this;
+                var traits = [self.get('traits').models[0]].concat([{
+                    type: 'checkbox',
+                    name: 'is_responsive',
+                    label: 'Responsive',
+                    changeProp: 1
+                }]);
 
-                editor.runCommand('set-properties', { component: self, traits: [self.get('traits').models[0]] });
+                editor.runCommand('set-properties', { component: self, traits: traits });
 
                 // Run Commands
                 if (!isPageMode) {
                     editor.runCommand('set-id-attribute', { component: self });
                 }
+
+                // Listener -- Responsive
+                self.listenTo(self, 'change:is_responsive', function(component, value) {
+                    var respClass = ['img-responsive'];
+                    // Remove Old CLasses
+                    editor.runCommand('remove-class', { component: component, classes: respClass });
+
+                    if (value) {
+                        // Add New CLasses
+                        editor.runCommand('add-class', { component: component, classes: respClass });
+                    }
+                });
             }
         }, {
             isComponent: function(el) {
@@ -655,67 +724,147 @@ grapesjs.plugins.add('components', (editor, options) => {
                 // Initialise code
                 var self = this;
                 var attrs = self.get('attributes');
-                var traits = [{
-                    type: 'select',
-                    name: 'type',
-                    label: 'Type',
-                    options: [
-                        { name: 'Colour', value: 'color' },
-                        { name: 'Date', value: 'date' },
-                        { name: 'Date Time', value: 'datetime-local' },
-                        { name: 'Email Address', value: 'email' },
-                        { name: 'Month', value: 'month' },
-                        { name: 'Number', value: 'number' },
-                        { name: 'Range', value: 'range' },
-                        { name: 'Search', value: 'search' },
-                        { name: 'Telephone', value: 'tel' },
-                        { name: 'Text', value: 'text' },
-                        { name: 'Time', value: 'time' },
-                        { name: 'URL', value: 'url' },
-                        { name: 'Week', value: 'week' },
-                    ]
-                }, {
-                    type: 'text',
-                    name: 'name',
-                    label: 'Name',
-                    placeholder: 'Enter field name..'
-                }, {
-                    type: 'text',
-                    name: 'value',
-                    label: 'Value',
-                    placeholder: 'Enter a default value..'
-                }, {
-                    type: 'text',
-                    name: 'placeholder',
-                    label: 'Placeholder',
-                    placeholder: 'Enter placeholder text..'
-                }, {
-                    type: 'checkbox',
-                    name: 'required',
-                    label: 'Required'
-                }];
+                var traits = [].concat(inputTypeTrait).concat(inputTraits);
 
-                if (attrs.type == 'hidden' || !attrs.type) {
-                    delete attrs.type;
-                    attrs.readonly = 'readonly';
-                    attrs['data-hidden'] = 'hidden';
-                    self.set('custom-name', 'Hidden input');
+                var formData = {};
+                var getFieldNames = false;
+                var inputType = attrs.type ? attrs.type : self.get('is_hidden') ? 'hidden' : null;
 
-                    console.log(self.get('removable'));
-
-                    if (!self.get('removable')) {
-                        attrs['data-draggable'] = false;
-                        attrs['data-copyable'] = false;
-                        attrs['data-removable'] = false;
-
+                switch (inputType) {
+                    case 'checkbox':
+                    case 'radio':
                         traits = traits.filter(function(t) {
+                            return (t.name == 'name' && t.type == 'text') || t.name == 'value' || t.name == 'required';
+                        });
+
+                        traits.splice(traits.length - 1, 0, {
+                            type: 'checkbox',
+                            name: 'is_checked',
+                            label: 'Checked',
+                            changeProp: 1
+                        });
+
+                        getFieldNames = true;
+                        formData.include_types = [inputType];
+
+                        // Listener -- name field
+                        self.listenTo(self, 'change:is_checked', function(component, value) {
+                            var attrs = component.get('attributes');
+
+                            if (value) {
+                                attrs.checked = 'checked';
+                            } else {
+                                delete attrs.checked;
+                            }
+
+                            component.set('attributes', attrs);
+                            domComponents.render();
+                        });
+                        break;
+                    case 'hidden':
+                        // Code Here
+                        if (!self.get('is_hidden')) { self.set('is_hidden', true); }
+                        attrs.readonly = 'readonly';
+                        attrs['data-hidden'] = 'hidden';
+                        delete attrs.type;
+
+                        customNameTrait.label = customNameLabel;
+                        traits = [].concat(self.get('removable') ? customNameTrait : []).concat(traits.filter(function(t) {
                             return t.name == 'value';
-                        });
-                    } else {
-                        traits = traits.filter(function(t) {
-                            return t.name == 'name' || t.name == 'value';
-                        });
+                        }));
+                        break;
+                    default:
+                        // Code Here
+                        getFieldNames = (inputType);
+                        formData.exclude_types = ['radio', 'checkbox', 'textarea'];
+                        break;
+                }
+
+                if (getFieldNames) {
+                    if (!self.get('name_field') || self.get('name_field') == '') {
+                        var index = (inputType == 'radio' || inputType == 'checkbox') ? 0 : 1;
+                        customNameTrait.label = ' ';
+                        traits.splice(index, 0, customNameTrait);
                     }
+
+                    /* Load Options */
+                    $.ajax({
+                            type: 'POST',
+                            url: opt.url_prefix + '/ajax/get/field/names',
+                            dataType: 'json',
+                            data: formData
+                        })
+                        .done(function(data) {
+                            var exists = traits.filter(function(t) { return t.name == 'name_field'; }).length > 0;
+
+                            if (!exists) {
+                                var trait = {
+                                    type: 'select',
+                                    name: 'name_field',
+                                    label: 'Name',
+                                    options: [{ name: 'Custom', value: '' }],
+                                    value: '',
+                                    changeProp: 1
+                                };
+
+                                data.forEach(function(field) {
+                                    if (field.name) {
+                                        trait.options.push({
+                                            name: field.name,
+                                            value: field.value,
+                                            input_type: field.type,
+                                            default_values: field.values,
+                                            copies: field.copies
+                                        });
+                                    }
+                                });
+
+                                var index = (inputType == 'radio' || inputType == 'checkbox') ? 0 : 1;
+                                traits.splice(index, 0, trait);
+                            }
+
+                            self.set('traits', traits);
+                        });
+
+                    // Listener -- name field
+                    self.listenTo(self, 'change:name_field', function(component, value) {
+                        var attrs = component.get('attributes');
+                        traits = component.get('traits').models.filter(function(t) { return t.get('name') != 'name' && t.get('name') != 'type'; });
+
+                        var selectedOption = traits.filter(function(t) {
+                            return t.get('name') == 'name_field';
+                        })[0].get('options').filter(function(o) { return o.value == value })[0];
+
+                        customNameTrait.label = ' ';
+                        attrs.name = value;
+
+                        switch (inputType) {
+                            case 'checkbox':
+                            case 'radio':
+                                // Code here
+                                if (value == '') {
+                                    traits.splice(1, 0, customNameTrait);
+                                }
+                                break;
+                            default:
+                                // Code here
+                                if (value == '') {
+                                    traits.splice(0, 0, inputTypeTrait);
+                                    traits.splice(2, 0, customNameTrait);
+                                    attrs.type = 'text';
+                                } else {
+                                    attrs.type = selectedOption.input_type;
+                                }
+                                break;
+                        }
+
+                        component.set('traits', traits);
+                        component.set('attributes', attrs);
+                        editor.trigger('change:selectedComponent');
+                        domComponents.render();
+
+                        customNameTrait.label = customNameLabel;
+                    });
                 }
 
                 self.set('traits', traits);
@@ -723,7 +872,7 @@ grapesjs.plugins.add('components', (editor, options) => {
             }
         }, {
             isComponent: function(el) {
-                if (el.tagName == 'INPUT' && el.type != 'checkbox' && el.type != 'radio' /* && el.type != 'hidden'*/ ) {
+                if (el.tagName == 'INPUT') {
                     return { type: 'input' };
                 }
             },
@@ -737,6 +886,7 @@ grapesjs.plugins.add('components', (editor, options) => {
         model: defaultType.model.extend({
             defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                 stylable: [],
+                droppable: ['option'],
                 traits: [{
                     type: 'text',
                     name: 'name',
@@ -794,6 +944,7 @@ grapesjs.plugins.add('components', (editor, options) => {
         model: defaultType.model.extend({
             defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                 stylable: [],
+                droppable: false,
                 traits: [{
                     type: 'text',
                     name: 'content',
@@ -865,63 +1016,92 @@ grapesjs.plugins.add('components', (editor, options) => {
         view: defaultType.view
     });
 
-    // Input Box
-    domComponents.addType('checkbox', {
+    // Textarea
+    domComponents.addType('textarea', {
         model: defaultType.model.extend({
             defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                 stylable: [],
-                traits: [{
+                droppable: false
+            }),
+            init() {
+                // Initialise code
+                var self = this;
+                var attrs = self.get('attributes');
+                var traits = [{
                     type: 'text',
-                    name: 'name',
-                    label: 'Name',
-                    placeholder: 'Enter field name..'
-                }, {
-                    type: 'text',
-                    name: 'value',
-                    label: 'Value',
-                    placeholder: 'Enter the value..'
-                }, {
-                    type: 'checkbox',
-                    name: 'required',
-                    label: 'Required'
-                }]
-            })
-        }, {
-            isComponent: function(el) {
-                if (el.tagName == 'INPUT' && el.type == 'checkbox') {
-                    return { type: 'checkbox' };
+                    name: 'rows',
+                    label: 'Rows',
+                }].concat(inputTraits);
+
+                if (!self.get('name_field') || self.get('name_field') == '') {
+                    customNameTrait.label = ' ';
+                    traits.splice(0, 0, customNameTrait);
                 }
-            },
-        }),
 
-        view: defaultType.view
-    });
+                /* Load Options */
+                $.ajax({
+                        type: 'POST',
+                        url: opt.url_prefix + '/ajax/get/field/names',
+                        dataType: 'json',
+                        data: { include_types: ['textarea'] }
+                    })
+                    .done(function(data) {
+                        var exists = traits.filter(function(t) { return t.name == 'name_field'; }).length > 0;
 
-    // Radio Button
-    domComponents.addType('radio button', {
-        model: defaultType.model.extend({
-            defaults: Object.assign({}, defaultType.model.prototype.defaults, {
-                stylable: [],
-                traits: [{
-                    type: 'text',
-                    name: 'name',
-                    label: 'Name',
-                    placeholder: 'Enter field name..'
-                }, {
-                    type: 'text',
-                    name: 'value',
-                    label: 'Value',
-                    placeholder: 'Enter the value..'
-                }, {
-                    type: 'checkbox',
-                    name: 'required',
-                    label: 'Required'
-                }]
-            })
+                        if (!exists) {
+                            var trait = {
+                                type: 'select',
+                                name: 'name_field',
+                                label: 'Name',
+                                options: [{ name: 'Custom', value: '' }],
+                                value: '',
+                                changeProp: 1
+                            };
+
+                            data.forEach(function(field) {
+                                if (field.name) {
+                                    trait.options.push({
+                                        name: field.name,
+                                        value: field.value
+                                    });
+                                }
+                            });
+
+                            traits.splice(0, 0, trait);
+                        }
+
+                        self.set('traits', traits);
+                    });
+
+                // Listener -- name field
+                self.listenTo(self, 'change:name_field', function(component, value) {
+                    var attrs = component.get('attributes');
+                    traits = component.get('traits').models.filter(function(t) { return t.get('name') != 'name'; });
+
+                    customNameTrait.label = ' ';
+                    attrs.name = value;
+
+                    if (value == '') {
+                        traits.splice(1, 0, customNameTrait);
+                    }
+
+                    component.set('traits', traits);
+                    component.set('attributes', attrs);
+                    editor.trigger('change:selectedComponent');
+                    domComponents.render();
+
+                    customNameTrait.label = customNameLabel;
+                });
+
+
+                self.set('traits', traits);
+                self.set('attributes', attrs);
+                customNameTrait.label = customNameLabel;
+            }
         }, {
             isComponent: function(el) {
-                if (el.tagName == 'INPUT' && el.type == 'radio') {
-                    return { type: 'radio button' };
+                if (el.tagName == 'TEXTAREA') {
+                    return { type: 'textarea' };
                 }
             },
         }),
@@ -931,7 +1111,7 @@ grapesjs.plugins.add('components', (editor, options) => {
 
 
     // DYNAMIC BLOCKS
-    domComponents.addType('dynamic block', {
+    domComponents.addType('dynablock', {
         model: defaultType.model.extend({
             defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                 stylable: [],
@@ -964,9 +1144,6 @@ grapesjs.plugins.add('components', (editor, options) => {
                 }
 
                 if (properties) {
-                    if (traits != []) { traits = traits.concat(dividerTrait); }
-
-
                     // Create Dynamic Traits from Payload Properties
                     _.forEach(properties, function(property) {
                         var trait = {
@@ -981,44 +1158,40 @@ grapesjs.plugins.add('components', (editor, options) => {
 
                         trait.options = [{ name: 'Please select ', value: '', disable: true }].concat(trait.options);
 
-                        // var formData = {
-                        //     table: property.options_table,
-                        //     text_field: property.options_text_field,
-                        //     value_field: property.options_value_field
-                        // };
+                        // Ajax Load Options
+                        if (property.dynamic_options) {
+                            var formData = {
+                                table: property.options_table,
+                                text_field: property.options_text_field,
+                                value_field: property.options_value_field
+                            };
 
-                        // if (property.options_connection) { formData.connection = property.options_connection; }
+                            if (property.options_connection) { formData.connection = property.options_connection; }
 
-                        // // Ajax Load Options
-                        // if (property.dynamic_options) {
-                        //     /* Load Options */
-                        //     $.ajax({
-                        //             type: 'POST',
-                        //             url: opt.url_prefix + '/ajax/get/trait/options',
-                        //             dataType: 'json',
-                        //             data: formData,
-                        //         })
-                        //         .done(function(data) {
-                        //             var options = options = data;
+                            /* Load Options */
+                            $.ajax({
+                                    type: 'POST',
+                                    url: opt.url_prefix + '/ajax/get/trait/options',
+                                    dataType: 'json',
+                                    data: formData,
+                                })
+                                .done(function(data) {
+                                    var compTraits = self.get('traits').models;
+                                    var iTrait = compTraits.filter(function(t) { return t.get('name') == property.name; })[0];
+                                    var index = compTraits.indexOf(function(t) { t.get('name') == iTrait.name; });
+                                    var options = iTrait.get('options');
 
-                        //             options.forEach(function(option) {
-                        //                 trait.options.push(option);
-                        //             });
+                                    if (options) {
+                                        data.forEach(function(option) {
+                                            options.push(option);
+                                        });
+                                    }
 
-                        //             traits.push(trait);
-
-                        //             datajson[property.name] = property.value;
-                        //             self.set(property.name, property.value);
-                        //             attrs['data-json'] = btoa(JSON.stringify(datajson));
-
-                        //             if (!attrs['data-view']) { attrs['data-view'] = ''; }
-                        //             self.set('attributes', attrs);
-
-                        //             editor.runCommand('set-properties', { component: self, traits: traits, disablePropertyTraits: true });
-                        //         });
-                        // } else {
-                        //     traits.push(trait);
-                        // }
+                                    iTrait.set('options', options);
+                                    compTraits.filter(function(t) { return t.get('name') != iTrait.name; }).splice(index, 0, iTrait);
+                                    self.set('traits', compTraits);
+                                });
+                        }
 
                         traits.push(trait);
 
@@ -1040,16 +1213,19 @@ grapesjs.plugins.add('components', (editor, options) => {
                     editor.runCommand('add-class', { component: self, classes: ['dynamic-block'] });
                 }
 
+                self.set('custom-name', 'Dynamic Block');
+
                 // Listeners - Traits
                 _.forEach(self.get('properties'), function(property) {
-                    self.listenTo(self, 'change:' + property.name, function() {
-                        attrs = self.get('attributes');
+                    self.listenTo(self, 'change:' + property.name, function(component, value) {
+                        attrs = component.get('attributes');
 
                         var datajson = JSON.parse(atob(attrs['data-json']));
-                        datajson[property.name] = self.get(property.name);
+                        datajson[property.name] = value;
 
                         attrs['data-json'] = btoa(JSON.stringify(datajson));
-                        self.set('attributes', attrs);
+                        component.set('attributes', attrs);
+                        domComponents.render();
                     });
                 });
 
@@ -1057,7 +1233,7 @@ grapesjs.plugins.add('components', (editor, options) => {
         }, {
             isComponent: function(el) {
                 if (el.tagName == 'DYNABLOCK') {
-                    return { type: 'dynamic block' };
+                    return { type: 'dynablock' };
                 }
             },
         }),
@@ -1303,23 +1479,25 @@ grapesjs.plugins.add('components', (editor, options) => {
     /* Selected Component Changed */
     editor.on('change:selectedComponent', function(ed, component) {
         console.log('Component Selected Changed', component);
-        if (!options.user.isSuperUser) {
-            var stylable = component ? component.get('stylable') : false;;
-            var isWrapper = component ? (component.get('wrapper') == 1) : false;
-            var disableSM = (stylable == false || stylable == []);
-            var disableTM = component ? (component.get('traits').length == 0) : false;
-            var invalidComponent = (isWrapper || !(component || editor.getSelected()));
+        // if (!options.user.isSuperUser) {
+        var isWrapper = component ? (component.get('wrapper') == 1) : false;
+        var invalidComponent = (isWrapper || (!component && !editor.getSelected()));
 
-            var smBtn = panels.getButton('views', 'open-sm');
-            var tmBtn = panels.getButton('views', 'open-tm');
+        var stylable = component ? component.get('stylable') : false;
+        var disableSM = invalidComponent || (stylable == false || stylable == []);
+        var disableTM = invalidComponent || (component.get('traits').length == 0);
 
-            smBtn.set('disable', invalidComponent || disableSM);
-            tmBtn.set('disable', invalidComponent || disableTM);
+        var smBtn = panels.getButton('views', 'open-sm');
+        var tmBtn = panels.getButton('views', 'open-tm');
 
-            if (invalidComponent || (disableSM && smBtn.get('active')) || (disableTM && tmBtn.get('active'))) {
-                var lmBtn = panels.getButton('views', 'open-layers');
-                lmBtn.set('active', true);
-            }
+        smBtn.set('disable', disableSM);
+        tmBtn.set('disable', disableTM);
+
+        // (invalidComponent || (disableSM && smBtn.get('active')) || (disableTM && tmBtn.get('active')))
+        if ((disableSM && smBtn.get('active')) || (disableTM && tmBtn.get('active'))) {
+            var lmBtn = panels.getButton('views', 'open-layers');
+            lmBtn.set('active', true);
         }
+        // }
     });
 });

@@ -38,7 +38,9 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
         run: function(editor, sender) {
             var elements = [
                 { tagName: 'a', events: ['click'] },
-                { tagName: 'form', events: ['submit'] }
+                { tagName: 'form', events: ['submit'] },
+                { tagName: 'input[type="checkbox"]', events: ['click'] },
+                { tagName: 'input[type="radio"]', events: ['click'] }
             ];
 
             var iframe = $(editor.Canvas.getFrameEl()).contents();
@@ -68,6 +70,7 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
             if (options.skipConfirm || confirm('Are you sure to empty the canvas?')) {
                 var comps = editor.DomComponents.clear();
                 editor.CssComposer.getAll().reset();
+                editor.trigger('change:selectedComponent');
                 editor.runCommand('open-snackbar', { message: 'The canvas has been cleared!' });
             }
         }
