@@ -20,6 +20,23 @@
     min-height: 75px !important;
 }
 
+.gjs-dashed label:empty,
+.gjs-dashed span:empty,
+.gjs-dashed p:empty,
+.gjs-dashed small:empty,
+.gjs-dashed cine:empty,
+.gjs-dashed h1:empty,
+.gjs-dashed h2:empty,
+.gjs-dashed h3:empty,
+.gjs-dashed h4:empty,
+.gjs-dashed h5:empty,
+.gjs-dashed h6:empty {
+    min-height: 30px !important;
+    background-image: url(http://via.placeholder.com/200x30/ffffff?text=ENTER+TEXT+HERE);
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
 .gjs-dashed [class*="container"] {
     padding-top: 10px !important;
     padding-bottom: 10px !important;
@@ -42,6 +59,7 @@
 .gjs-dashed [class*="container"]:empty,
 .gjs-dashed [class*="col"]:empty,
 .gjs-dashed form .form-dropzone:empty {
+    background-color: #fff !important;
     background-size: contain;
     min-height: 200px;
 }
@@ -60,7 +78,8 @@ input[data-hidden] {
 .gjs-dashed input[type="hidden"],
 .gjs-dashed input[data-hidden] {
     display: inline-block !important;
-    border: 2px solid rgba(146, 23, 23, .5);
-    background-color: rgba(146, 23, 23, 0.25);
+    border: 1px solid rgba(123, 123, 118, 0.5);
+    background-color: rgba(202, 202, 202, 0.25);
     /* color: #fff !important; */
+    opacity: 0.35;
 }
