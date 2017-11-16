@@ -61,7 +61,7 @@
                     // Park Holidays Stylesheets
                     _serverData.assetManager.assetPath + 'css/parkholidays/critical.css',
                     _serverData.assetManager.assetPath + 'css/parkholidays/non_critical.css',
-                    _serverData.assetManager.assetPath + 'css/phast/dynablocks.css',
+                    _serverData.assetManager.assetPath + 'css/phast/dynamicblocks.css',
                     'https://i.icomoon.io/public/342e837bbb/ParkHolidays/style.css',
                     // Page Builder Stylesheets
                     '{{ asset("parkholidays/pagebuilder/css/components.css") }}'
