@@ -1131,7 +1131,7 @@ grapesjs.plugins.add('components', (editor, options) => {
                     placeholder: 'Enter view name'
                 }] : [];
 
-                var datajson = {};
+                var datajson = attrs['data-json'] ? JSON.parse(atob(attrs['data-json'])) : {};
 
                 if (!properties && attrs['properties']) {
                     // Take payload-properties and add to gjs_components
@@ -1156,7 +1156,7 @@ grapesjs.plugins.add('components', (editor, options) => {
                             changeProp: 1
                         };
 
-                        trait.options = [{ name: 'Please select ', value: '', disable: true }].concat(trait.options);
+                        trait.options = [{ name: 'Please select ', value: ' ', disable: true }].concat(trait.options);
 
                         // Ajax Load Options
                         if (property.dynamic_options) {
@@ -1186,6 +1186,7 @@ grapesjs.plugins.add('components', (editor, options) => {
                                             options.push(option);
                                         });
                                     }
+
 
                                     iTrait.set('options', options);
                                     compTraits.where({ name: iTrait.name }).splice(index, 0, iTrait);
@@ -1221,13 +1222,14 @@ grapesjs.plugins.add('components', (editor, options) => {
                     self.listenTo(self, 'change:' + property.name, function(component, value) {
                         attrs = component.get('attributes');
 
-                        // console.log('Proeprty Changed', property.name, value);
                         var datajson = JSON.parse(atob(attrs['data-json']));
-                        datajson[property.name] = value;
+                        datajson[property.name] = value.trim();
+
+                        console.log('Proeprty Changed', property.name, value, datajson);
 
                         attrs['data-json'] = btoa(JSON.stringify(datajson));
                         component.set('attributes', attrs);
-                        // domComponents.render();
+                        domComponents.render();
                     });
                 });
 
