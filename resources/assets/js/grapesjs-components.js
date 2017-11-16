@@ -1217,15 +1217,17 @@ grapesjs.plugins.add('components', (editor, options) => {
 
                 // Listeners - Traits
                 _.forEach(self.get('properties'), function(property) {
+                    // console.log('Property Listeners', property);
                     self.listenTo(self, 'change:' + property.name, function(component, value) {
                         attrs = component.get('attributes');
 
+                        // console.log('Proeprty Changed', property.name, value);
                         var datajson = JSON.parse(atob(attrs['data-json']));
                         datajson[property.name] = value;
 
                         attrs['data-json'] = btoa(JSON.stringify(datajson));
                         component.set('attributes', attrs);
-                        domComponents.render();
+                        // domComponents.render();
                     });
                 });
 
@@ -1242,7 +1244,7 @@ grapesjs.plugins.add('components', (editor, options) => {
     });
 
     // SERVER BLOCKS
-    domComponents.addType('server block', {
+    domComponents.addType('serverblock', {
         model: defaultType.model.extend({
             defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                 stylable: [],
@@ -1255,12 +1257,13 @@ grapesjs.plugins.add('components', (editor, options) => {
 
             }),
             icon() {
+                self.setImmediate('custom-name', 'Server Block');
                 editor.runCommand('set-properties', { component: self });
             }
         }, {
             isComponent: function(el) {
                 if (el.tagName == 'SERVERBLOCK') {
-                    return { type: 'server block' };
+                    return { type: 'serverblock' };
                 }
             },
         }),
@@ -1485,7 +1488,8 @@ grapesjs.plugins.add('components', (editor, options) => {
 
         var stylable = component ? component.get('stylable') : false;
         var disableSM = invalidComponent || (stylable == false || stylable == []);
-        var disableTM = invalidComponent || (component.get('traits').length == 0);
+        console.log(component);
+        var disableTM = invalidComponent || (component ? (component.get('traits').length == 0) : false);
 
         var smBtn = panels.getButton('views', 'open-sm');
         var tmBtn = panels.getButton('views', 'open-tm');
