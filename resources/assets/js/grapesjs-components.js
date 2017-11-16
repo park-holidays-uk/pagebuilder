@@ -1176,8 +1176,8 @@ grapesjs.plugins.add('components', (editor, options) => {
                                     data: formData,
                                 })
                                 .done(function(data) {
-                                    var compTraits = self.get('traits').models;
-                                    var iTrait = compTraits.filter(function(t) { return t.get('name') == property.name; })[0];
+                                    var compTraits = self.get('traits');
+                                    var iTrait = compTraits.where({ name: property.name })[0];
                                     var index = compTraits.indexOf(function(t) { t.get('name') == iTrait.name; });
                                     var options = iTrait.get('options');
 
@@ -1188,7 +1188,7 @@ grapesjs.plugins.add('components', (editor, options) => {
                                     }
 
                                     iTrait.set('options', options);
-                                    compTraits.filter(function(t) { return t.get('name') != iTrait.name; }).splice(index, 0, iTrait);
+                                    compTraits.where({ name: iTrait.name }).splice(index, 0, iTrait);
                                     self.set('traits', compTraits);
                                 });
                         }
@@ -1253,12 +1253,12 @@ grapesjs.plugins.add('components', (editor, options) => {
                 copyable: false,
                 resizable: false,
                 editable: false,
-                removable: true,
-
+                removable: true
             }),
-            icon() {
-                self.setImmediate('custom-name', 'Server Block');
-                editor.runCommand('set-properties', { component: self });
+            init() {
+                var self = this;
+                self.set('custom-name', 'Server Block');
+                editor.runCommand('set-properties', { component: self, traits: [] });
             }
         }, {
             isComponent: function(el) {
