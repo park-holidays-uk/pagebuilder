@@ -104,7 +104,6 @@ At present only type *text* and *select* is available.
         "name":"parks",
         "label":"Parks", 
         "value": "", 
-        "multiple":true, 
         "dynamic_options":true, 
         "options_connection":"CONNECTION",
         "options_table":"TABLE",
@@ -143,3 +142,4 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 * When text blocks are emptied, after text is re-entered, the text or the block is duplicated.
 * When the trait *Checked* is changed for checkboxes and radion buttons, the prevent-default breaks for those elements.
 * Sometimes when canvas is loaded, some content or blocks are missing (although the content is in DB). Refreshing page seems to restore them.
+* Dragging blocks into the canvas (BODY) causes the block to be duplicated and deleting one deletes both.
