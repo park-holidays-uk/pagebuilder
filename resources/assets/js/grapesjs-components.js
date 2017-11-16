@@ -327,7 +327,7 @@ grapesjs.plugins.add('components', (editor, options) => {
         model: defaultType.model.extend({
             defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                 stylable: [],
-                draggable: ['#wrapper'],
+                draggable: true,
                 copyable: true,
                 resizable: false,
                 editable: true,
@@ -375,6 +375,11 @@ grapesjs.plugins.add('components', (editor, options) => {
                 self.listenTo(self, 'change:margin_bottom_class', function(component, value) {
                     editor.runCommand('set-margin', { component: self, margin: 'bottom', class: value });
                 });
+
+                // DRAGGABLE #WRAPPER FIX - TODO Remove in future versions
+                if (self.get('draggable') == '#wrapper') {
+                    self.set('draggable', true);
+                }
             }
         }, {
             isComponent: function(el) {
