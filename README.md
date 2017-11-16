@@ -135,6 +135,7 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 * Add support for more elements (Lists, tables etc.)
 * Change Trait input fields to multi-select dropdowns.
 * Replace multple grid blocks with customisable grids
+* Find more permenant fix for Grapejs select traits not triggering change event if value = '' or null.
 
 ## Known Issues
 
