@@ -141,5 +141,5 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 * If an element with a style associated to it is copied, both copies of the element refer to same style, preventing the elements being styled differently. - *Temporary solution would be to disable copying of elements*
 * When text blocks are emptied, after text is re-entered, the text or the block is duplicated.
 * When the trait *Checked* is changed for checkboxes and radion buttons, the prevent-default breaks for those elements.
-* Dynamic Block traits are unable to clear the value, once a page has been saved and reloaded. - *Work around, change the value, unfocus field and then clear the value*
+* Unable to clear the value of Dynamic Block traits, once a page has been saved and reloaded - *Work around, change the value, unfocus field and then clear the value*
 * Sometimes when canvas is loaded, some content or blocks are missing (although the content is in DB). Refreshing page seems to restore them.
