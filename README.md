@@ -143,4 +143,4 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 * Some blocks (i.e. Advert-Promo-Three) properties (Stylable, removable etc..) are being reset once dragged into the canvas.
 * When text blocks are emptied, after text is re-entered, the text or the block is duplicated.
 * When the trait *Checked* is changed for checkboxes and radion buttons, the prevent-default breaks for those elements.
-* Dynamic Block traits are unable to be changed once a page has been saved and reloaded.
+* Dynamic Block traits are unable to clear the value, once a page has been saved and reloaded. - *Work around, change the value, unfocus field and then clear the value*
