@@ -190,7 +190,7 @@ grapesjs.plugins.add('blocks', (editor, options) => {
             blockManager.add('form', {
                 label: 'Form',
                 category: 'Forms',
-                content: '<form><input type="hidden" name="name" title="Form name" placeholder="Form name" class="input"  data-gjs-custom-name="Hidden Input" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-removable="false" /> <input type="hidden" name="actions" title="Form actions" placeholder="Form actions" class="input"  data-gjs-custom-name="Hidden Input" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-removable="false" /> <input type="hidden" name="emailto" title="Email to" placeholder="Email to" class="input"  data-gjs-custom-name="Hidden Input" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-removable="false" /><div class="form-dropzone"></div></form>',
+                content: '<form><serverblock name="csrf_token" id="csrf-token" data-gjs-removable="false"></serverblock><input type="hidden" name="name" title="Form name" placeholder="Form name" class="input"  data-gjs-custom-name="Hidden Input" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-removable="false" /> <input type="hidden" name="actions" title="Form actions" placeholder="Form actions" class="input"  data-gjs-custom-name="Hidden Input" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-removable="false" /> <input type="hidden" name="emailto" title="Email to" placeholder="Email to" class="input"  data-gjs-custom-name="Hidden Input" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-removable="false" /><div class="form-dropzone"></div></form>',
                 attributes: { class: 'fa fa-wpforms' } // NO ICON
             });
 
