@@ -207,6 +207,10 @@ body {
     font-size: 14px;
 }
 
+.gjs-trt-trait select option {
+    background-color: #444444;
+}
+
 
 /* Create Divider */
 
