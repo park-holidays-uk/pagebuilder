@@ -150,6 +150,22 @@ grapesjs.plugins.add('blocks', (editor, options) => {
                 attributes: { class: 'fa fa-link' }
             });
 
+            // Lists
+            blockManager.add('list', {
+                label: 'List',
+                category: 'Basic',
+                content: '<ul><li>Lorem Ipsum</li></ul>',
+                attributes: { class: 'fa fa-list-ul' }
+            });
+
+            // Horizontal Rule
+            blockManager.add('horizontal-rule', {
+                label: 'Horizontal Rule',
+                category: 'Basic',
+                content: '<hr class="hr-separator"/>',
+                attributes: { class: 'fa fa-window-minimize' }
+            });
+
             // Image
             blockManager.add('image', {
                 label: 'Image',
@@ -173,14 +189,6 @@ grapesjs.plugins.add('blocks', (editor, options) => {
             //     content: '<table><thead><tr><th>Lorem Ipsum</th><th>Lorem Ipsum</th><th>Lorem Ipsum</th></tr></thead><tbody><tr><td>Lorem Ipsum</td><td>Lorem Ipsum</td><td>Lorem Ipsum</td></tr><tr><td>Lorem Ipsum</td><td>Lorem Ipsum</td><td>Lorem Ipsum</td></tr><tr><td>Lorem Ipsum</td><td>Lorem Ipsum</td><td>Lorem Ipsum</td></tr></tbody><tfoot><tr><td>Lorem Ipsum</td><td>Lorem Ipsum</td><td>Lorem Ipsum</td></tr></tfoot></table>',
             //     attributes: { class: 'fa fa-table' }
             // });
-
-            // Horizontal Rule
-            blockManager.add('horizontal-rule', {
-                label: 'Horizontal Rule',
-                category: 'Basic',
-                content: '<hr class="hr-separator"/>',
-                attributes: { class: 'fa fa-window-minimize' }
-            });
 
             /*
              *   FORMS
