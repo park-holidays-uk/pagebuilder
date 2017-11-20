@@ -71,10 +71,10 @@ class PageBuilderController extends Controller
 				$html = $this->setHiddenTypeAttributes($html);
 			}
 
-			// $html = preg_replace("@\n@","", $this->setInlineStyles($request->get('gjs-css'), $html)); 
+			$html = preg_replace("@\n@","", $this->setInlineStyles($request->get('gjs-css'), $html)); 
 			
 			$record->html_base64 = base64_encode($html);
-			$record->css_base64 = base64_encode(preg_replace("/([*{](.*?)[}][body{](.*?)[}])/", "", $request->get('gjs-css'))) ?? null;
+			$record->css_base64 = null;//base64_encode(preg_replace("/([*{](.*?)[}][body{](.*?)[}])/", "", $request->get('gjs-css'))) ?? null;
 			$record->gjs_components = $request->get('gjs-components');
 			$record->save();
 
@@ -282,6 +282,7 @@ class PageBuilderController extends Controller
 	// Set Hidden Input Types
 	function setHiddenTypeAttributes($html) {
 		$dom = new \DOMDocument();
+		$html = mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8"); 
 		@$dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 		$xpath = new \DOMXPath($dom);
 
@@ -314,9 +315,55 @@ class PageBuilderController extends Controller
 		return $dom->saveHTML();
 	}
 
+	// Convert CSS to inline styles
+	function setInlineStyles($css, $html) {
+		$dom = new \DOMDocument();
+		$html = mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8"); 
+		@$dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+		$xpath = new \DOMXPath($dom);
+
+		preg_match_all ('/(.(.*?)|#c\d{3,})\s?({(.*?)})/', $css, $styles, PREG_PATTERN_ORDER);
+
+		$prevSelector = null;
+		$i = 0;
+		
+		foreach($styles[1] as $selector) {
+			$element = null;
+			
+			if($selector != $prevSelector) {
+				switch($selector[0]) {
+					case '#':
+						$element = $xpath->query("//*[@id = '". substr($selector, 1) ."']");
+						break;
+					case '.':
+					dd(str_replace('.', ' ', substr($selector, 1)));
+						$element = $xpath->query("//*[contains(@class, '". str_replace('.', ' ', substr($selector, 1)) ."')]");
+
+						if($element && $element->item(0) && preg_match('/(.c\d{2,4})/', $selector)){
+							$class = $element->item(0)->getAttribute('class');
+							$class = preg_replace('/(.c\d{2,4})/', '', $class);
+							$element->item(0)->setAttribute('class', trim($class));
+						}
+						break;
+				}
+
+				if($element && $element->item(0)) {
+					$element->item(0)->setAttribute('style', $styles[4][$i]);
+				}
+			}
+
+			$prevSelector = $selector;
+			$i++;
+		}
+
+		$html = $dom->saveHTML();
+		return $html;
+	}
+
 	// Add GJS properties as attributes
 	function setGrapesAttributes($json, $html) {
 		$dom = new \DOMDocument();
+		$html = mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8"); 
 		@$dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 		$xpath = new \DOMXPath($dom);
 
