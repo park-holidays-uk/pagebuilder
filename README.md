@@ -135,6 +135,7 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 * Change Trait input fields to multi-select dropdowns.
 * Replace multple grid blocks with customisable grids
 * Find more permenant fix for Grapejs select traits not triggering change event if value = '' or null.
+* Look at changing video default source to YouTube
 
 ## Known Issues
 
@@ -143,3 +144,4 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 * When the trait *Checked* is changed for checkboxes and radion buttons, the prevent-default breaks for those elements.
 * Sometimes when canvas is loaded, some content or blocks are missing (although the content is in DB). Refreshing page seems to restore them.
 * Dragging blocks into the canvas (BODY) causes the block to be duplicated and deleting one deletes both.
+* Some blocks are randomly unable to be dropped into droppable components (elements).
