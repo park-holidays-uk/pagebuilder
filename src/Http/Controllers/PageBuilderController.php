@@ -333,17 +333,12 @@ class PageBuilderController extends Controller
 			if($selector != $prevSelector) {
 				switch($selector[0]) {
 					case '#':
-						$element = $xpath->query("//*[@id = '". substr($selector, 1) ."']");
+						$id = explode('.', substr($selector, 1))[0];
+						$element = $xpath->query("//*[@id = '". $id ."']");
 						break;
 					case '.':
-					dd(str_replace('.', ' ', substr($selector, 1)));
-						$element = $xpath->query("//*[contains(@class, '". str_replace('.', ' ', substr($selector, 1)) ."')]");
-
-						if($element && $element->item(0) && preg_match('/(.c\d{2,4})/', $selector)){
-							$class = $element->item(0)->getAttribute('class');
-							$class = preg_replace('/(.c\d{2,4})/', '', $class);
-							$element->item(0)->setAttribute('class', trim($class));
-						}
+						$classStr = str_replace('.', ' ', substr($selector, 1));
+						$element = $xpath->query("//*[contains(@class, '". $classStr ."')]");
 						break;
 				}
 
@@ -354,6 +349,33 @@ class PageBuilderController extends Controller
 
 			$prevSelector = $selector;
 			$i++;
+		}
+
+		$html = $this->removeGrapesJsId($dom->saveHTML());
+		return $html;
+	}
+
+	// Remove GrapesJS Id / Classes
+	function removeGrapesJsId($html) {
+		$dom = new \DOMDocument();
+		$html = mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8"); 
+		@$dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+		$xpath = new \DOMXPath($dom);
+
+		preg_match_all ('/(c\d{3,})/', $html, $items, PREG_PATTERN_ORDER);
+
+		foreach($items[0] as $item) { 
+			$element = $xpath->query("//*[@id = '". $item ."']");
+			if($element && $element->item(0)) {
+				$element->item(0)->removeAttribute('id');
+			}
+
+			$element = $xpath->query("//*[contains(@class, '". $item ."')]");
+			if($element && $element->item(0)){
+				$class = $element->item(0)->getAttribute('class');
+				$class = preg_replace('/(.c\d{2,4})/', '', $class);
+				$element->item(0)->setAttribute('class', trim($class));
+			}
 		}
 
 		$html = $dom->saveHTML();
