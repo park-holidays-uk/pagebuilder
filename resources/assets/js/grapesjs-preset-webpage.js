@@ -49,6 +49,9 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
                 el.events.forEach(function(e) {
                     iframe.find(el.tagName).off(e).on(e, function(event) {
                         event.preventDefault();
+                        if (el.tagName == 'checkbox' || el.tagName == 'radio') {
+                            $(this).prop('checked', !$(this).prop('checked'));
+                        }
                     });
                 });
             });
@@ -255,7 +258,6 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
 
     editor.on('load', function() {
         if (isPageMode) {
-            // wrapper.set('droppable', true /*['.container', '.fluid-container', '.dynamic-block']*/ );
             wrapper.set('stylable', []);
         }
 
