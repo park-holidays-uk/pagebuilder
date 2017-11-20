@@ -1,0 +1,228 @@
+/*
+*   GRAPE JS - Overrides
+*/
+
+.gjs-clickable-blocks {
+    .gjs-block {
+        cursor: pointer !important;
+        &:hover,
+        &:focus {
+            border-color: #fff;
+        }
+    }
+    #gjs-pn-commands .gjs-pn-buttons {
+        display: none !important;
+    }
+}
+
+
+/*
+*   CANVAS 
+*/
+
+
+/* .gjs-cv-canvas {
+transition: all 0.15s;
+} */
+
+.gjs-pn-attributes-shown .gjs-cv-canvas {
+    left: 15%;
+    width: 70%;
+}
+
+
+/*
+*   VIEWS 
+*/
+
+#gjs-pn-views {
+    .gjs-pn-buttons {
+        display: flex;
+        flex-direction: row !important;
+        .gjs-pn-btn {
+            flex: 1;
+        }
+    }
+}
+
+
+/*
+*   PANELS 
+*/
+
+.gjs-pn-active {
+    color: #e01e48 !important;
+}
+
+#gjs-pn-devices-c {
+    z-index: 3;
+    width: 85%;
+    background-color: transparent;
+}
+
+
+/* .gjs-clm-tags {
+display: none;
+} */
+
+
+/*
+*   Asset Manager 
+*/
+
+
+/* 
+.gjs-asset-manager .gjs-am-file-uploader,
+.gjs-asset-manager .gjs-am-assets-header {
+display: none;
+} */
+
+.gjs-asset-manager {
+    .gjs-am-assets-cont {
+        float: none;
+        width: 100%;
+    }
+}
+
+.gjs-am-assets-cont {
+    height: 425px;
+    .gjs-am-assets {
+        height: 405px;
+    }
+}
+
+.gjs-am-asset {
+    &.gjs-am-asset-image {
+        width: 25%;
+        display: flex;
+        flex-direction: column;
+        .gjs-am-preview-cont {
+            width: 100%;
+            height: 100px;
+            float: none;
+        }
+        .gjs-am-meta {
+            float: none;
+            display: block;
+            word-wrap: break-word;
+            width: 100%;
+        }
+    }
+}
+
+
+/* 
+*   Asset Manager Filters 
+*/
+
+.gjs-am-add-asset {
+    .gjs-am-select-filters {
+        display: flex;
+        flex-direction: row;
+    }
+    .gjs-am-select-filters>div {
+        flex: 1;
+        padding: 0 5px 10px;
+        &:first-child {
+            padding-left: 0;
+        }
+        &:last-child {
+            padding-right: 0;
+        }
+    }
+    .gjs-fields {
+        .gjs-field {
+            padding: 5px 0 5px 5px;
+        }
+        .gjs-field select {
+            padding: 0;
+        }
+        .gjs-field select option {
+            background-color: transparent;
+        }
+        .gjs-sm-label {
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+    }
+}
+
+
+/* .gjs-am-asset.gjs-am-asset-image .gjs-am-close {
+display: none !important;
+} */
+
+#gjs-am-pager {
+    .gjs-am-pagination {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        width: auto;
+    }
+    .gjs-am-pagination>li {
+        display: inline-block;
+    }
+    .gjs-am-pagination>li a {
+        display: block;
+        padding: 5px 8px;
+        text-align: center;
+    }
+    .gjs-am-pagination>li a.gjs-am-page-link {
+        cursor: pointer;
+    }
+    .gjs-am-pagination>li.active a {
+        background-color: rgba(33, 33, 33, 0.2);
+    }
+}
+
+
+/*
+*   SETTINGS TRAITS 
+*/
+
+.gjs-trt-trait {
+    position: relative;
+    .gjs-field.gjs-field-checkbox {
+        position: absolute;
+        top: 8px;
+        right: 10px;
+    }
+    .gjs-label {
+        font-size: 14px;
+    }
+    select option {
+        background-color: #444444;
+    }
+    /* Create Divider */
+    .gjs-label:empty,
+    .gjs-field-divider * {
+        display: none;
+    }
+    .gjs-field-divider {
+        width: 100%;
+        height: 1px;
+        /* margin: 10px; */
+    }
+}
+
+
+/* .gjs-trt-trait .gjs-label:empty~.gjs-field {
+display: none;
+} */
+
+
+/** MODALS **/
+
+.gjs-mdl-dialog {
+    .gjs-mdl-header {
+        padding: 15px !important;
+    }
+    .gjs-mdl-header .gjs-mdl-btn-close {
+        top: 8px !important;
+    }
+}
+
+.gjs-import-label,
+.CodeMirror-wrap {
+    margin-bottom: 15px;
+}

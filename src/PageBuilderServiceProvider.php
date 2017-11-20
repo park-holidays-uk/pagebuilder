@@ -33,7 +33,7 @@ class PageBuilderServiceProvider extends ServiceProvider
 
         // Publish assets
         $this->publishes([
-            $resourcePath .'/assets' => public_path('parkholidays/pagebuilder'),
+            __DIR__ . '/../public' => public_path('parkholidays/pagebuilder'),
         ], 'public');
     }
 

@@ -1,0 +1,83 @@
+/* Hidden Input */
+
+input[data-hidden] {
+    display: none !important;
+}
+
+
+/* Canvas GJS-DASHED */
+
+.gjs-dashed {
+    /* Add Padding */
+    // - To make elements easily selectable.
+    [class*="container"],
+    [class*="container"],
+    [class*="grid"],
+    section,
+    form,
+    form .form-dropzone {
+        padding-top: 10px !important;
+        padding-right: 10px !important;
+        padding-bottom: 10px !important;
+        padding-left: 10px !important;
+    }
+    [class*="grid"],
+    section,
+    form,
+    form .form-dropzone {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    /* Add Placeholder */
+    // - To show where to drop blocks when element empty
+    label:empty,
+    span:empty,
+    p:empty,
+    small:empty,
+    cine:empty,
+    h1:empty,
+    h2:empty,
+    h3:empty,
+    h4:empty,
+    h5:empty,
+    h6:empty {
+        min-height: 30px !important;
+        background-image: url(http://via.placeholder.com/200x30/ffffff?text=ENTER+TEXT+HERE);
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+    #wrapper:empty,
+    [class*="container"]:empty,
+    [class*="col"]:empty,
+    form .form-dropzone:empty {
+        background-image: url(http://via.placeholder.com/350x75/ffffff?text=DROP+BLOCKS+HERE);
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+    [class*="container"]:empty,
+    [class*="col"]:empty,
+    form .form-dropzone:empty {
+        background-color: #fff !important;
+        background-size: contain;
+        min-height: 200px;
+    }
+    /* Set Height / Min-Height */
+    // - To make elements more visible especially if empty
+    [class*="container"],
+    [class*="col"],
+    form .form-dropzone {
+        min-height: 75px !important;
+    }
+    hr {
+        height: 5px;
+    }
+    /* Hidden Input */
+    input[type="hidden"],
+    input[data-hidden] {
+        display: inline-block !important;
+        border: 1px solid rgba(123, 123, 118, 0.5);
+        background-color: rgba(202, 202, 202, 0.25);
+        /* color: #fff !important; */
+        opacity: 0.35;
+    }
+}

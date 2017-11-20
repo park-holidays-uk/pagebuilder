@@ -127,7 +127,6 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 
 ## TODOS
 
-* Modulerise CSS and JavaScript.
 * Add support for SRCSET on images. - *Need to work out how path will work*
 * Tweak filtering options for Asset modal to work better.
 * Restyle to match the styling of PHAST.
@@ -139,7 +138,7 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 
 ## Known Issues
 
-* When text blocks are emptied, after text is re-entered, the text or the block is duplicated.
+* When text blocks are emptied, after text is re-entered or pasted in, the text or the block is duplicated.
 * Sometimes when canvas is loaded, some content or blocks are missing (although the content is in DB). Refreshing page seems to restore them.
 * Dragging blocks into the canvas (BODY) causes the block to be appear duplicated, but it is only vision ghosting.
 * Some blocks are randomly unable to be dropped into droppable components (elements).
