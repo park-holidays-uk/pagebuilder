@@ -57,7 +57,12 @@ transition: all 0.15s;
 #gjs-pn-devices-c {
     z-index: 3;
     width: 85%;
-    background-color: transparent;
+    // background-color: transparent;
+}
+
+#gjs-pn-options,
+#gjs-pn-default {
+    z-index: 4;
 }
 
 
