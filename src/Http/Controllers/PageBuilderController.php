@@ -267,7 +267,7 @@ class PageBuilderController extends Controller
 		$html = base64_decode($item->html_base64);
 
 		$dom = new \DOMDocument();
-		@$dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+		@$dom->loadHTML($html, LIBXML_HTML_NODEFDTD);//, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 		$xpath = new \DOMXPath($dom);
 
 		$element = $xpath->query("//dynablock");
@@ -276,18 +276,19 @@ class PageBuilderController extends Controller
 			$element->item(0)->setAttribute('properties', base64_encode($item->payload_properties));
 		}
 
-		return $dom->saveHTML();
+		return preg_replace('/\<(\/)?(html|body)>/','', $dom->saveHTML());
 	}
 
 	// Set Hidden Input Types
 	function setHiddenTypeAttributes($html) {
 		$dom = new \DOMDocument();
 		$html = mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8"); 
-		@$dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+		@$dom->loadHTML($html, LIBXML_HTML_NODEFDTD);//, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 		$xpath = new \DOMXPath($dom);
 
 		$elements = $xpath->query("//input[@data-hidden=\"hidden\"]");
 
+		if($elements->length > 0) 
 		foreach($elements as $element) {
 			$element->setAttribute('type','hidden');
 			$element->removeAttribute('readonly');
@@ -312,14 +313,14 @@ class PageBuilderController extends Controller
 			}
 		}
 
-		return $dom->saveHTML();
+		return preg_replace('/\<(\/)?(html|body)>/','', $dom->saveHTML());
 	}
 
 	// Convert CSS to inline styles
 	function setInlineStyles($css, $html) {
 		$dom = new \DOMDocument();
 		$html = mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8"); 
-		@$dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+		@$dom->loadHTML($html, LIBXML_HTML_NODEFDTD);//, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 		$xpath = new \DOMXPath($dom);
 
 		preg_match_all ('/(.(.*?)|#c\d{3,})\s?({(.*?)})/', $css, $styles, PREG_PATTERN_ORDER);
@@ -351,7 +352,7 @@ class PageBuilderController extends Controller
 			$i++;
 		}
 
-		$html = $this->removeGrapesJsId($dom->saveHTML());
+		$html = $this->removeGrapesJsId(preg_replace('/\<(\/)?(html|body)>/','', $dom->saveHTML()));
 		return $html;
 	}
 
@@ -359,7 +360,7 @@ class PageBuilderController extends Controller
 	function removeGrapesJsId($html) {
 		$dom = new \DOMDocument();
 		$html = mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8"); 
-		@$dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+		@$dom->loadHTML($html, LIBXML_HTML_NODEFDTD);//, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 		$xpath = new \DOMXPath($dom);
 
 		preg_match_all ('/(c\d{3,})/', $html, $items, PREG_PATTERN_ORDER);
@@ -378,7 +379,7 @@ class PageBuilderController extends Controller
 			}
 		}
 
-		$html = $dom->saveHTML();
+		$html = preg_replace('/\<(\/)?(html|body)>/','', $dom->saveHTML());
 		return $html;
 	}
 
@@ -386,7 +387,7 @@ class PageBuilderController extends Controller
 	function setGrapesAttributes($json, $html) {
 		$dom = new \DOMDocument();
 		$html = mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8"); 
-		@$dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+		@$dom->loadHTML($html, LIBXML_HTML_NODEFDTD);//, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 		$xpath = new \DOMXPath($dom);
 
 		if(isset($json['attributes']['id'])) {
@@ -407,7 +408,7 @@ class PageBuilderController extends Controller
 			}
 		}
 		
-		$html = $dom->saveHTML();
+		$html = preg_replace('/\<(\/)?(html|body)>/','', $dom->saveHTML());
 		foreach($json['components'] as $component) {
 			$html = $this->setGrapesAttributes($component, $html);
 		}

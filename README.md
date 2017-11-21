@@ -129,12 +129,13 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 
 * Add support for SRCSET on images. - *Need to work out how path will work*
 * Tweak filtering options for Asset modal to work better.
-* Restyle to match the styling of PHAST.
+* Restyle to match the styling of PHAST/Park Holidays.
 * Add support for more elements (Lists, tables etc.)
-* Change Trait input fields to multi-select dropdowns.
+* Add support for multiple-select dropdowns for traits.
 * Replace multple grid blocks with customisable grids
 * Find more permenant fix for Grapejs select traits not triggering change event if value = '' or null.
 * Look at changing video default source to YouTube
+* Look into more permenant fix for DomDocument parsing issue (https://stackoverflow.com/questions/39479994/php-domdocument-savehtml-breaks-format)
 
 ## Known Issues
 
