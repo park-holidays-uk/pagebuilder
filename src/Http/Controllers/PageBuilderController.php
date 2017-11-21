@@ -45,7 +45,7 @@ class PageBuilderController extends Controller
 		if($record) {
 			$data = collect([
 				'gjs-assets' => [],
-				'gjs-css' => null,//base64_decode($record->css_base64),
+				'gjs-css' => base64_decode($record->css_base64),
 				'gjs-html' => preg_replace("/\s+|\n+|\r/", ' ', base64_decode($record->html_base64)),
 				'gjs-components' => $record->gjs_components
 			]);
@@ -72,9 +72,10 @@ class PageBuilderController extends Controller
 			}
 
 			$html = preg_replace("@\n@","", $this->setInlineStyles($request->get('gjs-css'), $html)); 
+			// return collect([$html])->toJson();
 			
 			$record->html_base64 = base64_encode($html);
-			$record->css_base64 = null;//base64_encode(preg_replace("/([*{](.*?)[}][body{](.*?)[}])/", "", $request->get('gjs-css'))) ?? null;
+			$record->css_base64 = base64_encode(preg_replace("/([*{](.*?)[}][body{](.*?)[}])/", "", $request->get('gjs-css'))) ?? null;
 			$record->gjs_components = $request->get('gjs-components');
 			$record->save();
 
