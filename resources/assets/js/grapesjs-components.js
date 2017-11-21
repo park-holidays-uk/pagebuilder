@@ -258,10 +258,7 @@ grapesjs.plugins.add('components', (editor, options) => {
                     var self = this;
 
                     // Run Commands
-                    if (!isPageMode) {
-                        editor.runCommand('set-id-attribute', { component: self });
-                    }
-
+                    editor.runCommand('set-id-attribute', { component: self });
                     editor.runCommand('set-properties', { component: self });
 
                     // Listener -- Change container class between Fluid and Non-fluid
@@ -301,12 +298,9 @@ grapesjs.plugins.add('components', (editor, options) => {
                 } else {
                     var stylables = ['color', 'text-align', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'];
 
-                    editor.runCommand('set-properties', { component: self, stylables: stylables });
-
                     // Run Commands
-                    if (!isPageMode) {
-                        editor.runCommand('set-id-attribute', { component: self });
-                    }
+                    editor.runCommand('set-properties', { component: self, stylables: stylables });
+                    editor.runCommand('set-id-attribute', { component: self });
                 }
             }
         }, {
@@ -326,7 +320,7 @@ grapesjs.plugins.add('components', (editor, options) => {
     domComponents.addType('container', {
         model: defaultType.model.extend({
             defaults: Object.assign({}, defaultType.model.prototype.defaults, {
-                stylable: [],
+                stylable: ['margin', 'margin-top', 'margin-bottom', 'padding', 'padding-top', 'padding-bottom'],
                 draggable: true,
                 copyable: true,
                 resizable: false,
@@ -351,10 +345,7 @@ grapesjs.plugins.add('components', (editor, options) => {
                 }]);
 
                 // Run Commands
-                if (!isPageMode) {
-                    editor.runCommand('set-id-attribute', { component: self });
-                }
-
+                editor.runCommand('set-id-attribute', { component: self });
                 editor.runCommand('set-properties', { component: self, traits: traits, allowDisablingTraits: true });
 
                 // Listener -- Change container class between Fluid and Non-fluid
@@ -407,10 +398,7 @@ grapesjs.plugins.add('components', (editor, options) => {
                 var self = this;
 
                 // Run Commands
-                if (!isPageMode) {
-                    editor.runCommand('set-id-attribute', { component: self });
-                }
-
+                editor.runCommand('set-id-attribute', { component: self });
                 editor.runCommand('set-properties', { component: self, traits: marginTraits, allowDisablingTraits: true });
 
                 // Listener -- Margins
@@ -454,12 +442,10 @@ grapesjs.plugins.add('components', (editor, options) => {
             }),
             init() {
                 var self = this;
-                editor.runCommand('set-properties', { component: self, traits: [] });
 
                 // Run Commands
-                if (!isPageMode) {
-                    editor.runCommand('set-id-attribute', { component: self });
-                }
+                editor.runCommand('set-properties', { component: self, traits: [] });
+                editor.runCommand('set-id-attribute', { component: self });
             }
         }, {
             isComponent: function(el) {
@@ -493,17 +479,14 @@ grapesjs.plugins.add('components', (editor, options) => {
                 var traits = self.get('traits').models;
                 self.set('stylable', self.get('is_stylable') ? true : []);
 
-                traits.concat(dividerTrait)
+                traits = traits.concat(dividerTrait)
                     .concat(alignmentTraits)
                     .concat(dividerTrait)
                     .concat(buttonStyleTraits);
 
-                editor.runCommand('set-properties', { component: self, traits: traits });
-
                 // Run Commands
-                if (!isPageMode) {
-                    editor.runCommand('set-id-attribute', { component: self });
-                }
+                editor.runCommand('set-properties', { component: self, traits: traits });
+                editor.runCommand('set-id-attribute', { component: self });
 
                 // Button Styles
                 var buttonSize = self.get(buttonProperties.size);
@@ -562,12 +545,9 @@ grapesjs.plugins.add('components', (editor, options) => {
                     changeProp: 1
                 }]);
 
-                editor.runCommand('set-properties', { component: self, traits: traits });
-
                 // Run Commands
-                if (!isPageMode) {
-                    editor.runCommand('set-id-attribute', { component: self });
-                }
+                editor.runCommand('set-properties', { component: self, traits: traits });
+                editor.runCommand('set-id-attribute', { component: self });
 
                 // Listener -- Responsive
                 self.listenTo(self, 'change:is_responsive', function(component, value) {
@@ -650,6 +630,7 @@ grapesjs.plugins.add('components', (editor, options) => {
 
                 editor.runCommand('set-button-style', { component: self });
                 editor.runCommand('set-properties', { component: self, traits: traits });
+                editor.runCommand('set-id-attribute', { component: self });
             }
         }, {
             isComponent: function(el) {
@@ -1101,6 +1082,7 @@ grapesjs.plugins.add('components', (editor, options) => {
 
                 self.set('traits', traits);
                 self.set('attributes', attrs);
+                editor.runCommand('set-id-attribute', { component: self });
                 customNameTrait.label = customNameLabel;
             }
         }, {
@@ -1157,7 +1139,6 @@ grapesjs.plugins.add('components', (editor, options) => {
                             name: property.name,
                             options: property.options || [],
                             value: property.value,
-                            multiple: property.multiple || false,
                             changeProp: 1
                         };
 
@@ -1191,7 +1172,6 @@ grapesjs.plugins.add('components', (editor, options) => {
                                             options.push(option);
                                         });
                                     }
-
 
                                     iTrait.set('options', options);
                                     compTraits.where({ name: iTrait.name }).splice(index, 0, iTrait);
@@ -1238,6 +1218,7 @@ grapesjs.plugins.add('components', (editor, options) => {
                     });
                 });
 
+                editor.runCommand('set-id-attribute', { component: self });
             }
         }, {
             isComponent: function(el) {
@@ -1255,7 +1236,7 @@ grapesjs.plugins.add('components', (editor, options) => {
         model: defaultType.model.extend({
             defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                 stylable: [],
-                draggable: false,
+                draggable: true,
                 droppable: false,
                 copyable: false,
                 resizable: false,
@@ -1266,6 +1247,7 @@ grapesjs.plugins.add('components', (editor, options) => {
                 var self = this;
                 self.set('custom-name', 'Server Block');
                 editor.runCommand('set-properties', { component: self, traits: [] });
+                editor.runCommand('set-id-attribute', { component: self });
             }
         }, {
             isComponent: function(el) {
@@ -1285,13 +1267,17 @@ grapesjs.plugins.add('components', (editor, options) => {
     /** Add Remove Classes **/
     commands.add('set-id-attribute', {
         run: function(editor, sender, options) {
-            var regex = /\b(c\d{1,})\b/g;
+            var regex = /\b(c\d{2,})\b/g;
             var attrs = options.component.get('attributes');
             var oldId = attrs.id;
 
-            attrs.id = options.component.cid;
-            if (oldId && !regex.test(oldId)) { attrs['data-old-id'] = oldId; }
+            if (!oldId || regex.test(oldId)) { attrs.id = options.component.cid; }
             options.component.set('attributes', attrs);
+
+            // Add new class matching new ID
+            var removeClasses = options.component.get('classes').models.filter(function(c) { return regex.test(c.get('name')); }).map(function(c) { return c.get('name'); });
+            editor.runCommand('remove-class', { component: options.component, classes: removeClasses });
+            editor.runCommand('add-class', { component: options.component, classes: [options.component.cid] });
         }
     });
 
@@ -1299,7 +1285,7 @@ grapesjs.plugins.add('components', (editor, options) => {
     commands.add('set-properties', {
         run: function(editor, sender, options) {
             var self = options.component;
-            var stylable = self.get('stylable');
+            var stylable = options.stylables || self.get('stylable');
             var not_stylable = (stylable == false || stylable == []);
 
             var traits = options.traits || [];
