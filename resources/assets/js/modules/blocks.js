@@ -5,8 +5,9 @@ grapesjs.plugins.add('blocks', (editor, options) => {
      *   VARIABLES 
      */
 
-    // Managers
     var opt = options || {};
+
+    // Managers
     var commands = editor.Commands;
     var blockManager = editor.BlockManager;
 

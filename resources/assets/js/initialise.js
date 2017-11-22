@@ -6,6 +6,7 @@ var options = {
 
     plugins: [
         'preset-webpage',
+        'traits',
         'components',
         'blocks',
         'assets',
