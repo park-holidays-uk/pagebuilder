@@ -297,10 +297,8 @@ grapesjs.plugins.add('components', (editor, options) => {
                 if (self.get('tagName') == 'label') {
                     self.set('custom-name', 'Label');
                 } else {
-                    var stylables = ['color', 'text-align', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'];
-
                     // Run Commands
-                    editor.runCommand('set-properties', { component: self, stylables: stylables });
+                    editor.runCommand('set-properties', { component: self });
                     editor.runCommand('set-id-attribute', { component: self });
                 }
             }
@@ -388,7 +386,6 @@ grapesjs.plugins.add('components', (editor, options) => {
             init() {
                 // Initialise code
                 var self = this;
-
                 self.set('noGutter', self.get('classes').models.filter(function(c) { return c.get('name').indexOf('-noGutter') > -1; }).length > 0);
 
                 // Run Commands
