@@ -11,22 +11,29 @@ input[data-hidden] {
     /* Add Padding */
     // - To make elements easily selectable.
     [class*="container"],
-    [class*="container"],
     [class*="grid"],
     section,
     form,
     form .form-dropzone {
-        padding-top: 10px !important;
-        padding-right: 10px !important;
-        padding-bottom: 10px !important;
-        padding-left: 10px !important;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-bottom: 10px;
+        padding-left: 10px;
     }
-    [class*="grid"],
+    [class*="grid"][class*="-noGutter"],
     section,
     form,
     form .form-dropzone {
-        margin-left: 0 !important;
-        margin-right: 0 !important;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    [class*="container"] {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    [class*="grid"]:not([class*="-noGutter"]) {
+        margin-left: -0.5rem;
+        margin-right: -0.5rem;
     }
     /* Add Placeholder */
     // - To show where to drop blocks when element empty

@@ -58,6 +58,9 @@ transition: all 0.15s;
     z-index: 3;
     width: 85%;
     // background-color: transparent;
+    .gjs-pn-buttons {
+        justify-content: center;
+    }
 }
 
 #gjs-pn-options,
