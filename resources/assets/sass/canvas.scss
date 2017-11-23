@@ -50,13 +50,13 @@ input[data-hidden] {
         background-position: center center;
         background-repeat: no-repeat;
     }
-    div:empty,
+    div:empty:not(.gjs-css-rules):not(.gjs-js-cont),
     section:empty {
         background-image: url(http://via.placeholder.com/350x75/ffffff?text=DROP+BLOCKS+HERE);
         background-position: center center;
         background-repeat: no-repeat;
     }
-    div:empty:not(#wrapper),
+    div:empty:not(#wrapper):not(.gjs-css-rules):not(.gjs-js-cont),
     section:empty {
         background-color: #fff;
         background-size: contain;
