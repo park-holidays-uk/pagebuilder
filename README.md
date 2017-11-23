@@ -115,7 +115,7 @@ At present only type *text* and *select* is available.
         "type":"text"
         "name":"NAME", 
         "label":"LABEL",
-        value": "1"
+        "value": "1"
     }
 ]
 ```
