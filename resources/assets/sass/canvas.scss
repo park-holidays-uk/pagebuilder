@@ -10,9 +10,7 @@ input[data-hidden] {
 .gjs-dashed {
     /* Add Padding */
     // - To make elements easily selectable.
-    [class*="container"],
     [class*="grid"],
-    section,
     form,
     form .form-dropzone {
         padding-top: 10px;
@@ -21,7 +19,6 @@ input[data-hidden] {
         padding-left: 10px;
     }
     [class*="grid"][class*="-noGutter"],
-    section,
     form,
     form .form-dropzone {
         margin-left: 0;
@@ -48,35 +45,22 @@ input[data-hidden] {
     h4:empty,
     h5:empty,
     h6:empty {
-        min-height: 30px !important;
+        min-height: 40px !important;
         background-image: url(http://via.placeholder.com/200x30/ffffff?text=ENTER+TEXT+HERE);
         background-position: center center;
         background-repeat: no-repeat;
     }
-    #wrapper:empty,
-    [class*="container"]:empty,
-    [class*="col"]:empty,
-    form .form-dropzone:empty {
+    div:empty,
+    section:empty {
         background-image: url(http://via.placeholder.com/350x75/ffffff?text=DROP+BLOCKS+HERE);
         background-position: center center;
         background-repeat: no-repeat;
     }
-    [class*="container"]:empty,
-    [class*="col"]:empty,
-    form .form-dropzone:empty {
-        background-color: #fff !important;
+    div:empty:not(#wrapper),
+    section:empty {
+        background-color: #fff;
         background-size: contain;
-        min-height: 200px;
-    }
-    /* Set Height / Min-Height */
-    // - To make elements more visible especially if empty
-    [class*="container"],
-    [class*="col"],
-    form .form-dropzone {
-        min-height: 75px !important;
-    }
-    hr {
-        height: 5px;
+        min-height: 75px;
     }
     /* Hidden Input */
     input[type="hidden"],
