@@ -63,6 +63,22 @@ grapesjs.plugins.add('blocks', (editor, options) => {
                 attributes: { class: 'gjs-fonts gjs-f-b37' }
             });
 
+            // Div
+            blockManager.add('div', {
+                label: 'Div',
+                category: 'Basic',
+                content: '<div></div>',
+                attributes: { class: '' } // NO ICON
+            });
+
+            // Section
+            blockManager.add('section', {
+                label: 'Section',
+                category: 'Basic',
+                content: '<section></section>',
+                attributes: { class: '' } // NO ICON
+            });
+
             // Heading One
             blockManager.add('heading-one-text', {
                 label: 'Heading 1',
