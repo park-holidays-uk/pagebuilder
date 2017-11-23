@@ -101,9 +101,10 @@ At present only type *text* and *select* is available.
 [
     {
         "type":"select",
-        "name":"parks",
-        "label":"Parks", 
+        "name":"NAME",
+        "label":"LABEL", 
         "value": "", 
+        "multiple": true,
         "dynamic_options":true, 
         "options_connection":"CONNECTION",
         "options_table":"TABLE",
@@ -112,8 +113,8 @@ At present only type *text* and *select* is available.
     },
     {
         "type":"text"
-        "name":"rental_type", 
-        "label":"Rental Type",
+        "name":"NAME", 
+        "label":"LABEL",
         value": "1"
     }
 ]

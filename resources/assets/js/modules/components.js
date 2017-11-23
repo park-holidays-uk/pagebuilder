@@ -1159,7 +1159,7 @@ grapesjs.plugins.add('components', (editor, options) => {
                     // Create Dynamic Traits from Payload Properties
                     _.forEach(properties, function(property) {
                         var trait = {
-                            type: property.type,
+                            type: (property.type == 'select' && property.multiple) ? 'multi-select' : property.type,
                             label: property.label || property.name,
                             name: property.name,
                             options: property.options || [],
@@ -1167,7 +1167,7 @@ grapesjs.plugins.add('components', (editor, options) => {
                             changeProp: 1
                         };
 
-                        trait.options = [{ name: 'Please select ', value: ' ', disable: true }].concat(trait.options);
+                        trait.options = [{ name: (property.multiple) ? 'All ' + property.label : 'Please select ', value: ' ', disable: !property.multiple }].concat(trait.options);
 
                         // Ajax Load Options
                         if (property.dynamic_options) {
