@@ -132,11 +132,12 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 * Tweak filtering options for Asset modal to work better.
 * Restyle to match the styling of PHAST/Park Holidays.
 * Add support for more elements (Lists, tables etc.)
-* Add support for multiple-select dropdowns for traits.
 * Replace multple grid blocks with customisable grids
 * Find more permenant fix for Grapejs select traits not triggering change event if value = '' or null.
 * Look at changing video default source to YouTube
 * Look into more permenant fix for DomDocument parsing issue (https://stackoverflow.com/questions/39479994/php-domdocument-savehtml-breaks-format)
+* Improve on the multiple select traits.
+* Look at implimenting being able to add traits (by user) in PB. - Dynablocks, Serverblocks only.
 
 ## Known Issues
 
