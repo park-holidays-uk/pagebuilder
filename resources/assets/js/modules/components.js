@@ -257,10 +257,22 @@ grapesjs.plugins.add('components', (editor, options) => {
                 init() {
                     // Initialise code
                     var self = this;
+                    var stylables = [];
 
+                    switch (self.get('tagName')) {
+                        case 'div':
+                        case 'section':
+                            stylables = [
+                                'float', 'display',
+                                'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right',
+                                'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right',
+                                'background-color'
+                            ];
+                            break;
+                    }
                     // Run Commands
                     editor.runCommand('set-id-attribute', { component: self });
-                    editor.runCommand('set-properties', { component: self });
+                    editor.runCommand('set-properties', { component: self, stylables: stylables });
 
                     // Listener -- Change container class between Fluid and Non-fluid
                     self.listenTo(self, 'change:fluid', function(component, value) {
@@ -287,7 +299,11 @@ grapesjs.plugins.add('components', (editor, options) => {
     domComponents.addType('text', {
         model: textType.model.extend({
             defaults: Object.assign({}, defaultType.model.prototype.defaults, {
-                stylable: ['color', 'text-align', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'],
+                stylable: [
+                    'color', 'text-align',
+                    'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right',
+                    'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right'
+                ],
                 editable: true,
                 traits: []
             }),
@@ -312,6 +328,70 @@ grapesjs.plugins.add('components', (editor, options) => {
         }),
 
         view: textType.view
+    });
+
+    // Link
+    domComponents.addType('link', {
+        model: linkType.model.extend({
+            defaults: Object.assign({}, linkType.model.prototype.defaults, {
+                stylable: [
+                    'color', 'text-align',
+                    'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'
+                ],
+            }),
+            init() {
+                // Initialise code
+                var self = this;
+                var traits = self.get('traits').models;
+                // self.set('stylable', self.get('is_stylable') ? true : []);
+
+                traits = traits.concat(dividerTrait)
+                    .concat(alignmentTraits)
+                    .concat(dividerTrait)
+                    .concat(buttonStyleTraits);
+
+                // Run Commands
+                editor.runCommand('set-properties', { component: self, traits: traits });
+                editor.runCommand('set-id-attribute', { component: self });
+
+                // Button Styles
+                var buttonSize = self.get(buttonProperties.size);
+                var buttonStyle = self.get(buttonProperties.style);
+                var buttonOutline = self.get(buttonProperties.is_outline);
+                var buttonBlock = self.get(buttonProperties.is_block);
+                var buttonFlat = self.get(buttonProperties.is_flat);
+
+                if (!buttonSize) { self.set(buttonProperties.size, ''); }
+                if (!buttonStyle) { self.set(buttonProperties.style, ''); }
+                if (!buttonOutline) { self.set(buttonProperties.is_outline, false); }
+                if (!buttonBlock) { self.set(buttonProperties.is_block, false); }
+                if (!buttonFlat) { self.set(buttonProperties.is_flat, false); }
+
+                // Listeners -- Button style traits
+                for (var key in buttonProperties) {
+                    if (buttonProperties.hasOwnProperty(key)) {
+                        self.listenTo(self, 'change:' + buttonProperties[key], function(component, value) {
+                            editor.runCommand('set-button-style', { component: component });
+                        });
+                    }
+                }
+
+                // Listener -- ALignment
+                self.listenTo(self, 'change:self_alignment', function(component, value) {
+                    editor.runCommand('set-alignment', { component: component, align: value });
+                });
+
+                editor.runCommand('set-button-style', { component: self });
+            }
+        }, {
+            isComponent: function(el) {
+                if (el.tagName == 'A') {
+                    return { type: 'link' };
+                }
+            },
+        }),
+
+        view: linkType.view
     });
 
 
@@ -448,78 +528,17 @@ grapesjs.plugins.add('components', (editor, options) => {
         })
     });
 
-    // Link
-    domComponents.addType('link', {
-        model: linkType.model.extend({
-            defaults: Object.assign({}, linkType.model.prototype.defaults, {
-                stylable: []
-            }),
-            init() {
-                // Initialise code
-                var self = this;
-                var traits = self.get('traits').models;
-                self.set('stylable', self.get('is_stylable') ? true : []);
-
-                traits = traits.concat(dividerTrait)
-                    .concat(alignmentTraits)
-                    .concat(dividerTrait)
-                    .concat(buttonStyleTraits);
-
-                // Run Commands
-                editor.runCommand('set-properties', { component: self, traits: traits });
-                editor.runCommand('set-id-attribute', { component: self });
-
-                // Button Styles
-                var buttonSize = self.get(buttonProperties.size);
-                var buttonStyle = self.get(buttonProperties.style);
-                var buttonOutline = self.get(buttonProperties.is_outline);
-                var buttonBlock = self.get(buttonProperties.is_block);
-                var buttonFlat = self.get(buttonProperties.is_flat);
-
-                if (!buttonSize) { self.set(buttonProperties.size, ''); }
-                if (!buttonStyle) { self.set(buttonProperties.style, ''); }
-                if (!buttonOutline) { self.set(buttonProperties.is_outline, false); }
-                if (!buttonBlock) { self.set(buttonProperties.is_block, false); }
-                if (!buttonFlat) { self.set(buttonProperties.is_flat, false); }
-
-                // Listeners -- Button style traits
-                for (var key in buttonProperties) {
-                    if (buttonProperties.hasOwnProperty(key)) {
-                        self.listenTo(self, 'change:' + buttonProperties[key], function(component, value) {
-                            editor.runCommand('set-button-style', { component: component });
-                        });
-                    }
-                }
-
-                // Listener -- ALignment
-                self.listenTo(self, 'change:self_alignment', function(component, value) {
-                    editor.runCommand('set-alignment', { component: component, align: value });
-                });
-
-                editor.runCommand('set-button-style', { component: self });
-            }
-        }, {
-            isComponent: function(el) {
-                if (el.tagName == 'A') {
-                    return { type: 'link' };
-                }
-            },
-        }),
-
-        view: linkType.view
-    });
-
     // Image
     domComponents.addType('image', {
         model: imageType.model.extend({
             defaults: Object.assign({}, imageType.model.prototype.defaults, {
-                stylable: [],
+                stylable: ['float', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'],
                 editable: true
             }),
             init() {
                 // Initialise code
                 var self = this;
-                var traits = [self.get('traits').models[0]].concat([{
+                var traits = [self.get('traits').where({ name: 'alt' })[0]].concat([{
                     type: 'checkbox',
                     name: 'is_responsive',
                     label: 'Responsive',
@@ -553,30 +572,30 @@ grapesjs.plugins.add('components', (editor, options) => {
         view: imageType.view
     });
 
-    // // Video
-    // domComponents.addType('video', {
-    //     model: videoType.model.extend({
-    //         defaults: Object.assign({}, videoType.model.prototype.defaults, {
-    //             // stylable: []
-    //         }),
-    //         init() {
-    //             // Initialise code
-    //             var self = this;
+    // Video
+    domComponents.addType('video', {
+        model: videoType.model.extend({
+            defaults: Object.assign({}, videoType.model.prototype.defaults, {
+                stylable: ['float', 'width', 'height', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'],
+            }),
+            init() {
+                // Initialise code
+                var self = this;
 
-    //             // Run Commands
-    //             // editor.runCommand('set-properties', { component: self });
-    //             editor.runCommand('set-id-attribute', { component: self });
-    //         }
-    //     }, {
-    //         isComponent: function(el) {
-    //             if (el.tagName == 'video') {
-    //                 return { type: 'video' };
-    //             }
-    //         },
-    //     }),
+                // Run Commands
+                // editor.runCommand('set-properties', { component: self });
+                editor.runCommand('set-id-attribute', { component: self });
+            }
+        }, {
+            isComponent: function(el) {
+                if (el.tagName == 'VIDEO') {
+                    return { type: 'video' };
+                }
+            },
+        }),
 
-    //     view: videoType.view
-    // });
+        view: videoType.view
+    });
 
     // Button
     domComponents.addType('button', {
@@ -1300,6 +1319,7 @@ grapesjs.plugins.add('components', (editor, options) => {
                 // Listener -- Change is stylable
                 self.listenTo(self, 'change:is_stylable', function(component, value) {
                     component.set('stylable', value ? (stylable ? stylable : true) : []);
+                    editor.trigger('change:selectedComponent', editor, self);
                 });
 
                 var is_stylable = self.get('is_stylable');
