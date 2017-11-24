@@ -202,13 +202,13 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
             id: 'undo',
             className: 'fa fa-undo', // icon-undo
             command: 'undo',
-            attributes: { title: 'Undo (CTRL/CMD + Z)' }
+            attributes: { title: 'Undo' } //(CTRL/CMD + Z)
         },
         {
             id: 'redo',
             className: 'fa fa-repeat', // icon-redo
             command: 'redo',
-            attributes: { title: 'Redo (CTRL/CMD + SHIFT + Z)' }
+            attributes: { title: 'Redo' } //  (CTRL/CMD + SHIFT + Z)
         }
     ]);
 
@@ -228,7 +228,7 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
         id: 'save',
         className: 'fa fa-floppy-o',
         command: 'save',
-        attributes: { title: 'Save (CTRL/CMD + S)' }
+        attributes: { title: 'Save' } //(CTRL/CMD + S)
     }, {
         id: 'empty-canvas',
         className: 'fa fa-trash',
