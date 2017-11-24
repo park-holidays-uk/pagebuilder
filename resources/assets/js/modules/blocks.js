@@ -180,7 +180,7 @@ grapesjs.plugins.add('blocks', (editor, options) => {
                 label: 'Horizontal Rule',
                 category: 'Basic',
                 content: '<hr class="hr-separator"/>',
-                attributes: { class: 'fa fa-window-minimize' }
+                attributes: { class: 'gjs-fonts gjs-f-divider' }
             });
 
             // Image
