@@ -22,10 +22,7 @@ class PageBuilderController extends Controller
 	}
 
 	public function editPage($id)
-	{
-        // $su = isset($_GET['su']) ? (int)$_GET['su'] : 1;
-		// session(['superUser' => $su]);
-		
+	{		
 		$record = $this->getRecord('page', $id);
 		$viewModel = $this->getViewModel((object)['id' => $id, 'name' => ($record ? $record->name : ''), 'type' => 'page']);
 

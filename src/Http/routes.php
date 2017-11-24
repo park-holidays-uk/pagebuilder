@@ -10,8 +10,8 @@ Route::group(['middleware' => ['web', 'auth']], function () {
             Route::get('/page/{id}', array('as' => 'pagebuilder.editor.pages', 'uses' => 'PageBuilderController@editPage'))
             ;//->middleware('can:ACL_PHAST_PARKHOLIDAYS_PAGES');
 
-            Route::get('/{type}/{id}', array('as' => 'pagebuilder.editor.blocks', 'uses' => 'PageBuilderController@editBlock'))
-            ->where('type', 'block|layout');//->middleware('can:ACL_PHAST_PAGEBUILDER_COMPONENTS,ACL_PHAST_PAGEBUILDER_LAYOUTS');
+            Route::get('/block/{id}', array('as' => 'pagebuilder.editor.blocks', 'uses' => 'PageBuilderController@editBlock'))
+            ;//->middleware('can:ACL_PHAST_PAGEBUILDER_COMPONENTS');
         });
     });
 });
