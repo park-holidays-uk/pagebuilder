@@ -28,7 +28,7 @@ grapesjs.plugins.add('blocks', (editor, options) => {
                 label: 'Container',
                 category: 'Basic',
                 content: '<div class="container"></div>',
-                attributes: { class: '' } // NO ICON
+                attributes: { class: 'gjs-fonts gjs-f-b1' } // NO ICON
             });
 
             // One Column Grid
@@ -68,7 +68,7 @@ grapesjs.plugins.add('blocks', (editor, options) => {
                 label: 'Div',
                 category: 'Basic',
                 content: '<div></div>',
-                attributes: { class: '' } // NO ICON
+                attributes: { class: 'gjs-fonts gjs-f-b1' } // NO ICON
             });
 
             // Section
@@ -76,7 +76,7 @@ grapesjs.plugins.add('blocks', (editor, options) => {
                 label: 'Section',
                 category: 'Basic',
                 content: '<section></section>',
-                attributes: { class: '' } // NO ICON
+                attributes: { class: 'gjs-fonts gjs-f-b1' } // NO ICON
             });
 
             // Heading One
