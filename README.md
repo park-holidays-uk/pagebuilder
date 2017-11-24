@@ -53,9 +53,19 @@ Check for any changes to ENV settings.
 
 ## Things To Know
 
-All layout blocks should be contained within a *DIV* element with the class *wrapper*. This will allow the use of both fullwidth and non-fullwidth blocks in the page.
+* All layout blocks should be contained within a *DIV* element with the class *wrapper*. This will allow the use of both fullwidth and non-fullwidth blocks in the page.
+* When creating FORM blocks, they must contain an empty DIV with the class *form-dropzone*. This be the only area a user can drop form field blocks into.
+* To use SVG for block icons you can put teh code in the label field. see **Fig. TTK1**
 
-When creating FORM blocks, they must contain an empty DIV with the class *form-dropzone*. This be the only area a user can drop form field blocks into.
+### FIG. TTK1
+
+```
+<svg class="gjs-block-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path class="gjs-block-svg-path" d="M22,9 C22,8.4 21.5,8 20.75,8 L3.25,8 C2.5,8 2,8.4 2,9 L2,15 C2,15.6 2.5,16 3.25,16 L20.75,16 C21.5,16 22,15.6 22,15 L22,9 Z M21,15 L3,15 L3,9 L21,9 L21,15 Z"></path>
+    <polygon class="gjs-block-svg-path" points="4 10 5 10 5 14 4 14"></polygon>
+</svg>
+<div class="gjs-block-label">LABEL</div
+```
 
 ## Events
 
@@ -91,7 +101,6 @@ When creating FORM blocks, they must contain an empty DIV with the class *form-d
 
 ## PHAST Wizard Requirements
 
-* Must be able to create blocks as well as pages.
 * For dynamic blocks, it will need to populate the *payload_properties* field with a JSON object that is used to create dynamic traits (payload object). see **Fig. PW1R**
 
 ### FIG. PW1R
