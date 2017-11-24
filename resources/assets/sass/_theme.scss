@@ -1,0 +1,29 @@
+$primary-color: #0C5595;
+$dark-primary-color: #0b487d;
+$pale-primary-color: #4d7ba5; //#ecf4fb;
+.gjs-one-bg {
+    background-color: $dark-primary-color;
+}
+
+.gjs-pn-active {
+    color: #6f7e8c;
+    &:not(.gjs-four-color) {
+        background-color: rgba(0, 0, 0, 0.1);
+        cursor: default;
+    }
+}
+
+.gjs-four-color,
+.gjs-four-color-h:hover {
+    color: $pale-primary-color;
+}
+
+.gjs-three-bg {
+    background-color: darken($pale-primary-color, 10%);
+}
+
+.gjs-trt-trait {
+    select option {
+        background-color: darken($primary-color, 7%);
+    }
+}
