@@ -264,6 +264,7 @@ grapesjs.plugins.add('components', (editor, options) => {
                         case 'section':
                             stylables = [
                                 'float', 'display',
+                                'width', 'max-width', 'height',
                                 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right',
                                 'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right',
                                 'background-color'
@@ -1467,7 +1468,7 @@ grapesjs.plugins.add('components', (editor, options) => {
     /* Selected Component Changed */
     editor.on('change:selectedComponent', function(ed, component) {
         console.log('Component Selected Changed', component);
-        // if (!options.user.isSuperUser) {
+
         var isWrapper = component ? (component.get('wrapper') == 1) : false;
         var invalidComponent = (isWrapper || (!component && !editor.getSelected()));
 
@@ -1482,12 +1483,10 @@ grapesjs.plugins.add('components', (editor, options) => {
         smBtn.set('disable', disableSM);
         tmBtn.set('disable', disableTM);
 
-        // (invalidComponent || (disableSM && smBtn.get('active')) || (disableTM && tmBtn.get('active')))
         if ((disableSM && smBtn.get('active')) || (disableTM && tmBtn.get('active'))) {
             var lmBtn = panels.getButton('views', 'open-layers');
             lmBtn.set('active', true);
         }
-        // }
     });
 
     /* Padding Styles Updated */
