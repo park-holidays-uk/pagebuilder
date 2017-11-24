@@ -139,7 +139,6 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 
 * Add support for SRCSET on images. - *Need to work out how path will work*
 * Tweak filtering options for Asset modal to work better.
-* Restyle to match the styling of PHAST/Park Holidays.
 * Add support for more elements (Lists, tables etc.)
 * Replace multple grid blocks with customisable grids
 * Find more permenant fix for Grapejs select traits not triggering change event if value = '' or null.
