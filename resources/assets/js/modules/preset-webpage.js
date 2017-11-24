@@ -186,15 +186,19 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     var deviceBtns = panelDevices.get('buttons');
 
     // Default Panel
-    panels.addButton('default', [{
-        id: 'phast',
-        className: 'fa fa-sign-out',
-        command: 'exit-app',
-        attributes: { title: 'Exit to Phast' }
-    }]);
+    // panels.addButton('default', [{
+    //     id: 'exit-app',
+    //     className: 'fa fa-sign-out',
+    //     command: 'exit-app',
+    //     attributes: { title: 'Exit PageBuilder' }
+    // }]);
 
     // Options Panel
     panels.addButton('options', [{
+            id: 'divider-1',
+            className: 'gjs-pn-divider',
+        },
+        {
             id: 'undo',
             className: 'fa fa-undo', // icon-undo
             command: 'undo',
@@ -205,17 +209,14 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
             className: 'fa fa-repeat', // icon-redo
             command: 'redo',
             attributes: { title: 'Redo (CTRL/CMD + SHIFT + Z)' }
-        },
-        {
-            id: 'save',
-            className: 'fa fa-floppy-o',
-            command: 'save',
-            attributes: { title: 'Save (CTRL/CMD + S)' }
-        },
+        }
     ]);
 
     if (options.user.isSuperUser) {
         panels.addButton('options', [{
+            id: 'divider-2',
+            className: 'gjs-pn-divider',
+        }, {
             id: 'import',
             className: 'fa fa-download',
             command: 'html-import',
@@ -224,11 +225,24 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     }
 
     panels.addButton('options', [{
+        id: 'save',
+        className: 'fa fa-floppy-o',
+        command: 'save',
+        attributes: { title: 'Save (CTRL/CMD + S)' }
+    }, {
         id: 'empty-canvas',
         className: 'fa fa-trash',
         command: 'empty-canvas',
         attributes: { title: 'Empty Canvas' }
-    }, ]);
+    }, {
+        id: 'divider-3',
+        className: 'gjs-pn-divider',
+    }, {
+        id: 'exit-app',
+        className: 'fa fa-sign-out',
+        command: 'exit-app',
+        attributes: { title: 'Exit PageBuilder' }
+    }]);
 
     // Devices
     deviceBtns.add([{
