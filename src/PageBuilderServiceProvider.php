@@ -44,7 +44,7 @@ class PageBuilderServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $composer = json_decode(file_get_contents(base_path() . '\composer.lock'));
+        $composer = json_decode(file_get_contents(base_path() . '/composer.lock'));
         $pb = head(array_where($composer->packages, function($value, $key) {
             return $value->name == 'park-holidays-uk/pagebuilder';
         }));
