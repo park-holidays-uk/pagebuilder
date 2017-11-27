@@ -51,12 +51,17 @@ grapesjs.plugins.add('modals', (editor, options) => {
 
     /** MODAL OPEN/CLOSE **/
     model.on('change:open', function(model) {
+        var dialogModal = $('.gjs-mdl-dialog');
         switch (model.name) {
             case aboutModal.name:
-                var dialogModal = $('.gjs-mdl-dialog');
                 if (!dialogModal.hasClass('about-modal') && dialogModal.find('.about-content').length > 0) {
                     dialogModal.addClass('about-modal');
+                } else {
+                    dialogModal.removeClass('about-modal');
                 }
+                break;
+            default:
+                dialogModal.removeClass('about-modal');
                 break;
         }
     });
