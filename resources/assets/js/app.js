@@ -12,6 +12,7 @@ require('./modules/preset-webpage.js');
 require('./modules/traits.js');
 require('./modules/components.js');
 require('./modules/blocks.js');
+require('./modules/modals.js');
 require('./modules/assets.js');
 
 /* Initialise GrapesJS */

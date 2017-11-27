@@ -9,6 +9,7 @@ var options = {
         'traits',
         'components',
         'blocks',
+        'modals',
         'assets',
     ],
 
@@ -28,6 +29,10 @@ var options = {
 
         'blocks': {
             url_prefix: _serverData.url_prefix
+        },
+
+        'modals': {
+            app_info: _serverData.app_info
         },
 
         'assets': {

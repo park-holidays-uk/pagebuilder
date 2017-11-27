@@ -186,12 +186,12 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     var deviceBtns = panelDevices.get('buttons');
 
     // Default Panel
-    // panels.addButton('default', [{
-    //     id: 'exit-app',
-    //     className: 'fa fa-sign-out',
-    //     command: 'exit-app',
-    //     attributes: { title: 'Exit PageBuilder' }
-    // }]);
+    panels.addButton('default', [{
+        id: 'about',
+        className: 'fa fa-info',
+        command: 'open-about-modal',
+        attributes: { title: 'About PageBuilder' }
+    }]);
 
     // Options Panel
     panels.addButton('options', [{
@@ -326,6 +326,9 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
         var encMeta = $('<meta/>');
         encMeta.attr('charset', 'utf-8');
         $(editor.Canvas.getFrameEl()).contents().find('head').append(encMeta);
+
+        var bmBtn = panels.getButton('views', 'open-blocks');
+        bmBtn.set('active', true);
 
         // Run Commands
         editor.runCommand('load-blocks', { excludeUserBlocks: !isPageMode });

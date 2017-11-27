@@ -234,6 +234,11 @@ display: none;
     .gjs-mdl-header .gjs-mdl-btn-close {
         top: 8px !important;
     }
+    &.about-modal {
+        width: 300px;
+        max-width: 90%;
+        padding: 5px 0;
+    }
 }
 
 .gjs-import-label,

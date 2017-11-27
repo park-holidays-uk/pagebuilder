@@ -13,6 +13,32 @@ use App\Models\Media;
 
 class PageBuilderController extends Controller
 {	
+	private $ph_assets = [];
+
+	/**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+		parent::__construct();
+
+		$assets = [
+			'/css/parkholidays/critical.css',
+			'/css/parkholidays/non_critical.css',
+			'/css/phast/dynamicblocks.css',
+		];
+
+		$mix_manifest = json_decode(file_get_contents(config('pagebuilder.asset_path').'mix-manifest.json'));
+
+		foreach($assets as $asset) {
+			if(isset($mix_manifest->{$asset})) {
+				array_push($this->ph_assets, config('pagebuilder.asset_path') . substr($mix_manifest->{$asset}, 1));
+			}
+		}
+	}
+
 	public function editBlock($type, $id)
 	{
 		$record = $this->getRecord($type, $id);
@@ -26,7 +52,7 @@ class PageBuilderController extends Controller
 		$record = $this->getRecord('page', $id);
 		$viewModel = $this->getViewModel((object)['id' => $id, 'name' => ($record ? $record->name : ''), 'type' => 'page']);
 
-		return $record ? view('pagebuilder::editor', ['viewModel' => $viewModel]) : abort(404);
+		return $record ? $record->pagebuilder_disabled ? redirect('/') : view('pagebuilder::editor', ['viewModel' => $viewModel]) : abort(404);
 	}
 
 
@@ -239,6 +265,7 @@ class PageBuilderController extends Controller
 		$viewModel->url_load = config('pagebuilder.url_prefix') . '/ajax/load/'. $record->type .'/'. $record->id;
 		$viewModel->record = $record;
 		$viewModel->isSuperUser = session('superUser');
+		$viewModel->ph_assets = $this->ph_assets;
 
 		return $viewModel;
 	}
@@ -270,8 +297,8 @@ class PageBuilderController extends Controller
 
 		$element = $xpath->query("//dynablock");
 
-		if($element) {
-			$element->item(0)->setAttribute('properties', base64_encode($item->payload_properties));
+		if($element && $element->item(0)) {
+			$element->item(0)->setAttribute('properties', base64_encode($item->payload_properties || []));
 		}
 
 		return preg_replace('/\<(\/)?(html|body)>/','', $dom->saveHTML());
