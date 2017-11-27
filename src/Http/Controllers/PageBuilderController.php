@@ -22,19 +22,30 @@ class PageBuilderController extends Controller
      */
     public function __construct()
     {
-		// parent::__construct();
-
 		$assets = [
 			'/css/parkholidays/critical.css',
 			'/css/parkholidays/non_critical.css',
 			'/css/phast/dynamicblocks.css',
 		];
 
-		$mix_manifest = json_decode(file_get_contents(config('pagebuilder.asset_path').'mix-manifest.json'));
+		$protocol = \Request::secure() ? 'https://' :  'http://';
+		$asset_path = config('pagebuilder.asset_path');
+		$domain = config('pagebuilder.domain');
 
-		foreach($assets as $asset) {
-			if(isset($mix_manifest->{$asset})) {
-				array_push($this->ph_assets, config('pagebuilder.asset_path') . substr($mix_manifest->{$asset}, 1));
+		if(strpos($domain, 'http') == false) {
+			$domain = $protocol . $domain;
+		}
+
+		$fn = (strpos($asset_path, $domain) > -1 ? '' : $domain) . $asset_path .'mix-manifest.json';
+		$curl = curl_init($fn);
+
+		if($curl) {
+			$mix_manifest = json_decode(file_get_contents($fn));
+
+			foreach($assets as $asset) {
+				if(isset($mix_manifest->{$asset})) {
+					array_push($this->ph_assets, config('pagebuilder.asset_path') . substr($mix_manifest->{$asset}, 1));
+				}
 			}
 		}
 	}
