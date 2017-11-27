@@ -180,7 +180,7 @@ class PageBuilderController extends Controller
 
 		if($blocks) {
 			$blocks->each(function($item, $key) use($data) { 
-				if($item->html_base64 != null && trim($item->html_base64) != '') {
+				if($item->html_base64 && trim($item->html_base64) != '') {
 					$html = ($item->is_dynamic) ? preg_replace("@\n@","", $this->setPayloadProperties($item)) : base64_decode($item->html_base64);
 				
 					$data->push((object) [
