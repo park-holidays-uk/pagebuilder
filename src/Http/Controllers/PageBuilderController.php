@@ -28,15 +28,7 @@ class PageBuilderController extends Controller
 			'/css/phast/dynamicblocks.css',
 		];
 
-		$protocol = \Request::secure() ? 'https://' :  'http://';
-		$asset_path = config('pagebuilder.asset_path');
-		$domain = config('pagebuilder.domain');
-
-		if(strpos($domain, 'http') == false) {
-			$domain = $protocol . $domain;
-		}
-
-		$fn = (strpos($asset_path, $domain) > -1 ? '' : $domain) . $asset_path .'mix-manifest.json';
+		$fn = public_path() . config('pagebuilder.asset_path') .'mix-manifest.json';
 		$curl = curl_init($fn);
 
 		if($curl) {
