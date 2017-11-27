@@ -15,6 +15,19 @@ grapesjs.plugins.add('blocks', (editor, options) => {
     /*
      *   COMMANDS
      */
+    commands.add('category-accordionify', {
+        run: function(editor, sender, options) {
+            const categories = editor.BlockManager.getCategories();
+            categories.each(category => {
+                var open = (category.get('id').toLowerCase() == 'basic') ? true : false;
+                category.set('open', open).on('change:open', opened => {
+                    opened.get('open') && categories.each(category => {
+                        category !== opened && category.set('open', false)
+                    });
+                });
+            });
+        }
+    })
 
     commands.add('load-blocks', {
         run: function(editor, sender, options) {
@@ -79,94 +92,6 @@ grapesjs.plugins.add('blocks', (editor, options) => {
                 attributes: { class: 'gjs-fonts gjs-f-b1' } // NO ICON
             });
 
-            // Heading One
-            blockManager.add('heading-one-text', {
-                label: 'Heading 1',
-                category: 'Basic',
-                content: '<h1 data-gjs-custom-name="Heading">Lorem Ipsum</h1>',
-                attributes: { class: 'fa fa-header' }
-            });
-
-            // Heading Two
-            blockManager.add('heading-two-text', {
-                label: 'Heading 2',
-                category: 'Basic',
-                content: '<h2 data-gjs-custom-name="Heading">Lorem Ipsum</h2>',
-                attributes: { class: 'fa fa-header' }
-            });
-
-            // Heading
-            blockManager.add('heading-three-text', {
-                label: 'Heading 3',
-                category: 'Basic',
-                content: '<h3 data-gjs-custom-name="Heading">Lorem Ipsum</h3>',
-                attributes: { class: 'fa fa-header' }
-            });
-
-            // Heading Four
-            blockManager.add('heading-four-text', {
-                label: 'Heading 4',
-                category: 'Basic',
-                content: '<h4 data-gjs-custom-name="Heading">Lorem Ipsum</h4>',
-                attributes: { class: 'fa fa-header' }
-            });
-
-            // Heading Five
-            blockManager.add('heading-five-text', {
-                label: 'Heading 5',
-                category: 'Basic',
-                content: '<h5 data-gjs-custom-name="Heading">Lorem Ipsum</h5>',
-                attributes: { class: 'fa fa-header' }
-            });
-
-            // Heading Six
-            blockManager.add('heading-six-text', {
-                label: 'Heading 6',
-                category: 'Basic',
-                content: '<h6 data-gjs-custom-name="Heading">Lorem Ipsum</h6>',
-                attributes: { class: 'fa fa-header' }
-            });
-
-            // Paragraph
-            blockManager.add('paragraph-text', {
-                label: 'Paragraph',
-                category: 'Basic',
-                content: '<p data-gjs-custom-name="Paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis purus mi, a lacinia nunc semper auctor. Nullam id dictum lacus. Sed dignissim eu sem in semper. Nullam viverra, est rhoncus lobortis tristique, mi erat fermentum mauris, ac laoreet mi magna sit amet nibh. Vestibulum vulputate nibh urna, eget vestibulum dolor faucibus quis. Quisque consequat risus sed consectetur iaculis. Cras non dapibus lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam vulputate aliquet justo at lacinia. Praesent pharetra varius velit. Nam eleifend consequat elit sit amet condimentum.</p>',
-                attributes: { class: 'fa fa-paragraph' }
-            });
-
-            // Span Text
-            blockManager.add('span-text', {
-                label: 'Text',
-                category: 'Basic',
-                content: '<span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed sem rutrum lacus cursus viverra imperdiet id risus. Nulla massa mauris, venenatis eget hendrerit a.</span>',
-                attributes: { class: 'gjs-fonts gjs-f-text' }
-            });
-
-            // Small Text
-            blockManager.add('small-text', {
-                label: 'Small Text',
-                category: 'Basic',
-                content: '<small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed sem rutrum lacus cursus viverra imperdiet id risus. Nulla massa mauris, venenatis eget hendrerit a.</small>',
-                attributes: { class: 'fa fa-font' }
-            });
-
-            // Block Quote Text
-            blockManager.add('blockquote-text', {
-                label: 'Quote',
-                category: 'Basic',
-                content: '<blockquote class="mx-0 my-4" data-gjs-custom-name="Blockquote" data-gjs-stylable="false" data-gjs-droppable="false"> <i class="icon-quotes-round-up top" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-droppable="false" data-gjs-removable="false"></i><p data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-droppable="false" data-gjs-removable="false">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed sem rutrum lacus cursus viverra imperdiet id risus. Nulla massa mauris, venenatis eget hendrerit a.</p> <i class="icon-quotes-round-down bottom" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-droppable="false" data-gjs-removable="false"></i><cite data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-droppable="false" data-gjs-removable="false">Lorem Ipsum</cite> <small data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-droppable="false" data-gjs-removable="false">Lorem Ipsum</small></blockquote>',
-                attributes: { class: 'fa fa-quote-right' }
-            });
-
-            // Link
-            blockManager.add('link', {
-                label: 'Link',
-                category: 'Basic',
-                content: '<a>Lorem ipsum</a>',
-                attributes: { class: 'fa fa-link' }
-            });
-
             // Lists
             blockManager.add('list', {
                 label: 'List',
@@ -197,6 +122,94 @@ grapesjs.plugins.add('blocks', (editor, options) => {
                 category: 'Basic',
                 content: '<video></video>',
                 attributes: { class: 'fa fa-youtube-play' }
+            });
+
+            // Heading One
+            blockManager.add('heading-one-text', {
+                label: 'Heading 1',
+                category: 'Typography',
+                content: '<h1 data-gjs-custom-name="Heading">Lorem Ipsum</h1>',
+                attributes: { class: 'fa fa-header' }
+            });
+
+            // Heading Two
+            blockManager.add('heading-two-text', {
+                label: 'Heading 2',
+                category: 'Typography',
+                content: '<h2 data-gjs-custom-name="Heading">Lorem Ipsum</h2>',
+                attributes: { class: 'fa fa-header' }
+            });
+
+            // Heading
+            blockManager.add('heading-three-text', {
+                label: 'Heading 3',
+                category: 'Typography',
+                content: '<h3 data-gjs-custom-name="Heading">Lorem Ipsum</h3>',
+                attributes: { class: 'fa fa-header' }
+            });
+
+            // Heading Four
+            blockManager.add('heading-four-text', {
+                label: 'Heading 4',
+                category: 'Typography',
+                content: '<h4 data-gjs-custom-name="Heading">Lorem Ipsum</h4>',
+                attributes: { class: 'fa fa-header' }
+            });
+
+            // Heading Five
+            blockManager.add('heading-five-text', {
+                label: 'Heading 5',
+                category: 'Typography',
+                content: '<h5 data-gjs-custom-name="Heading">Lorem Ipsum</h5>',
+                attributes: { class: 'fa fa-header' }
+            });
+
+            // Heading Six
+            blockManager.add('heading-six-text', {
+                label: 'Heading 6',
+                category: 'Typography',
+                content: '<h6 data-gjs-custom-name="Heading">Lorem Ipsum</h6>',
+                attributes: { class: 'fa fa-header' }
+            });
+
+            // Paragraph
+            blockManager.add('paragraph-text', {
+                label: 'Paragraph',
+                category: 'Typography',
+                content: '<p data-gjs-custom-name="Paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis purus mi, a lacinia nunc semper auctor. Nullam id dictum lacus. Sed dignissim eu sem in semper. Nullam viverra, est rhoncus lobortis tristique, mi erat fermentum mauris, ac laoreet mi magna sit amet nibh. Vestibulum vulputate nibh urna, eget vestibulum dolor faucibus quis. Quisque consequat risus sed consectetur iaculis. Cras non dapibus lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam vulputate aliquet justo at lacinia. Praesent pharetra varius velit. Nam eleifend consequat elit sit amet condimentum.</p>',
+                attributes: { class: 'fa fa-paragraph' }
+            });
+
+            // Span Text
+            blockManager.add('span-text', {
+                label: 'Text',
+                category: 'Typography',
+                content: '<span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed sem rutrum lacus cursus viverra imperdiet id risus. Nulla massa mauris, venenatis eget hendrerit a.</span>',
+                attributes: { class: 'gjs-fonts gjs-f-text' }
+            });
+
+            // Small Text
+            blockManager.add('small-text', {
+                label: 'Small Text',
+                category: 'Typography',
+                content: '<small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed sem rutrum lacus cursus viverra imperdiet id risus. Nulla massa mauris, venenatis eget hendrerit a.</small>',
+                attributes: { class: 'fa fa-font' }
+            });
+
+            // Block Quote Text
+            blockManager.add('blockquote-text', {
+                label: 'Quote',
+                category: 'Typography',
+                content: '<blockquote class="mx-0 my-4" data-gjs-custom-name="Blockquote" data-gjs-stylable="false" data-gjs-droppable="false"> <i class="icon-quotes-round-up top" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-droppable="false" data-gjs-removable="false"></i><p data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-droppable="false" data-gjs-removable="false">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed sem rutrum lacus cursus viverra imperdiet id risus. Nulla massa mauris, venenatis eget hendrerit a.</p> <i class="icon-quotes-round-down bottom" data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-droppable="false" data-gjs-removable="false"></i><cite data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-droppable="false" data-gjs-removable="false">Lorem Ipsum</cite> <small data-gjs-stylable="false" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-droppable="false" data-gjs-removable="false">Lorem Ipsum</small></blockquote>',
+                attributes: { class: 'fa fa-quote-right' }
+            });
+
+            // Link
+            blockManager.add('link', {
+                label: 'Link',
+                category: 'Typography',
+                content: '<a>Lorem ipsum</a>',
+                attributes: { class: 'fa fa-link' }
             });
 
             // Table
@@ -325,6 +338,8 @@ grapesjs.plugins.add('blocks', (editor, options) => {
                             attributes: JSON.parse(block.attributes),
                         });
                     });
+
+                    editor.runCommand('category-accordionify');
                 });
             }
         }
