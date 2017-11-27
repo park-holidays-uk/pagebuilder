@@ -22,7 +22,7 @@ class PageBuilderController extends Controller
      */
     public function __construct()
     {
-		parent::__construct();
+		// parent::__construct();
 
 		$assets = [
 			'/css/parkholidays/critical.css',
