@@ -350,10 +350,13 @@ grapesjs.plugins.add('blocks', (editor, options) => {
      *   Events
      */
 
-    // editor.on('block:drag:stop', function(model) {
-    //     // block:drag:start
-    //     // block:drag:move
-    //     // block:drag:stop
-    // });
+    editor.on('block:remove', function(model) {
+        // block:drag:start
+        // block:drag:move
+        // block:drag:stop
+        // block:add
+        // block:remove
+        editor.trigger('change:selectedComponent');
+    });
 
 });
