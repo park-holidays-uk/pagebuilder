@@ -77,7 +77,7 @@ class PageBuilderController extends Controller
 			]);
 		}
 
-		return isset($data) ? $data->toArray() : [];
+		return isset($data) ? $data->toJson() : [];
 	}
 
 	/** STORE **/
@@ -97,8 +97,7 @@ class PageBuilderController extends Controller
 				$html = $this->setHiddenTypeAttributes($html);
 			}
 
-			$html = preg_replace("@\n@","", $this->setInlineStyles($request->get('gjs-css'), $html)); 
-			// return collect([$html])->toJson();
+			$html =preg_replace("/@\n@/","", $this->setInlineStyles($request->get('gjs-css'), $html)); 
 			
 			$record->html_base64 = base64_encode($html);
 			$record->css_base64 = base64_encode(preg_replace("/([*{](.*?)[}][body{](.*?)[}])/", "", $request->get('gjs-css'))) ?? null;
