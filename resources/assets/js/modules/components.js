@@ -35,7 +35,7 @@ grapesjs.plugins.add('components', (editor, options) => {
     }
 
     // Shared Traits
-    var dividerTrait = [{ type: 'divider' }];
+    var dividerTrait = [{ type: 'divider', changeProp: 1 }];
 
     var propertyTraits = [{
         type: 'checkbox',
@@ -301,7 +301,7 @@ grapesjs.plugins.add('components', (editor, options) => {
         model: textType.model.extend({
             defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                 stylable: [
-                    'color', 'text-align',
+                    'color', 'text-align', 'font-weight',
                     'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right',
                     'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right'
                 ],
@@ -336,15 +336,14 @@ grapesjs.plugins.add('components', (editor, options) => {
         model: linkType.model.extend({
             defaults: Object.assign({}, linkType.model.prototype.defaults, {
                 stylable: [
-                    'color', 'text-align',
+                    'color', 'text-align', 'font-weight',
                     'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'
-                ],
+                ]
             }),
             init() {
                 // Initialise code
                 var self = this;
-                var traits = self.get('traits').models;
-                // self.set('stylable', self.get('is_stylable') ? true : []);
+                var traits = self.get('traits').models.filter(function(t) { return t.get('changeProp') == 0 && t.get('type') != 'divider'; });
 
                 traits = traits.concat(dividerTrait)
                     .concat(alignmentTraits)
