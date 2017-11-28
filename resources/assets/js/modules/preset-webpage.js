@@ -346,5 +346,10 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
                 editor.runCommand('open-snackbar', { message: response.message });
             }
         }
+
+        if (window.firstRun) {
+            editor.UndoManager.clear();
+            window.firstRun = false;
+        }
     });
 });

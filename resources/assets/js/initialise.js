@@ -48,10 +48,9 @@ var options = {
 
     storageManager: {
         type: 'remote',
+        autoload: false,
         autosave: false,
-        autoload: true,
         stepsBeforeSave: 1,
-        storeComponents: true,
         urlStore: _serverData.storageManager.urlStore,
         urlLoad: _serverData.storageManager.urlLoad,
         params: {
@@ -70,16 +69,7 @@ var options = {
     }
 };
 
-// Remove styling options for non Super Users
-// if (!_serverData.user.isSuperUser) {
-//     options.styleManager = {
-//         sectors: [{
-//             name: 'Decoration',
-//             buildProps: ['background']
-//         }]
-//     };
-// }
-
-
 // Initialise
+window.firstRun = true;
 var editor = grapesjs.init(options);
+editor.load();
