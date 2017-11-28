@@ -85,7 +85,6 @@ class PageBuilderController extends Controller
 	{
 		try {
 			$record = $this->getRecord($type, $id);
-			dd($record, $type, $id, $request);
 			$html = $request->get('gjs-html');
 			
 			if($type == 'block') {				
