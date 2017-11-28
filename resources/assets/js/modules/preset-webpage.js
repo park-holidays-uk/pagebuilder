@@ -349,7 +349,7 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
 
         if (window.firstRun) {
             editor.UndoManager.clear();
-            window.firstRun = false;
+            delete window.firstRun;
         }
     });
 });
