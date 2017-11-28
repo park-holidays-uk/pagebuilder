@@ -97,9 +97,9 @@ class PageBuilderController extends Controller
 				$html = $this->setHiddenTypeAttributes($html);
 			}
 
-			$html =preg_replace("/@\n@/","", $this->setInlineStyles($request->get('gjs-css'), $html)); 
+			$html = preg_replace("/@\n@/","", $this->setInlineStyles($request->get('gjs-css'), $html)); 
 			
-			$record->html_base64 = base64_encode($html);
+			$record->html_base64 = $html ? base64_encode($html) : null;
 			$record->css_base64 = base64_encode(preg_replace("/([*{](.*?)[}][body{](.*?)[}])/", "", $request->get('gjs-css'))) ?? null;
 			$record->gjs_components = $request->get('gjs-components');
 			$record->save();
@@ -406,7 +406,7 @@ class PageBuilderController extends Controller
 			}
 		}
 
-		$html = preg_replace('/\<(\/)?(html|body)>/','', $dom->saveHTML());
+		$html = preg_replace('/\<(\/)?(html|body)>/','', trim($dom->saveHTML()));
 		return $html;
 	}
 
