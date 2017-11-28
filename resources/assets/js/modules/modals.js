@@ -54,8 +54,11 @@ grapesjs.plugins.add('modals', (editor, options) => {
         var dialogModal = $('.gjs-mdl-dialog');
         switch (model.name) {
             case aboutModal.name:
-                if (!dialogModal.hasClass('about-modal') && dialogModal.find('.about-content').length > 0) {
-                    dialogModal.addClass('about-modal');
+                // Is Modal Open
+                if (model.attributes.open) {
+                    if (!dialogModal.hasClass('about-modal') && dialogModal.find('.about-content').length > 0) {
+                        dialogModal.addClass('about-modal');
+                    }
                 } else {
                     dialogModal.removeClass('about-modal');
                 }
