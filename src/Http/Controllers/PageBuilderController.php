@@ -76,7 +76,9 @@ class PageBuilderController extends Controller
 				'gjs-components' => $record->gjs_components
 			]);
 		}
-
+		
+		dd($record, base64_decode($record->html_base64), preg_replace("/\s+|\n+|\r/", ' ', base64_decode($record->html_base64)));
+		
 		return isset($data) ? $data->toJson() : [];
 	}
 
