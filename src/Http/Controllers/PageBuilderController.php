@@ -311,13 +311,13 @@ class PageBuilderController extends Controller
 
 	// Set Hidden Input Types
 	function setHiddenTypeAttributes($html) {
-		$html1 = $html;
-		$dom = new \DOMDocument();
 		$html = mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8"); 
-		$html2 = $html;
+		
+		$dom = new \DOMDocument();
+		libxml_use_internal_errors(true);
 		$dom->loadHTML($html, LIBXML_HTML_NODEFDTD);//, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-		$xpath = new \DOMXPath($dom);
 
+		$xpath = new \DOMXPath($dom);
 		$elements = $xpath->query("//input[@data-hidden=\"hidden\"]");
 
 		if($elements->length > 0) 
@@ -344,11 +344,7 @@ class PageBuilderController extends Controller
 				$element->removeAttribute('data-removable');
 			}
 		}
-		$html3 = $html;
-		$html4 = $dom;
-		$html5 = $dom->saveHTML();
-		$html6 = preg_replace('/\<(\/)?(html|body)>/','', $dom->saveHTML());
-		dd($html1, $html2, $html3, $html4, $html5, $html6);
+		
 		return preg_replace('/\<(\/)?(html|body)>/','', $dom->saveHTML());
 	}
 
