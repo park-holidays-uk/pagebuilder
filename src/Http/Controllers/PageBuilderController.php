@@ -86,7 +86,6 @@ class PageBuilderController extends Controller
 		try {
 			$record = $this->getRecord($type, $id);
 			$html = $request->get('gjs-html');
-			$html1 = $html;
 
 			if($type == 'block') {				
 				$json = json_decode($request->get('gjs-components'), true);
@@ -95,12 +94,8 @@ class PageBuilderController extends Controller
 					$html = $this->setGrapesAttributes($object, $html);
 				}
 			} else {
-				$html2 = $html;
 				$html = $this->setHiddenTypeAttributes($html);
-				$html3 = $html;
 			}
-
-			dd($html1, $html2, $html3);
 			
 			$html = preg_replace("/@\n@/","", $this->setInlineStyles($request->get('gjs-css'), $html)); 
 			
@@ -316,8 +311,10 @@ class PageBuilderController extends Controller
 
 	// Set Hidden Input Types
 	function setHiddenTypeAttributes($html) {
+		$html1 = $html;
 		$dom = new \DOMDocument();
 		$html = mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8"); 
+		$html2 = $html;
 		@$dom->loadHTML($html, LIBXML_HTML_NODEFDTD);//, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 		$xpath = new \DOMXPath($dom);
 
@@ -347,7 +344,9 @@ class PageBuilderController extends Controller
 				$element->removeAttribute('data-removable');
 			}
 		}
-
+		$html3 = $html;
+		$html4 = preg_replace('/\<(\/)?(html|body)>/','', $dom->saveHTML());
+		dd($html1, $html2, $html3, $html4);
 		return preg_replace('/\<(\/)?(html|body)>/','', $dom->saveHTML());
 	}
 
