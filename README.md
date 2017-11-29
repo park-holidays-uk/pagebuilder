@@ -153,3 +153,4 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 * Sometimes when canvas is loaded, some content or blocks are missing (although the content is in DB). Refreshing page seems to restore them.
 * Dragging blocks into the canvas (BODY) causes the block to be appear duplicated, but it is only vision ghosting.
 * Some blocks are randomly unable to be dropped into droppable components (elements).
+* Input NAME field (custom name) doesn't always change when emptied.
