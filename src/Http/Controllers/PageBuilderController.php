@@ -86,7 +86,8 @@ class PageBuilderController extends Controller
 		try {
 			$record = $this->getRecord($type, $id);
 			$html = $request->get('gjs-html');
-			
+			$html1 = $html;
+
 			if($type == 'block') {				
 				$json = json_decode($request->get('gjs-components'), true);
 				
@@ -94,12 +95,14 @@ class PageBuilderController extends Controller
 					$html = $this->setGrapesAttributes($object, $html);
 				}
 			} else {
+				$html2 = $html;
 				$html = $this->setHiddenTypeAttributes($html);
+				$html3 = $html;
 			}
 
-			$prereg = $html;
+			dd($html1, $html2, $html3);
+			
 			$html = preg_replace("/@\n@/","", $this->setInlineStyles($request->get('gjs-css'), $html)); 
-			dd($html, $prereg);
 			
 			$record->html_base64 = $html ? base64_encode($html) : null;
 			$record->css_base64 = base64_encode(preg_replace("/([*{](.*?)[}][body{](.*?)[}])/", "", $request->get('gjs-css'))) ?? null;
