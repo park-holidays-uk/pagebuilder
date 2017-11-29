@@ -127,6 +127,7 @@ class PageBuilderController extends Controller
 		}
 		
 		$records->select($text_field . ' as name', $value_field . ' as value')
+				->whereNotNull($value_field)
 				->orderBy('name')
 				->get();
 
