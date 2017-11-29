@@ -853,13 +853,13 @@ grapesjs.plugins.add('components', (editor, options) => {
                             case 'checkbox':
                             case 'radio':
                                 // Code here
-                                if (value == '') {
+                                if (value.trim() == '') {
                                     traits.splice(1, 0, customNameTrait);
                                 }
                                 break;
                             default:
                                 // Code here
-                                if (value == '') {
+                                if (value.trim() == '') {
                                     traits.splice(0, 0, inputTypeTrait);
                                     traits.splice(2, 0, customNameTrait);
                                     attrs.type = 'text';
@@ -1174,7 +1174,7 @@ grapesjs.plugins.add('components', (editor, options) => {
                             changeProp: 1
                         };
 
-                        trait.options = [{ name: (property.multiple) ? 'All ' + property.label : 'Please select ', value: ' ', disable: !property.multiple }].concat(trait.options);
+                        trait.options = [{ name: (property.multiple) ? 'All ' + property.label : 'Please select ', value: '', disable: !property.multiple }].concat(trait.options);
 
                         // Ajax Load Options
                         if (property.dynamic_options) {
