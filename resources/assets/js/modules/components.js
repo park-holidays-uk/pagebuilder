@@ -1325,7 +1325,7 @@ grapesjs.plugins.add('components', (editor, options) => {
 
                 // Listener -- Change is stylable
                 self.listenTo(self, 'change:is_stylable', function(component, value) {
-                    component.set('stylable', value ? (stylable ? stylable : true) : []);
+                    component.set('stylable', value ? (!not_stylable ? stylable : true) : []);
                     editor.trigger('change:selectedComponent', editor, self);
                 });
 
