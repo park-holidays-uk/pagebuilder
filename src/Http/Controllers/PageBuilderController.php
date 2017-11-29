@@ -42,10 +42,10 @@ class PageBuilderController extends Controller
 		}
 	}
 
-	public function editBlock($type, $id)
+	public function editBlock($id)
 	{
-		$record = $this->getRecord($type, $id);
-		$viewModel = $this->getViewModel((object)['id' => $id, 'name' => ($record ? $record->label : ''), 'type' => $type]);
+		$record = $this->getRecord('block', $id);
+		$viewModel = $this->getViewModel((object)['id' => $id, 'name' => ($record ? $record->label : ''), 'type' => 'block']);
 		
 		return $record ? view('pagebuilder::editor', ['viewModel' => $viewModel]) : abort(404);
 	}
@@ -183,7 +183,7 @@ class PageBuilderController extends Controller
 		if($blocks) {
 			$blocks->each(function($item, $key) use($data) { 
 				if($item->html_base64 && trim($item->html_base64) != '') {
-					$html = ($item->is_dynamic) ? preg_replace("@\n@","", $this->setPayloadProperties($item)) : base64_decode($item->html_base64);
+					$html = ($item->is_dynamic) ? preg_replace("/@\n@/","", $this->setPayloadProperties($item)) : base64_decode($item->html_base64);
 				
 					$data->push((object) [
 						'category' => $item->group->name,
@@ -300,10 +300,12 @@ class PageBuilderController extends Controller
 		$element = $xpath->query("//dynablock");
 
 		if($element && $element->item(0)) {
-			$element->item(0)->setAttribute('properties', base64_encode($item->payload_properties || []));
+			if(!$item->payload_properties) { $item->payload_properties = '[]'; }
+			$element->item(0)->setAttribute('properties', base64_encode($item->payload_properties));
 		}
 
-		return preg_replace('/\<(\/)?(html|body)>/','', $dom->saveHTML());
+		$html = preg_replace('/\<(\/)?(html|body)>/','', $dom->saveHTML());
+		return $html;
 	}
 
 	// Set Hidden Input Types
