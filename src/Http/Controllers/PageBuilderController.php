@@ -315,7 +315,7 @@ class PageBuilderController extends Controller
 		$dom = new \DOMDocument();
 		$html = mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8"); 
 		$html2 = $html;
-		@$dom->loadHTML($html, LIBXML_HTML_NODEFDTD);//, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+		$dom->loadHTML($html, LIBXML_HTML_NODEFDTD);//, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 		$xpath = new \DOMXPath($dom);
 
 		$elements = $xpath->query("//input[@data-hidden=\"hidden\"]");
