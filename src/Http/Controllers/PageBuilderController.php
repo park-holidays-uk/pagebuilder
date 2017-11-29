@@ -76,7 +76,7 @@ class PageBuilderController extends Controller
 				'gjs-components' => $record->gjs_components
 			]);
 		}
-
+				
 		return isset($data) ? $data->toJson() : [];
 	}
 
