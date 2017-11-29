@@ -99,7 +99,7 @@ class PageBuilderController extends Controller
 
 			$prereg = $html;
 			$html = preg_replace("/@\n@/","", $this->setInlineStyles($request->get('gjs-css'), $html)); 
-			dd($html, $prereg);
+			dd($html, $prereg, $request->get('gjs-html'));
 			
 			$record->html_base64 = $html ? base64_encode($html) : null;
 			$record->css_base64 = base64_encode(preg_replace("/([*{](.*?)[}][body{](.*?)[}])/", "", $request->get('gjs-css'))) ?? null;
