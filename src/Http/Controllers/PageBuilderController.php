@@ -345,8 +345,10 @@ class PageBuilderController extends Controller
 			}
 		}
 		$html3 = $html;
-		$html4 = preg_replace('/\<(\/)?(html|body)>/','', $dom->saveHTML());
-		dd($html1, $html2, $html3, $html4, $dom->saveHTML());
+		$html4 = $dom;
+		$html5 = $dom->saveHTML();
+		$html6 = preg_replace('/\<(\/)?(html|body)>/','', $dom->saveHTML());
+		dd($html1, $html2, $html3, $html4, $html5, $html6);
 		return preg_replace('/\<(\/)?(html|body)>/','', $dom->saveHTML());
 	}
 
