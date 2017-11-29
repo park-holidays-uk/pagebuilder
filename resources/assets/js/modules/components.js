@@ -869,6 +869,13 @@ grapesjs.plugins.add('components', (editor, options) => {
                                 break;
                         }
 
+                        // ACCEPT Attribute
+                        if (attrs.type == 'file') {
+                            attrs.accept = 'image/*';
+                        } else {
+                            delete attrs.accept;
+                        }
+
                         component.set('traits', traits);
                         component.set('attributes', attrs);
                         editor.trigger('change:selectedComponent');
