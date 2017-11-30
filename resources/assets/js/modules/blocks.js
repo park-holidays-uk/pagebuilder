@@ -48,7 +48,7 @@ grapesjs.plugins.add('blocks', (editor, options) => {
             blockManager.add('grid-empty', {
                 label: 'Grid',
                 category: 'Basic',
-                content: '<div class="grid"></div>',
+                content: '<div class="grid grd"></div>',
                 attributes: { class: 'fa fa-th' }
             });
 
@@ -56,7 +56,7 @@ grapesjs.plugins.add('blocks', (editor, options) => {
             blockManager.add('column-empty', {
                 label: 'Column',
                 category: 'Basic',
-                content: '<div class="col"></div>',
+                content: '<div class="col grd-cl"></div>',
                 attributes: { class: 'fa fa-columns' }
             });
 
