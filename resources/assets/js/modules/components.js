@@ -459,7 +459,7 @@ grapesjs.plugins.add('components', (editor, options) => {
         model: defaultType.model.extend({
             defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                 stylable: ['margin', 'margin-top', 'margin-bottom'],
-                droppable: ['.' + stylePrefix + 'grd-cl'],
+                droppable: ['.grd-cl'],
                 resizable: false,
                 editable: true,
             }),
@@ -504,7 +504,7 @@ grapesjs.plugins.add('components', (editor, options) => {
                         if (ng) { newClass += '-noGutter'; }
 
                         // Remove Old CLasses
-                        editor.runCommand('remove-class', { component: component, classes: [], removeAll: true });
+                        editor.runCommand('remove-class', { component: component, classes: [], removeAllBut: ['grd'] });
 
                         // Add New CLasses
                         editor.runCommand('add-class', { component: component, classes: [newClass] });
@@ -529,7 +529,7 @@ grapesjs.plugins.add('components', (editor, options) => {
             render: function() {
                 // Extend the original render method
                 defaultType.view.prototype.render.apply(this, arguments);
-                this.el.classList.add(stylePrefix + 'grd');
+                // this.el.classList.add(stylePrefix + 'grd');
                 return this;
             },
         })
@@ -540,7 +540,7 @@ grapesjs.plugins.add('components', (editor, options) => {
         model: defaultType.model.extend({
             defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                 stylable: [],
-                draggable: ['.' + stylePrefix + 'grd'],
+                draggable: ['.grd'],
                 resizable: false,
                 editable: false,
             }),
@@ -614,7 +614,7 @@ grapesjs.plugins.add('components', (editor, options) => {
                         if (xs) { newClass += '_xs-' + xs; }
 
                         // Remove Old CLasses
-                        editor.runCommand('remove-class', { component: component, classes: [], removeAll: true });
+                        editor.runCommand('remove-class', { component: component, classes: [], removeAllBut: ['grd-cl'] });
                         // Add New Classes
                         editor.runCommand('add-class', { component: component, classes: [newClass] });
                     });
@@ -638,7 +638,7 @@ grapesjs.plugins.add('components', (editor, options) => {
             render: function() {
                 // Extend the original render method
                 defaultType.view.prototype.render.apply(this, arguments);
-                this.el.classList.add(stylePrefix + 'grd-cl');
+                // this.el.classList.add(stylePrefix + 'grd-cl');
                 return this;
             },
         })
@@ -1478,10 +1478,16 @@ grapesjs.plugins.add('components', (editor, options) => {
             var parentModel = options.component.sm;
             const sm = parentModel.get('SelectorManager');
             var componentClasses = options.component.get('classes');
+            var classesToRemove = options.classes || [];
+            var removeAll = options.removeAll || false;
+            var removeAllBut = options.removeAllBut || [];
+            var regex = /\b(c\d{2,})\b/g;
 
             for (var i = componentClasses.length - 1; i >= 0; i--) {
                 var cls = componentClasses.models[i];
-                if (options.classes.indexOf(cls.id) > -1 || options.removeAll) {
+                var removeThis = (classesToRemove.indexOf(cls.id) > -1) || ((removeAll || (removeAllBut.length > 0 && removeAllBut.indexOf(cls.id) == -1)) && !regex.test(cls.id));
+
+                if (removeThis) {
                     componentClasses.remove(cls);
                 }
             }
