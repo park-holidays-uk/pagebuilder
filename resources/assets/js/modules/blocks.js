@@ -44,37 +44,53 @@ grapesjs.plugins.add('blocks', (editor, options) => {
                 attributes: { class: 'gjs-fonts gjs-f-b1' } // NO ICON
             });
 
-            // One Column Grid
-            blockManager.add('grid-one-column', {
-                label: '1 Column',
+            // Grid
+            blockManager.add('grid-empty', {
+                label: 'Grid',
                 category: 'Basic',
-                content: '<div class="grid"><div class="col"></div></div>',
-                attributes: { class: 'gjs-fonts gjs-f-b1' }
+                content: '<div class="grid"></div>',
+                attributes: { class: 'fa fa-th' }
             });
 
-            // Two Column Grid
-            blockManager.add('grid-two-columns', {
-                label: '2 Columns',
+            // Column
+            blockManager.add('column-empty', {
+                label: 'Column',
                 category: 'Basic',
-                content: '<div class="grid-2_md-2_sm-1_xs-1"><div class="col"></div><div class="col"></div></div>',
-                attributes: { class: 'gjs-fonts gjs-f-b2' }
+                content: '<div class="col"></div>',
+                attributes: { class: 'fa fa-columns' }
             });
 
-            // Three Column Grid
-            blockManager.add('grid-three-columns', {
-                label: '3 Columns',
-                category: 'Basic',
-                content: '<div class="grid-3_md-2_xs-1"><div class="col"></div><div class="col"></div><div class="col"></div></div>',
-                attributes: { class: 'gjs-fonts gjs-f-b3' }
-            });
+            // // One Column Grid
+            // blockManager.add('grid-one-column', {
+            //     label: '1 Column',
+            //     category: 'Basic',
+            //     content: '<div class="grid"><div class="col"></div></div>',
+            //     attributes: { class: 'gjs-fonts gjs-f-b1' }
+            // });
 
-            // Two Column 4/8 Grid
-            blockManager.add('grid-four-eight-columns', {
-                label: '2 Columns 4/8',
-                category: 'Basic',
-                content: '<div class="grid"><div class="col-4_xs-12"></div><div class="col-8_xs-12"></div></div>',
-                attributes: { class: 'gjs-fonts gjs-f-b37' }
-            });
+            // // Two Column Grid
+            // blockManager.add('grid-two-columns', {
+            //     label: '2 Columns',
+            //     category: 'Basic',
+            //     content: '<div class="grid-2_md-2_sm-1_xs-1"><div class="col"></div><div class="col"></div></div>',
+            //     attributes: { class: 'gjs-fonts gjs-f-b2' }
+            // });
+
+            // // Three Column Grid
+            // blockManager.add('grid-three-columns', {
+            //     label: '3 Columns',
+            //     category: 'Basic',
+            //     content: '<div class="grid-3_md-2_xs-1"><div class="col"></div><div class="col"></div><div class="col"></div></div>',
+            //     attributes: { class: 'gjs-fonts gjs-f-b3' }
+            // });
+
+            // // Two Column 4/8 Grid
+            // blockManager.add('grid-four-eight-columns', {
+            //     label: '2 Columns 4/8',
+            //     category: 'Basic',
+            //     content: '<div class="grid"><div class="col-4_xs-12"></div><div class="col-8_xs-12"></div></div>',
+            //     attributes: { class: 'gjs-fonts gjs-f-b37' }
+            // });
 
             // Div
             blockManager.add('div', {
@@ -270,7 +286,7 @@ grapesjs.plugins.add('blocks', (editor, options) => {
                 content: '<label>Lorem Ipsum</label><input type="text" class="input" />'
             });
 
-            // Input
+            // Textarea
             blockManager.add('textarea-form-field', {
                 label: `<svg class="gjs-block-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path class="gjs-block-svg-path" d="M22,7.5 C22,6.6 21.5,6 20.75,6 L3.25,6 C2.5,6 2,6.6 2,7.5 L2,16.5 C2,17.4 2.5,18 3.25,18 L20.75,18 C21.5,18 22,17.4 22,16.5 L22,7.5 Z M21,17 L3,17 L3,7 L21,7 L21,17 Z"></path>
