@@ -109,7 +109,6 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 * Tweak filtering options for Asset modal to work better.
 * Add support for more elements (Lists, tables etc.)
 * Replace multple grid blocks with customisable grids
-* Find more permenant fix for Grapejs select traits not triggering change event if value = '' or null.
 * Look at changing video default source to YouTube
 * Look into more permenant fix for DomDocument parsing issue (https://stackoverflow.com/questions/39479994/php-domdocument-savehtml-breaks-format)
 * Improve on the multiple select traits.
