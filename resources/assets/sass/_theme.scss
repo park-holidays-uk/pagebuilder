@@ -1,6 +1,7 @@
 $primary-color: #0C5595;
-$dark-primary-color: #0b487d;
+$dark-primary-color: darken(#0b487d, 10%);
 $pale-primary-color: #4d7ba5; //#ecf4fb;
+// Styles
 .gjs-one-bg {
     background-color: $dark-primary-color;
 }
