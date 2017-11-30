@@ -56,6 +56,9 @@ input[data-hidden] {
         background-position: center center;
         background-repeat: no-repeat;
     }
+    div[class*="grid"]:empty {
+        background-image: url(http://via.placeholder.com/350x75/ffffff?text=DROP+COLUMNS+HERE) !important;
+    }
     div:empty:not(#wrapper):not(.gjs-css-rules):not(.gjs-js-cont),
     section:empty {
         background-color: #fff;
