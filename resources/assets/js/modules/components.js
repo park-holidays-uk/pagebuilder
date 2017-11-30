@@ -466,11 +466,38 @@ grapesjs.plugins.add('components', (editor, options) => {
             init() {
                 // Initialise code
                 var self = this;
-                self.set('noGutter', self.get('classes').models.filter(function(c) { return c.get('name').indexOf('-noGutter') > -1; }).length > 0);
+                // self.set('noGutter', self.get('classes').models.filter(function(c) { return c.get('name').indexOf('-noGutter') > -1; }).length > 0);
+
+                var traits = [{
+                    type: 'select',
+                    name: 'horizontally_aligned',
+                    label: 'H. Align',
+                    options: [
+                        { name: 'Default', value: '' },
+                        { name: 'Center', value: 'center' },
+                        { name: 'Right', value: 'right' }
+                    ],
+                    changeProp: 1
+                }];
+
+                // Listener -- Horizontal Alignment
+                self.listenTo(self, 'change:horizontally_aligned', function(component, value) {
+                    var newClass = 'grid';
+
+                    if (value && value != '') {
+                        newClass += '-' + value;
+                    }
+
+                    // Remove Old CLasses
+                    editor.runCommand('remove-class', { component: component, classes: [], removeAll: true });
+
+                    // Add New CLasses
+                    editor.runCommand('add-class', { component: component, classes: [newClass] });
+                });
 
                 // Run Commands
                 editor.runCommand('set-id-attribute', { component: self });
-                editor.runCommand('set-properties', { component: self, allowDisablingTraits: true });
+                editor.runCommand('set-properties', { component: self, traits: traits });
             }
         }, {
             isComponent: function(el) {
@@ -503,10 +530,83 @@ grapesjs.plugins.add('components', (editor, options) => {
             }),
             init() {
                 var self = this;
+                var options = [
+                    { name: 'None', value: '' },
+                    { name: '1', value: '1' },
+                    { name: '2', value: '2' },
+                    { name: '3', value: '3' },
+                    { name: '4', value: '4' },
+                    { name: '5', value: '5' },
+                    { name: '6', value: '6' },
+                    { name: '7', value: '7' },
+                    { name: '8', value: '8' },
+                    { name: '9', value: '9' },
+                    { name: '10', value: '10' },
+                    { name: '11', value: '11' },
+                    { name: '12', value: '12' }
+                ];
+
+                var columnSizeTraits = [{
+                    type: 'select',
+                    name: 'column_xl',
+                    label: 'XL',
+                    options: options,
+                    changeProp: 1
+                }, {
+                    type: 'select',
+                    name: 'column_lg',
+                    label: 'LG',
+                    options: options,
+                    changeProp: 1
+                }, {
+                    type: 'select',
+                    name: 'column_md',
+                    label: 'MD',
+                    options: options,
+                    changeProp: 1
+                }, {
+                    type: 'select',
+                    name: 'column_sm',
+                    label: 'SM',
+                    options: options,
+                    changeProp: 1
+                }, {
+                    type: 'select',
+                    name: 'column_xs',
+                    label: 'XS',
+                    options: options,
+                    changeProp: 1
+                }];
+
+                var traits = columnSizeTraits;
+
+                _.forEach(columnSizeTraits, function(trait) {
+                    // Listener -- Column Size Traits
+                    self.listenTo(self, 'change:' + trait.name, function(component, value) {
+                        var newClass = 'col';
+
+                        var xl = component.get('column_xl');
+                        var lg = component.get('column_lg');
+                        var md = component.get('column_md');
+                        var sm = component.get('column_sm');
+                        var xs = component.get('column_xs');
+
+                        if (xl) { newClass += '-' + xl; }
+                        if (lg) { newClass += '_lg-' + lg; }
+                        if (md) { newClass += '_md-' + md; }
+                        if (sm) { newClass += '_sm-' + sm; }
+                        if (xs) { newClass += '_xs-' + xs; }
+
+                        // Remove Old CLasses
+                        editor.runCommand('remove-class', { component: component, classes: [], removeAll: true });
+                        // Add New Classes
+                        editor.runCommand('add-class', { component: component, classes: [newClass] });
+                    });
+                });
 
                 // Run Commands
-                editor.runCommand('set-properties', { component: self, traits: [] });
-                editor.runCommand('set-id-attribute', { component: self });
+                editor.runCommand('set-properties', { component: self, traits: traits });
+                // editor.runCommand('set-id-attribute', { component: self });
             }
         }, {
             isComponent: function(el) {
@@ -1115,7 +1215,7 @@ grapesjs.plugins.add('components', (editor, options) => {
                 self.set('traits', traits);
                 self.set('attributes', attrs);
                 editor.runCommand('set-id-attribute', { component: self });
-                customNameTrait.label = customNameLabel;
+                // customNameTrait.label = customNameLabel;
             }
         }, {
             isComponent: function(el) {
@@ -1365,7 +1465,7 @@ grapesjs.plugins.add('components', (editor, options) => {
 
             for (var i = componentClasses.length - 1; i >= 0; i--) {
                 var cls = componentClasses.models[i];
-                if (options.classes.indexOf(cls.id) > -1) {
+                if (options.classes.indexOf(cls.id) > -1 || options.removeAll) {
                     componentClasses.remove(cls);
                 }
             }
