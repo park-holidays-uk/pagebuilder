@@ -470,7 +470,7 @@ grapesjs.plugins.add('components', (editor, options) => {
 
                 var traits = [{
                     type: 'select',
-                    name: 'horizontally_aligned',
+                    name: 'horizontallyAligned',
                     label: 'H. Align',
                     options: [
                         { name: 'Default', value: '' },
@@ -478,21 +478,37 @@ grapesjs.plugins.add('components', (editor, options) => {
                         { name: 'Right', value: 'right' }
                     ],
                     changeProp: 1
+                }, {
+                    type: 'checkbox',
+                    name: 'equalHeight',
+                    label: 'Eq. Height',
+                    changeProp: 1
+                }, {
+                    type: 'checkbox',
+                    name: 'noGutter',
+                    label: 'No Gutter',
+                    changeProp: 1
                 }];
 
-                // Listener -- Horizontal Alignment
-                self.listenTo(self, 'change:horizontally_aligned', function(component, value) {
-                    var newClass = 'grid';
+                _.forEach(traits, function(trait) {
+                    // Listener -- Horizontal Alignment
+                    self.listenTo(self, 'change:' + trait.name, function(component, value) {
+                        var newClass = 'grid';
 
-                    if (value && value != '') {
-                        newClass += '-' + value;
-                    }
+                        var ha = component.get('horizontallyAligned');
+                        var eh = component.get('equalHeight');
+                        var ng = component.get('noGutter');
 
-                    // Remove Old CLasses
-                    editor.runCommand('remove-class', { component: component, classes: [], removeAll: true });
+                        if (ha && ha != '') { newClass += '-' + ha; }
+                        if (eh) { newClass += '-equalHeight'; }
+                        if (ng) { newClass += '-noGutter'; }
 
-                    // Add New CLasses
-                    editor.runCommand('add-class', { component: component, classes: [newClass] });
+                        // Remove Old CLasses
+                        editor.runCommand('remove-class', { component: component, classes: [], removeAll: true });
+
+                        // Add New CLasses
+                        editor.runCommand('add-class', { component: component, classes: [newClass] });
+                    });
                 });
 
                 // Run Commands
