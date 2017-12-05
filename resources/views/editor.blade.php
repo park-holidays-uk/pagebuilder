@@ -58,7 +58,7 @@
                 styles: [
                     // Park Holidays Stylesheets
                     @foreach($viewModel->ph_assets as $asset)
-                        @if(substr($asset, -4) == '.css')
+                        @if(strpos($asset, '.css') !=  false)
                         '{{ $asset }}',
                         @endif
                     @endforeach
@@ -69,7 +69,7 @@
                 scripts: [
                     // Park Holidays Scripts
                     @foreach($viewModel->ph_assets as $asset)
-                        @if(substr($asset, -3) == '.js')
+                        @if(strpos($asset, '.js') != false)
                         '{{ $asset }}',
                         @endif
                     @endforeach
