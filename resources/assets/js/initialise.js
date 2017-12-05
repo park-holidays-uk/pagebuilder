@@ -1,6 +1,7 @@
 var options = {
     container: '#gjs',
     fromElement: true,
+    forceClass: false,
     showOffsets: true,
     height: '100%',
 
