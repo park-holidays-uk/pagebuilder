@@ -50,6 +50,14 @@ input[data-hidden] {
         background-position: center center;
         background-repeat: no-repeat;
     }
+    i.empty-icon {
+        display: block;
+        width: 16px;
+        height: 16px;
+        background-image: url('http://via.placeholder.com/16?text=i');
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
     div:empty:not(.gjs-css-rules):not(.gjs-js-cont),
     section:empty {
         background-image: url(http://via.placeholder.com/350x75/ffffff?text=DROP+BLOCKS+HERE);
@@ -61,7 +69,7 @@ input[data-hidden] {
     }
     div:empty:not(#wrapper):not(.gjs-css-rules):not(.gjs-js-cont),
     section:empty {
-        background-color: #fff;
+        // background-color: #fff;
         background-size: contain;
         min-height: 75px;
     }
