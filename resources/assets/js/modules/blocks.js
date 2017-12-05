@@ -60,38 +60,6 @@ grapesjs.plugins.add('blocks', (editor, options) => {
                 attributes: { class: 'fa fa-columns' }
             });
 
-            // // One Column Grid
-            // blockManager.add('grid-one-column', {
-            //     label: '1 Column',
-            //     category: 'Basic',
-            //     content: '<div class="grid"><div class="col"></div></div>',
-            //     attributes: { class: 'gjs-fonts gjs-f-b1' }
-            // });
-
-            // // Two Column Grid
-            // blockManager.add('grid-two-columns', {
-            //     label: '2 Columns',
-            //     category: 'Basic',
-            //     content: '<div class="grid-2_md-2_sm-1_xs-1"><div class="col"></div><div class="col"></div></div>',
-            //     attributes: { class: 'gjs-fonts gjs-f-b2' }
-            // });
-
-            // // Three Column Grid
-            // blockManager.add('grid-three-columns', {
-            //     label: '3 Columns',
-            //     category: 'Basic',
-            //     content: '<div class="grid-3_md-2_xs-1"><div class="col"></div><div class="col"></div><div class="col"></div></div>',
-            //     attributes: { class: 'gjs-fonts gjs-f-b3' }
-            // });
-
-            // // Two Column 4/8 Grid
-            // blockManager.add('grid-four-eight-columns', {
-            //     label: '2 Columns 4/8',
-            //     category: 'Basic',
-            //     content: '<div class="grid"><div class="col-4_xs-12"></div><div class="col-8_xs-12"></div></div>',
-            //     attributes: { class: 'gjs-fonts gjs-f-b37' }
-            // });
-
             // Div
             blockManager.add('div', {
                 label: 'Div',
@@ -109,18 +77,25 @@ grapesjs.plugins.add('blocks', (editor, options) => {
             });
 
             // Lists
-            blockManager.add('list', {
-                label: 'List',
+            blockManager.add('unordered-list', {
+                label: 'Unordered List',
                 category: 'Basic',
-                content: '<ul><li>Lorem Ipsum</li></ul>',
+                content: '<ul><li><span>Lorem Ipsum</span></li></ul>',
                 attributes: { class: 'fa fa-list-ul' }
+            });
+
+            blockManager.add('ordered-list', {
+                label: 'Ordered List',
+                category: 'Basic',
+                content: '<ol><li><span>Lorem Ipsum</span></li></ol>',
+                attributes: { class: 'fa fa-list-ol' }
             });
 
             // Horizontal Rule
             blockManager.add('horizontal-rule', {
                 label: 'Horizontal Rule',
                 category: 'Basic',
-                content: '<hr class="hr-separator"/>',
+                content: '<hr class="hr-separator" />',
                 attributes: { class: 'gjs-fonts gjs-f-divider' }
             });
 
@@ -140,51 +115,20 @@ grapesjs.plugins.add('blocks', (editor, options) => {
                 attributes: { class: 'fa fa-youtube-play' }
             });
 
+            // Icon
+            // blockManager.add('icon', {
+            //     label: 'Icon',
+            //     category: 'Basic',
+            //     textable: 1,
+            //     content: '<i class="icon-info-circle"></i>',
+            //     attributes: { class: 'fa fa-info' }
+            // });
+
             // Heading One
             blockManager.add('heading-one-text', {
-                label: 'Heading 1',
+                label: 'Heading',
                 category: 'Typography',
                 content: '<h1 data-gjs-custom-name="Heading">Lorem Ipsum</h1>',
-                attributes: { class: 'fa fa-header' }
-            });
-
-            // Heading Two
-            blockManager.add('heading-two-text', {
-                label: 'Heading 2',
-                category: 'Typography',
-                content: '<h2 data-gjs-custom-name="Heading">Lorem Ipsum</h2>',
-                attributes: { class: 'fa fa-header' }
-            });
-
-            // Heading
-            blockManager.add('heading-three-text', {
-                label: 'Heading 3',
-                category: 'Typography',
-                content: '<h3 data-gjs-custom-name="Heading">Lorem Ipsum</h3>',
-                attributes: { class: 'fa fa-header' }
-            });
-
-            // Heading Four
-            blockManager.add('heading-four-text', {
-                label: 'Heading 4',
-                category: 'Typography',
-                content: '<h4 data-gjs-custom-name="Heading">Lorem Ipsum</h4>',
-                attributes: { class: 'fa fa-header' }
-            });
-
-            // Heading Five
-            blockManager.add('heading-five-text', {
-                label: 'Heading 5',
-                category: 'Typography',
-                content: '<h5 data-gjs-custom-name="Heading">Lorem Ipsum</h5>',
-                attributes: { class: 'fa fa-header' }
-            });
-
-            // Heading Six
-            blockManager.add('heading-six-text', {
-                label: 'Heading 6',
-                category: 'Typography',
-                content: '<h6 data-gjs-custom-name="Heading">Lorem Ipsum</h6>',
                 attributes: { class: 'fa fa-header' }
             });
 
@@ -200,6 +144,7 @@ grapesjs.plugins.add('blocks', (editor, options) => {
             blockManager.add('span-text', {
                 label: 'Text',
                 category: 'Typography',
+                textable: 1,
                 content: '<span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed sem rutrum lacus cursus viverra imperdiet id risus. Nulla massa mauris, venenatis eget hendrerit a.</span>',
                 attributes: { class: 'gjs-fonts gjs-f-text' }
             });
@@ -208,6 +153,7 @@ grapesjs.plugins.add('blocks', (editor, options) => {
             blockManager.add('small-text', {
                 label: 'Small Text',
                 category: 'Typography',
+                textable: 1,
                 content: '<small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed sem rutrum lacus cursus viverra imperdiet id risus. Nulla massa mauris, venenatis eget hendrerit a.</small>',
                 attributes: { class: 'fa fa-font' }
             });
@@ -224,6 +170,7 @@ grapesjs.plugins.add('blocks', (editor, options) => {
             blockManager.add('link', {
                 label: 'Link',
                 category: 'Typography',
+                textable: 1,
                 content: '<a>Lorem ipsum</a>',
                 attributes: { class: 'fa fa-link' }
             });
