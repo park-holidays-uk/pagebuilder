@@ -29,13 +29,14 @@ grapesjs.plugins.add('components', (editor, options) => {
     var buttonProperties = {
         size: 'button_size',
         style: 'button_style',
+        chevron: 'chevron_class',
         is_outline: 'button_outline',
         is_block: 'button_block',
         is_flat: 'button_flat'
-    }
+    };
 
     // Shared Traits
-    var dividerTrait = [{ type: 'divider', changeProp: 1 }];
+    var dividerTrait = { type: 'divider', changeProp: 1 };
 
     var propertyTraits = [{
         type: 'checkbox',
@@ -131,6 +132,16 @@ grapesjs.plugins.add('components', (editor, options) => {
             { name: 'Cyan', value: 'cyan' },
             { name: 'Brown', value: 'brown' },
             { name: 'Blue Grey', value: 'blue-grey' }
+        ],
+        changeProp: 1
+    }, {
+        type: 'select',
+        name: 'chevron_class',
+        label: 'Chevron',
+        options: [
+            { name: 'None', value: '' },
+            { name: 'Left', value: 'link-chevron-left' },
+            { name: 'Right', value: 'link-chevron-right' },
         ],
         changeProp: 1
     }, {
@@ -258,6 +269,7 @@ grapesjs.plugins.add('components', (editor, options) => {
                     // Initialise code
                     var self = this;
                     var stylables = [];
+                    var traits = [];
 
                     switch (self.get('tagName')) {
                         case 'div':
@@ -266,22 +278,89 @@ grapesjs.plugins.add('components', (editor, options) => {
                                 'float', 'display',
                                 'width', 'max-width', 'height',
                                 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right',
-                                'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right',
-                                'background-color'
+                                'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right'
+                            ];
+
+                            traits = [{
+                                    type: 'select',
+                                    name: 'bgColorClass',
+                                    label: 'BG. Colour',
+                                    options: [
+                                        { name: 'None', value: '' },
+                                        { name: 'Primary', value: 'background-primary' },
+                                        { name: 'Holidays', value: 'background-holidays' },
+                                        { name: 'Touring', value: 'background-touring' },
+                                        { name: 'Ownership', value: 'background-ownership' },
+                                        { name: 'Sun', value: 'background-sun' },
+                                        { name: 'Rose', value: 'background-rose' },
+                                        { name: 'Dark', value: 'background-dark' },
+                                        { name: 'Grey', value: 'background-grey' }
+                                    ],
+                                    changeProp: 1
+                                },
+                                {
+                                    type: 'checkbox',
+                                    name: 'isBgPale',
+                                    label: 'Pale',
+                                    changeProp: 1
+                                }
                             ];
                             break;
                     }
+
+                    console.log('Stylables', stylables);
                     // Run Commands
                     editor.runCommand('set-id-attribute', { component: self });
-                    editor.runCommand('set-properties', { component: self, stylables: stylables });
+                    editor.runCommand('set-properties', { component: self, stylables: stylables, traits: traits });
 
-                    // Listener -- Change container class between Fluid and Non-fluid
-                    self.listenTo(self, 'change:fluid', function(component, value) {
-                        var prevClass = value ? classes.normal : classes.fluid;
-                        var newClass = value ? classes.fluid : classes.normal;
+                    // Listener -- Background Colour
+                    self.listenTo(self, 'change:bgColorClass', function(component, value) {
+                        var removeClasses = [
+                            'background-primary', 'background-holidays', 'background-touring', 'background-ownership',
+                            'background-sun', 'background-rose', 'background-dark', 'background-grey',
 
-                        editor.runCommand('remove-class', { component: self, classes: [prevClass] });
-                        editor.runCommand('add-class', { component: self, classes: [newClass] });
+                            'background-primary-pale', 'background-holidays-pale', 'background-touring-pale', 'background-ownership-pale',
+                            'background-grey-pale'
+                        ];
+
+                        var paleableClasses = ['background-primary', 'background-holidays', 'background-touring', 'background-ownership', 'background-grey'];
+                        var makePale = component.get('isBgPale') && _.indexOf(paleableClasses, value) > -1;
+
+                        editor.runCommand('remove-class', { component: self, classes: removeClasses });
+
+                        if (value) {
+                            editor.runCommand('add-class', { component: self, classes: [makePale ? value + '-pale' : value] });
+                        }
+
+                        editor.trigger('change:selectedComponent');
+                    });
+
+                    // Listener -- Is Background Color Pale
+                    self.listenTo(self, 'change:isBgPale', function(component, value) {
+                        var newClass;
+                        var removeClasses = [
+                            'background-primary', 'background-holidays', 'background-touring', 'background-ownership',
+                            'background-sun', 'background-rose', 'background-dark', 'background-grey',
+
+                            'background-primary-pale', 'background-holidays-pale', 'background-touring-pale', 'background-ownership-pale',
+                            'background-grey-pale'
+                        ];
+
+                        var paleableClasses = ['background-primary', 'background-holidays', 'background-touring', 'background-ownership', 'background-grey'];
+
+                        var current = _.find(component.get('classes').models, function(c) {
+                            return _.indexOf(removeClasses, c.id) > -1;
+                        });
+
+                        var paleable = _.indexOf(paleableClasses, current.id) > -1;
+
+                        if (current) {
+                            newClass = value ? (paleable ? current.id + '-pale' : current.id.replace('-pale', '')) : current.id.replace('-pale', '');
+                            editor.runCommand('remove-class', { component: self, classes: removeClasses });
+                            editor.runCommand('add-class', { component: self, classes: [newClass] });
+
+                            if (!paleable) { component.set('isBgPale', false); }
+                        }
                     });
                 }
             }, {
@@ -301,27 +380,91 @@ grapesjs.plugins.add('components', (editor, options) => {
         model: textType.model.extend({
             defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                 stylable: [
-                    'color', 'text-align', 'font-weight',
+                    'text-align', 'font-weight',
                     'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right',
                     'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right'
                 ],
+                droppable: false,
                 editable: true,
-                traits: []
+                // traits: []
             }),
             init() {
                 // Initialise code
                 var self = this;
+                var traits = [];
+                var regex = /\b(h\d{1})\b/g;
+
+                if (regex.test(self.get('tagName'))) {
+                    self.set('custom-name', 'Heading');
+
+                    traits.push({
+                        type: 'select',
+                        name: 'tagName',
+                        label: 'Type',
+                        options: [
+                            { name: 'Heading 1', value: 'h1' },
+                            { name: 'Heading 2', value: 'h2' },
+                            { name: 'Heading 3', value: 'h3' },
+                            { name: 'Heading 4', value: 'h4' },
+                            { name: 'Heading 5', value: 'h5' },
+                            { name: 'Heading 6', value: 'h6' }
+                        ],
+                        changeProp: 1
+                    })
+                }
+
+                traits.push({
+                    type: 'select',
+                    name: 'colorClass',
+                    label: 'Colour',
+                    options: [
+                        { name: 'Default', value: '' },
+                        { name: 'Muted', value: 'text-muted' },
+                        { name: 'White', value: 'text-white' },
+                        { name: 'Primary', value: 'text-primary' },
+                        { name: 'Holidays', value: 'text-holidays' },
+                        { name: 'Touring', value: 'text-touring' },
+                        { name: 'Ownership', value: 'text-ownership' }
+                    ],
+                    changeProp: 1
+                });
+
                 if (self.get('tagName') == 'label') {
                     self.set('custom-name', 'Label');
-                } else {
-                    // Run Commands
-                    editor.runCommand('set-properties', { component: self });
-                    editor.runCommand('set-id-attribute', { component: self });
                 }
+
+                // Run Commands
+                editor.runCommand('set-properties', { component: self, traits: traits });
+                editor.runCommand('set-id-attribute', { component: self });
+
+                // Listener -- TagName
+                self.listenTo(self, 'change:tagName', function(component, value) {
+                    var sel = editor.getSelected();
+
+                    var collection = sel.collection;
+                    var index = collection.indexOf(sel);
+                    var clone = sel.clone();
+
+                    collection.add(clone, { at: index + 1 });
+                    editor.trigger('component:update', sel);
+
+                    editor.select(clone);
+                    sel.destroy();
+                });
+
+                // Listener -- Colour
+                self.listenTo(self, 'change:colorClass', function(component, value) {
+                    var removeClasses = ['text-muted', 'text-white', 'text-primary', 'text-holidays', 'text-touring', 'text-ownership'];
+                    editor.runCommand('remove-class', { component: self, classes: removeClasses });
+
+                    if (value) {
+                        editor.runCommand('add-class', { component: self, classes: [value] });
+                    }
+                });
             }
         }, {
             isComponent: function(el) {
-                var regex = /\b(SPAN|P|H|SMALL|CINE|LABEL\d{1})\b/g;
+                var regex = /\b(SPAN|P|H\d{1}|SMALL|CINE|LABEL)\b/g;
                 if (regex.test(el.tagName)) {
                     return { type: 'text' };
                 }
@@ -336,7 +479,7 @@ grapesjs.plugins.add('components', (editor, options) => {
         model: linkType.model.extend({
             defaults: Object.assign({}, linkType.model.prototype.defaults, {
                 stylable: [
-                    'color', 'text-align', 'font-weight',
+                    'text-align', 'font-weight',
                     'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'
                 ]
             }),
@@ -345,9 +488,9 @@ grapesjs.plugins.add('components', (editor, options) => {
                 var self = this;
                 var traits = self.get('traits').models.filter(function(t) { return t.get('changeProp') == 0 && t.get('type') != 'divider'; });
 
-                traits = traits.concat(dividerTrait)
+                traits = traits.concat([dividerTrait])
                     .concat(alignmentTraits)
-                    .concat(dividerTrait)
+                    .concat([dividerTrait])
                     .concat(buttonStyleTraits);
 
                 // Run Commands
@@ -357,12 +500,14 @@ grapesjs.plugins.add('components', (editor, options) => {
                 // Button Styles
                 var buttonSize = self.get(buttonProperties.size);
                 var buttonStyle = self.get(buttonProperties.style);
+                var buttonChevron = self.get(buttonProperties.chevron);
                 var buttonOutline = self.get(buttonProperties.is_outline);
                 var buttonBlock = self.get(buttonProperties.is_block);
                 var buttonFlat = self.get(buttonProperties.is_flat);
 
                 if (!buttonSize) { self.set(buttonProperties.size, ''); }
                 if (!buttonStyle) { self.set(buttonProperties.style, ''); }
+                if (!buttonChevron) { self.set(buttonProperties.chevron, ''); }
                 if (!buttonOutline) { self.set(buttonProperties.is_outline, false); }
                 if (!buttonBlock) { self.set(buttonProperties.is_block, false); }
                 if (!buttonFlat) { self.set(buttonProperties.is_flat, false); }
@@ -392,6 +537,96 @@ grapesjs.plugins.add('components', (editor, options) => {
         }),
 
         view: linkType.view
+    });
+
+    // Icon
+    domComponents.addType('icon', {
+        model: defaultType.model.extend({
+            defaults: Object.assign({}, defaultType.model.prototype.defaults, {
+                stylable: [
+                    'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'
+                ]
+            }),
+            init() {
+                // Initialise code
+                var self = this;
+                var traits = [{
+                    type: 'select',
+                    name: 'icon_class',
+                    label: 'Icon',
+                    options: [],
+
+                }];
+
+                editor.runCommand('set-id-attribute', { component: self });
+                editor.runCommand('set-properties', { component: self, traits: traits });
+            }
+        }, {
+            isComponent: function(el) {
+                var regex = /\b(icon)\b/g;
+                if (el.tagName == 'I' && regex.test(el.className)) {
+                    return { type: 'icon' };
+                }
+            },
+        }),
+
+        view: defaultType.view
+    });
+
+    // List
+    domComponents.addType('list', {
+        model: defaultType.model.extend({
+            defaults: Object.assign({}, defaultType.model.prototype.defaults, {
+                stylable: [
+                    'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right',
+                    'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right'
+                ],
+                traits: []
+            }),
+            init() {
+                // Initialise code
+                var self = this;
+
+                editor.runCommand('set-id-attribute', { component: self });
+                editor.runCommand('set-properties', { component: self });
+            }
+        }, {
+            isComponent: function(el) {
+                if (el.tagName == 'UL' || el.tagName == 'OL') {
+                    return { type: 'list' };
+                }
+            },
+        }),
+
+        view: defaultType.view
+    });
+
+    // List Item
+    domComponents.addType('list item', {
+        model: defaultType.model.extend({
+            defaults: Object.assign({}, defaultType.model.prototype.defaults, {
+                stylable: [
+                    'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right',
+                    'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right'
+                ],
+                traits: []
+            }),
+            init() {
+                // Initialise code
+                var self = this;
+
+                editor.runCommand('set-id-attribute', { component: self });
+                editor.runCommand('set-properties', { component: self });
+            }
+        }, {
+            isComponent: function(el) {
+                if (el.tagName == 'LI') {
+                    return { type: 'list item' };
+                }
+            },
+        }),
+
+        view: defaultType.view
     });
 
 
@@ -730,12 +965,14 @@ grapesjs.plugins.add('components', (editor, options) => {
                 // Button Styles
                 var buttonSize = self.get(buttonProperties.size);
                 var buttonStyle = self.get(buttonProperties.style);
+                var buttonChevron = self.get(buttonProperties.chevron);
                 var buttonOutline = self.get(buttonProperties.is_outline);
                 var buttonBlock = self.get(buttonProperties.is_block);
                 var buttonFlat = self.get(buttonProperties.is_flat);
 
                 if (!buttonSize) { self.set(buttonProperties.size, ''); }
                 if (!buttonStyle) { self.set(buttonProperties.style, 'default'); }
+                if (!buttonChevron) { self.set(buttonProperties.chevron, ''); }
                 if (!buttonOutline) { self.set(buttonProperties.is_outline, false); }
                 if (!buttonBlock) { self.set(buttonProperties.is_block, false); }
                 if (!buttonFlat) { self.set(buttonProperties.is_flat, false); }
@@ -764,9 +1001,9 @@ grapesjs.plugins.add('components', (editor, options) => {
                             { name: 'Reset', value: 'reset' },
                         ]
                     }]
-                    .concat(dividerTrait)
+                    .concat([dividerTrait])
                     .concat(alignmentTraits)
-                    .concat(dividerTrait)
+                    .concat([dividerTrait])
                     .concat(buttonStyleTraits);
 
                 editor.runCommand('set-button-style', { component: self });
@@ -1434,9 +1671,10 @@ grapesjs.plugins.add('components', (editor, options) => {
             var not_stylable = (stylable == false || stylable == []);
 
             var traits = options.traits || [];
+            options.component.set('stylable', stylable);
 
             if (opt.user.isSuperUser && !options.disablePropertyTraits) {
-                if (traits.length > 0) { traits = traits.concat(dividerTrait); }
+                if (traits.length > 0) { traits.push(dividerTrait); }
                 traits = traits.concat(propertyTraits);
 
                 // Listener -- Change is stylable
@@ -1542,6 +1780,7 @@ grapesjs.plugins.add('components', (editor, options) => {
             var button = {
                 size: options.component.get(buttonProperties.size),
                 style: options.component.get(buttonProperties.style),
+                chevron: options.component.get(buttonProperties.chevron),
                 is_outline: options.component.get(buttonProperties.is_outline),
                 is_block: options.component.get(buttonProperties.is_block),
                 is_flat: options.component.get(buttonProperties.is_flat)
@@ -1558,7 +1797,9 @@ grapesjs.plugins.add('components', (editor, options) => {
                 // Outlines
                 'btn-outline-primary', 'btn-outline-holidays', 'btn-outline-touring', 'btn-outline-ownership',
                 // Sizes
-                'btn-large', 'btn-small', 'btn-tiny'
+                'btn-large', 'btn-small', 'btn-tiny',
+                // Chevron
+                'link-chevron-left', 'link-chevron-right'
             ];
 
             // Remove Old CLasses
@@ -1577,9 +1818,10 @@ grapesjs.plugins.add('components', (editor, options) => {
                 if (button.size != '') { newClasses.push('btn-' + button.size); }
                 if (button.is_block) { newClasses.push('btn-block'); }
                 if (button.is_flat) { newClasses.push('btn-flat'); }
-
-                editor.runCommand('add-class', { component: options.component, classes: newClasses });
             }
+
+            if (button.chevron != '') { newClasses.push(button.chevron); }
+            if (newClasses != []) { editor.runCommand('add-class', { component: options.component, classes: newClasses }); }
         }
     });
 
