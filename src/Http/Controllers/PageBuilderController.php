@@ -22,6 +22,8 @@ class PageBuilderController extends Controller
      */
     public function __construct()
     {
+		$this->ph_assets = collect([]);
+
 		$assets = [
 			'/css/parkholidays/critical.css',
 			'/css/parkholidays/non_critical.css',
@@ -32,11 +34,10 @@ class PageBuilderController extends Controller
 		$curl = curl_init($fn);
 
 		if($curl) {
-			$mix_manifest = json_decode(file_get_contents($fn));
-
+			$mix_manifest = collect(json_decode(file_get_contents($fn)));
 			foreach($assets as $asset) {
-				if(isset($mix_manifest->{$asset})) {
-					array_push($this->ph_assets, config('pagebuilder.asset_path') . substr($mix_manifest->{$asset}, 1));
+				if(isset($mix_manifest[$asset])) {
+					$this->ph_assets->push(config('pagebuilder.asset_path') . substr($mix_manifest[$asset], 1));
 				}
 			}
 		}
