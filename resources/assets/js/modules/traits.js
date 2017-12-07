@@ -61,6 +61,7 @@ grapesjs.plugins.add('traits', (editor, options) => {
                     });
                 }
             }
+
             return this.$input.get(0);
         },
 
@@ -82,5 +83,4 @@ grapesjs.plugins.add('traits', (editor, options) => {
             this.target.set(this.model.get('name'), this.model.get('value'));
         }
     });
-
 });

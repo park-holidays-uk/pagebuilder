@@ -189,7 +189,7 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
     panels.addButton('default', [{
         id: 'about',
         className: 'fa fa-info',
-        command: 'open-about-modal',
+        command: 'open-about',
         attributes: { title: 'About PageBuilder' }
     }]);
 

@@ -11,7 +11,6 @@ var options = {
         'components',
         'blocks',
         'modals',
-        'assets',
     ],
 
     pluginsOpts: {
@@ -33,13 +32,10 @@ var options = {
         },
 
         'modals': {
+            url_prefix: _serverData.url_prefix,
+            assetManager: _serverData.assetManager,
             app_info: _serverData.app_info
         },
-
-        'assets': {
-            url_prefix: _serverData.url_prefix,
-            assetManager: _serverData.assetManager
-        }
     },
 
     canvas: {
