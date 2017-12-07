@@ -116,13 +116,13 @@ grapesjs.plugins.add('blocks', (editor, options) => {
             });
 
             // Icon
-            // blockManager.add('icon', {
-            //     label: 'Icon',
-            //     category: 'Basic',
-            //     textable: 1,
-            //     content: '<i class="icon-info-circle"></i>',
-            //     attributes: { class: 'fa fa-info' }
-            // });
+            blockManager.add('icon', {
+                label: 'Icon',
+                category: 'Basic',
+                textable: 1,
+                content: '<i class="icon-info-circle"></i>',
+                attributes: { class: 'fa fa-info' }
+            });
 
             // Heading One
             blockManager.add('heading-one-text', {

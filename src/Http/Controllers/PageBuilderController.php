@@ -257,6 +257,30 @@ class PageBuilderController extends Controller
 		])->toJson();
 	}
 
+	/** Get Icon Selection **/
+	public function getIconSelection() 
+	{
+		$css = file_get_contents('https://i.icomoon.io/public/342e837bbb/ParkHolidays/style.css');
+		//'/(.icon-(.*))\w+(?=:)/'
+		preg_match_all('/(.icon-(.*))(:before(\s)?{(\n)(.*)(\n)})+/', $css, $icons);
+		$data = collect([]);
+
+		if($icons) {
+			$unique = collect([]);
+			foreach($icons[1] as $index => $icon) {
+				if(!$unique->contains($icons[6][$index])) {
+					$unique->push($icons[6][$index]);
+					$data->push((object)[
+						'label' => str_replace('-', ' ', substr($icon, 6)),
+						'class' => substr($icon, 1)
+					]);
+				}
+			}
+		}
+		
+		return $data->toJson();
+	}
+
 	/*
 	*	Private Methods
 	*/

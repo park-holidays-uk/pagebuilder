@@ -41,6 +41,9 @@ Route::group(['prefix' => config('pagebuilder.url_prefix')], function() {
             /** ASSETS **/
             Route::post('/assets', array('as' => 'pagebuilder.ajax.get.assets', 'uses' => 'PageBuilderController@getAssets'));
 
+            /** ICON SELECTION **/
+            Route::get('/icon-selection', array('as' => 'pagebuilder.ajax.get.icon.selection', 'uses' => 'PageBuilderController@getIconSelection'));            
+
             /** BLOCKS **/
             Route::get('/blocks', array('as' => 'pagebuilder.ajax.get.blocks', 'uses' => 'PageBuilderController@getBlocks'));
 

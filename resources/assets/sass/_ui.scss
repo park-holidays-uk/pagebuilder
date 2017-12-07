@@ -204,11 +204,15 @@ display: none !important;
     .gjs-label {
         font-size: 14px;
     }
+    // &:has(.gjs-field-heading) .gjs-label {
+    //     width: 100%;
+    // }
     select option {
         background-color: #444444;
     }
     /* Create Divider */
     .gjs-label:empty,
+    .gjs-field-heading,
     .gjs-field-divider * {
         display: none;
     }
@@ -216,6 +220,10 @@ display: none !important;
         width: 100%;
         height: 1px;
         /* margin: 10px; */
+    }
+    .gjs-field-icon-selector {
+        width: 100%;
+        display: block;
     }
 }
 
@@ -238,6 +246,35 @@ display: none;
         width: 300px;
         max-width: 90%;
         padding: 5px 0;
+    }
+    &.gjs-icon-selection {
+        max-width: 680px;
+        .gjs-blocks-c {
+            min-height: 128px;
+            max-height: 428px;
+            overflow-y: auto;
+            .gjs-block {
+                width: 96px;
+                text-align: center;
+                text-transform: capitalize;
+            }
+            .gjs-block[class*="icon-"]:before {
+                font-family: 'parkholidays' !important;
+                speak: none;
+                font-style: normal;
+                font-weight: normal;
+                font-variant: normal;
+                text-transform: none;
+                line-height: 1;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                margin-bottom: 5px;
+                font-size: 48px;
+            }
+            .gjs-block:hover {
+                border-color: #4d7ba5;
+            }
+        }
     }
 }
 

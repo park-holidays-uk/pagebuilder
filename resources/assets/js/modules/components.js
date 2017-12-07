@@ -435,7 +435,11 @@ grapesjs.plugins.add('components', (editor, options) => {
 
                 // Run Commands
                 editor.runCommand('set-properties', { component: self, traits: traits });
-                editor.runCommand('set-id-attribute', { component: self });
+                if (!self.get('linked_clone')) { editor.runCommand('set-id-attribute', { component: self }); }
+
+                setTimeout(function() {
+                    self.set('linked_clone', false);
+                }, 1000);
 
                 // Listener -- TagName
                 self.listenTo(self, 'change:tagName', function(component, value) {
@@ -443,6 +447,7 @@ grapesjs.plugins.add('components', (editor, options) => {
 
                     var collection = sel.collection;
                     var index = collection.indexOf(sel);
+                    sel.set('linked_clone', true);
                     var clone = sel.clone();
 
                     collection.add(clone, { at: index + 1 });
@@ -544,19 +549,21 @@ grapesjs.plugins.add('components', (editor, options) => {
         model: defaultType.model.extend({
             defaults: Object.assign({}, defaultType.model.prototype.defaults, {
                 stylable: [
+                    'font-size', 'font-weight',
                     'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'
                 ]
             }),
             init() {
                 // Initialise code
                 var self = this;
-                var traits = [{
-                    type: 'select',
-                    name: 'icon_class',
-                    label: 'Icon',
-                    options: [],
+                var traits = [];
+                var toolbarItems = self.get('toolbar');
+                var iconSelectorItem = _.find(toolbarItems, { command: 'open-icon-selector' });
 
-                }];
+                if (!iconSelectorItem) {
+                    toolbarItems.splice(2, 0, { attributes: { class: 'fa fa-info', title: 'Change icon' }, command: 'open-icon-selector' })
+                    self.set('toolbar', toolbarItems);
+                }
 
                 editor.runCommand('set-id-attribute', { component: self });
                 editor.runCommand('set-properties', { component: self, traits: traits });
@@ -586,6 +593,7 @@ grapesjs.plugins.add('components', (editor, options) => {
             init() {
                 // Initialise code
                 var self = this;
+                self.set('custom-name', (self.get('tagName') == 'ul' ? 'Unordered List' : 'Ordered List'))
 
                 editor.runCommand('set-id-attribute', { component: self });
                 editor.runCommand('set-properties', { component: self });
@@ -614,6 +622,7 @@ grapesjs.plugins.add('components', (editor, options) => {
             init() {
                 // Initialise code
                 var self = this;
+                self.set('custom-name', 'List Item');
 
                 editor.runCommand('set-id-attribute', { component: self });
                 editor.runCommand('set-properties', { component: self });
