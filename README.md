@@ -107,8 +107,7 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 
 * Add support for SRCSET on images. - *Need to work out how path will work*
 * Tweak filtering options for Asset modal to work better.
-* Add support for more elements (Lists, tables etc.)
-* Replace multple grid blocks with customisable grids
+* Add support for more elements (tables etc.)
 * Look at changing video default source to YouTube
 * Look into more permenant fix for DomDocument parsing issue (https://stackoverflow.com/questions/39479994/php-domdocument-savehtml-breaks-format)
 * Improve on the multiple select traits.
@@ -120,4 +119,4 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 * Sometimes when canvas is loaded, some content or blocks are missing (although the content is in DB). Refreshing page seems to restore them.
 * Dragging blocks into the canvas (BODY) causes the block to be appear duplicated, but it is only vision ghosting.
 * Some blocks are randomly unable to be dropped into droppable components (elements).
-* Input NAME field (custom name) doesn't always change when emptied.
+* Traits are not always being set when selecting a empty value.
