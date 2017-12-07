@@ -11,8 +11,10 @@ let mix = require('laravel-mix');
  |
  */
 
+let directory = ''; //mix.config.inProduction ? '/dist' : '/build';
+
 mix.setPublicPath('public')
-    .js('resources/assets/js/app.js', 'public/js')
-    .sass('resources/assets/sass/app.scss', 'public/css')
-    .sass('resources/assets/sass/canvas.scss', 'public/css')
+    .js('resources/assets/js/app.js', 'public' + directory + '/js')
+    .sass('resources/assets/sass/app.scss', 'public' + directory + '/css')
+    .sass('resources/assets/sass/canvas.scss', 'public' + directory + '/css')
     .options({ processCssUrls: false });
