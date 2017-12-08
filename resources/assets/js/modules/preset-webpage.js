@@ -1,5 +1,5 @@
 /*export default*/
-grapesjs.plugins.add('preset-webpage', (editor, options) => {
+export default grapesjs.plugins.add('preset-webpage', (editor, options) => {
 
     /*
      *   VARIABLES
@@ -352,4 +352,7 @@ grapesjs.plugins.add('preset-webpage', (editor, options) => {
             delete window.firstRun;
         }
     });
+
+    // Toolbar events
+    // editor.on('run:tlb-clone', () => {});
 });

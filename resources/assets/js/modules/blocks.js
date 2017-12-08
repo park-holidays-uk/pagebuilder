@@ -1,5 +1,5 @@
 /*export default*/
-grapesjs.plugins.add('blocks', (editor, options) => {
+export default grapesjs.plugins.add('blocks', (editor, options) => {
 
     /*
      *   VARIABLES 

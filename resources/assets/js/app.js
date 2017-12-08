@@ -1,5 +1,6 @@
 window.jQuery = window.$ = require('jquery');
 window.grapesjs = require('./libraries/grapes.min.js');
+if (grapesjs.grapesjs) { grapesjs = grapesjs.grapesjs; }
 
 let axios = require('axios');
 let lodash = require('lodash');
@@ -13,7 +14,6 @@ require('./modules/traits.js');
 require('./modules/components.js');
 require('./modules/blocks.js');
 require('./modules/modals.js');
-require('./modules/assets.js');
 
 /* Initialise GrapesJS */
 require('./initialise.js');

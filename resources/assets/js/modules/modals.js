@@ -1,5 +1,5 @@
 /*export default*/
-grapesjs.plugins.add('modals', (editor, options) => {
+export default grapesjs.plugins.add('modals', (editor, options) => {
 
     var opt = options || {};
     var config = editor.getConfig();

@@ -1,5 +1,5 @@
 /*export default*/
-grapesjs.plugins.add('traits', (editor, options) => {
+export default grapesjs.plugins.add('traits', (editor, options) => {
 
     /*
      *   VARIABLES 
