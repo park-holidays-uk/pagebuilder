@@ -1,5 +1,5 @@
 /*export default*/
-grapesjs.plugins.add('components', (editor, options) => {
+export default grapesjs.plugins.add('components', (editor, options) => {
 
     /*
      *   VARIABLES
@@ -39,6 +39,11 @@ grapesjs.plugins.add('components', (editor, options) => {
     var dividerTrait = { type: 'divider', changeProp: 1 };
 
     var propertyTraits = [{
+        type: 'checkbox',
+        name: 'disableTraits',
+        label: 'Disable Traits',
+        changeProp: 1
+    }, {
         type: 'checkbox',
         name: 'is_stylable',
         label: 'Stylable',
@@ -1679,11 +1684,12 @@ grapesjs.plugins.add('components', (editor, options) => {
             var stylable = options.stylables || self.get('stylable');
             var not_stylable = (stylable == false || stylable == []);
 
-            var traits = options.traits || [];
+            var disableTraits = options.disablePropertyTraits || options.component.get('disableTraits');
+            var traits = !disableTraits ? options.traits || [] : [];
             options.component.set('stylable', stylable);
 
-            if (opt.user.isSuperUser && !options.disablePropertyTraits) {
-                if (traits.length > 0) { traits.push(dividerTrait); }
+            if (opt.user.isSuperUser) {
+                if (traits.length > 0 && traits[traits.length - 1].type != 'divider') { traits.push(dividerTrait); }
                 traits = traits.concat(propertyTraits);
 
                 // Listener -- Change is stylable
@@ -1692,11 +1698,17 @@ grapesjs.plugins.add('components', (editor, options) => {
                     editor.trigger('change:selectedComponent', editor, self);
                 });
 
+                // Listener -- Change disable traits
+                self.listenTo(self, 'change:disableTraits', function(component, value) {
+                    editor.runCommand('set-properties', options);
+                    editor.trigger('change:selectedComponent', editor, self);
+                });
+
                 var is_stylable = self.get('is_stylable');
                 if (typeof is_stylable === 'undefined') { self.set('is_stylable', !not_stylable); }
             }
 
-            if (!opt.user.isSuperUser && !self.get('editable') && options.allowDisablingTraits) {
+            if ((!opt.user.isSuperUser && !disableTraits && options.allowDisablingTraits)) {
                 self.set('traits', []);
             } else {
                 self.set('traits', traits);
@@ -1798,13 +1810,14 @@ grapesjs.plugins.add('components', (editor, options) => {
             var buttonClasses = [
                 'btn', 'btn-block', 'btn-link', 'btn-default', 'btn-flat',
                 'btn-primary', 'btn-secondary', 'btn-success', 'btn-info', 'btn-warning', 'btn-error',
-                'btn-green', 'btn-light-green', 'btn-dark-green', 'btn-lime',
+                'btn-green', 'btn-light-green', 'btn-dark-green', 'btn-lime', 'btn-white',
                 'btn-cyan', 'btn-indigo', 'btn-purple', 'btn-deep-purple',
                 'btn-yellow', 'btn-amber', 'btn-orange', 'btn-deep-orange',
                 'btn-pink', 'btn-red', 'btn-brown', 'btn-blue-grey',
                 'btn-holidays', 'btn-touring', 'btn-ownership',
                 // Outlines
                 'btn-outline-primary', 'btn-outline-holidays', 'btn-outline-touring', 'btn-outline-ownership',
+                'btn-outline-white',
                 // Sizes
                 'btn-large', 'btn-small', 'btn-tiny',
                 // Chevron
@@ -1872,16 +1885,21 @@ grapesjs.plugins.add('components', (editor, options) => {
     editor.on('component:styleUpdate:padding', function(property) {
         var component = editor.getSelected();
         var sm = component.sm.get('StyleManager');
+        var padding = _.find(sm.getProperties('Dimension').models, function(prop) {
+            return prop.get('name') == 'Padding';
+        });
 
         switch (component.get('type')) {
             case 'container':
                 var x = component.get('type') == 'container' ? '15px' : 0;
 
-                var paddingLeft = property.get('properties').where({ property: 'padding-left' })[0];
-                paddingLeft.set('value', x);
+                if (padding.get('properties')) {
+                    var paddingLeft = padding.get('properties').where({ property: 'padding-left' })[0];
+                    paddingLeft.set('value', x);
 
-                var paddingRight = property.get('properties').where({ property: 'padding-right' })[0];
-                paddingRight.set('value', x);
+                    var paddingRight = padding.get('properties').where({ property: 'padding-right' })[0];
+                    paddingRight.set('value', x);
+                }
                 break;
         }
     });
@@ -1890,6 +1908,9 @@ grapesjs.plugins.add('components', (editor, options) => {
     editor.on('component:styleUpdate:margin', function(property) {
         var component = editor.getSelected();
         var sm = component.sm.get('StyleManager');
+        var margin = _.find(sm.getProperties('Dimension').models, function(prop) {
+            return prop.get('name') == 'Margin';
+        });
 
         switch (component.get('type')) {
             case 'container':
@@ -1900,11 +1921,13 @@ grapesjs.plugins.add('components', (editor, options) => {
                     x = component.get('noGutter') ? 0 : '-0.5rem';
                 }
 
-                var marginLeft = property.get('properties').where({ property: 'margin-left' })[0];
-                marginLeft.set('value', x);
+                if (margin.get('properties')) {
+                    var marginLeft = margin.get('properties').where({ property: 'margin-left' })[0];
+                    marginLeft.set('value', x);
 
-                var marginRight = property.get('properties').where({ property: 'margin-right' })[0];
-                marginRight.set('value', x);
+                    var marginRight = margin.get('properties').where({ property: 'margin-right' })[0];
+                    marginRight.set('value', x);
+                }
                 break;
         }
     });
