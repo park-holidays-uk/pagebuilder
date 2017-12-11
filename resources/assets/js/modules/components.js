@@ -280,7 +280,7 @@ export default grapesjs.plugins.add('components', (editor, options) => {
                         case 'div':
                         case 'section':
                             stylables = [
-                                'float', 'display',
+                                'float', /*'display',*/
                                 'width', 'max-width', 'height',
                                 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right',
                                 'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right'
