@@ -1509,7 +1509,7 @@ export default grapesjs.plugins.add('components', (editor, options) => {
             init() {
                 var self = this;
                 var attrs = self.get('attributes');
-                var properties = self.get('properties');
+                var properties = self.get('properties') || [];
                 var traits = !isPageMode ? [{
                     type: 'text',
                     name: 'data-view',
@@ -1519,13 +1519,11 @@ export default grapesjs.plugins.add('components', (editor, options) => {
 
                 var datajson = attrs['data-json'] ? JSON.parse(atob(attrs['data-json'])) : {};
 
-                if (!properties && attrs['properties']) {
+                if (attrs['properties']) {
                     // Take payload-properties and add to gjs_components
                     properties = JSON.parse(atob(attrs['properties']));
                     delete attrs['properties'];
-                }
 
-                if (!self.get('properties')) {
                     self.set('properties', properties || {});
                 }
 
@@ -1562,8 +1560,8 @@ export default grapesjs.plugins.add('components', (editor, options) => {
                                 })
                                 .done(function(data) {
                                     var compTraits = self.get('traits');
-                                    var iTrait = compTraits.where({ name: property.name })[0];
-                                    var index = compTraits.indexOf(function(t) { t.get('name') == iTrait.name; });
+                                    var iTrait = _.find(compTraits.models, function(m) { return m.get('name') == property.name; });
+                                    var index = _.indexOf(compTraits.models, function(t) { t.get('name') == iTrait.name; });
                                     var options = iTrait.get('options');
 
                                     if (options) {
@@ -1684,7 +1682,7 @@ export default grapesjs.plugins.add('components', (editor, options) => {
             var stylable = options.stylables || self.get('stylable');
             var not_stylable = (stylable == false || stylable == []);
 
-            var disableTraits = options.disablePropertyTraits || options.component.get('disableTraits');
+            var disableTraits = options.component.get('disableTraits') || false;
             var traits = !disableTraits ? options.traits || [] : [];
             options.component.set('stylable', stylable);
 
