@@ -92,7 +92,7 @@ export default grapesjs.plugins.add('modals', (editor, options) => {
                 var data = JSON.parse(_data);
                 var assets = assetManager.getAll().models;
 
-                for (i = assets.length - 1; i >= 0; i--) {
+                for (var i = assets.length - 1; i >= 0; i--) {
                     if (assets[i]) {
                         assetManager.remove(assets[i].get('src'));
                     }
