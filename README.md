@@ -107,7 +107,6 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 
 * Add support for SRCSET on images. - *Need to work out how path will work*
 * Tweak filtering options for Asset modal to work better.
-* Add support for more elements (tables etc.)
 * Look at changing video default source to YouTube
 * Look into more permenant fix for DomDocument parsing issue (https://stackoverflow.com/questions/39479994/php-domdocument-savehtml-breaks-format)
 * Improve on the multiple select traits.
