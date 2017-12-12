@@ -250,11 +250,11 @@ export default grapesjs.plugins.add('components', (editor, options) => {
 
         // Temporary
         { 'name': 'table', tagNames: ['TABLE'] },
-        { 'name': 'table row', tagNames: ['TR'] },
-        { 'name': 'table cell', tagNames: ['TH', 'TD'] },
-        { 'name': 'table header', tagNames: ['THEAD'] },
-        { 'name': 'table body', tagNames: ['TBODY'] },
-        { 'name': 'table footer', tagNames: ['TFOOT'] },
+        { 'name': 'row', tagNames: ['TR'] },
+        { 'name': 'cell', tagNames: ['TH', 'TD'] },
+        { 'name': 'thead', tagNames: ['THEAD'] },
+        { 'name': 'tbody', tagNames: ['TBODY'] },
+        { 'name': 'tfoot', tagNames: ['TFOOT'] },
     ];
 
 
@@ -384,11 +384,7 @@ export default grapesjs.plugins.add('components', (editor, options) => {
     domComponents.addType('text', {
         model: textType.model.extend({
             defaults: Object.assign({}, defaultType.model.prototype.defaults, {
-                stylable: [
-                    'text-align', 'font-weight',
-                    'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right',
-                    'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right'
-                ],
+                stylable: [],
                 droppable: false,
                 editable: true,
                 // traits: []
@@ -397,6 +393,11 @@ export default grapesjs.plugins.add('components', (editor, options) => {
                 // Initialise code
                 var self = this;
                 var traits = [];
+                var stylables = [
+                    'text-align', 'font-weight',
+                    'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right',
+                    'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right'
+                ];
                 var regex = /\b(h\d{1})\b/g;
 
                 if (regex.test(self.get('tagName'))) {
@@ -434,12 +435,32 @@ export default grapesjs.plugins.add('components', (editor, options) => {
                     changeProp: 1
                 });
 
-                if (self.get('tagName') == 'label') {
-                    self.set('custom-name', 'Label');
+                switch (self.get('tagName')) {
+                    case 'caption':
+                    case 'label':
+                    case 'cine':
+                        if (!self.get('custom-name')) {
+                            var tagName = self.get('tagName');
+                            tagName = tagName[0].toUpperCase() + tagName.substr(1).toLowerCase();
+                            self.set('custom-name', tagName);
+                        }
+
+                        if (self.get('tagName') == 'caption') {
+                            stylables = [];
+                            traits = [];
+                            self.set('copyable', false);
+                            self.set('draggable', false);
+                        }
+                        break;
+                    case 'p':
+                        if (!self.get('custom-name')) {
+                            self.set('custom-name', 'Paragraph');
+                        }
+                        break;
                 }
 
                 // Run Commands
-                editor.runCommand('set-properties', { component: self, traits: traits });
+                editor.runCommand('set-properties', { component: self, stylables: stylables, traits: traits });
                 if (!self.get('linked_clone')) { editor.runCommand('set-id-attribute', { component: self }); }
 
                 setTimeout(function() {
@@ -474,7 +495,7 @@ export default grapesjs.plugins.add('components', (editor, options) => {
             }
         }, {
             isComponent: function(el) {
-                var regex = /\b(SPAN|P|H\d{1}|SMALL|CINE|LABEL)\b/g;
+                var regex = /\b(SPAN|P|H\d{1}|SMALL|CINE|LABEL|CAPTION)\b/g;
                 if (regex.test(el.tagName)) {
                     return { type: 'text' };
                 }
@@ -643,6 +664,94 @@ export default grapesjs.plugins.add('components', (editor, options) => {
         view: defaultType.view
     });
 
+    // Table Wrapper
+    domComponents.addType('table wrapper', {
+        model: defaultType.model.extend({
+            defaults: Object.assign({}, defaultType.model.prototype.defaults, {
+                stylable: [],
+                droppable: ['table'],
+                traits: []
+            }),
+            init() {
+                // Initialise code
+                var self = this;
+                var traits = [{
+                    type: 'select',
+                    name: 'theme_class',
+                    label: 'Theme',
+                    options: [
+                        { name: 'None', value: '' },
+                        { name: 'Holidays', value: 'holidays' },
+                        { name: 'Touring', value: 'touring' },
+                        { name: 'Ownership', value: 'ownership' }
+                    ],
+                    changeProp: 1
+                }];
+
+                // editor.runCommand('set-id-attribute', { component: self });
+                editor.runCommand('set-properties', { component: self, stylables: [], traits: traits });
+
+                // Listener -- Change theme class
+                self.listenTo(self, 'change:theme_class', function(component, value) {
+                    var removeClasses = ['holidays', 'touring', 'ownership'];
+                    editor.runCommand('remove-class', { component: self, classes: removeClasses });
+
+                    if (value) {
+                        editor.runCommand('add-class', { component: self, classes: [value] });
+                    }
+                });
+            }
+        }, {
+            isComponent: function(el) {
+                var regex = /\b(table-wrapper)\b/g;
+                if (el.tagName == 'DIV' && regex.test(el.className)) {
+                    return { type: 'table wrapper' };
+                }
+            },
+        }),
+
+        view: defaultType.view
+    });
+
+    // Table Wrapper
+    domComponents.addType('table group', {
+        model: defaultType.model.extend({
+            defaults: Object.assign({}, defaultType.model.prototype.defaults, {
+                stylable: [],
+                droppable: ['table'],
+                traits: []
+            }),
+            init() {
+                // Initialise code
+                var self = this;
+
+                var tagName = self.get('tagName');
+                tagName = tagName[0].toUpperCase() + tagName.substr(1).toLowerCase();
+                self.set('custom-name', tagName);
+
+                switch (self.get('tagName')) {
+                    case 'thead':
+                    case 'tfoot':
+                        self.set('copyable', false);
+                        self.set('draggable', false);
+                        self.set('droppable', false);
+                        break;
+                }
+
+                // editor.runCommand('set-id-attribute', { component: self });
+                editor.runCommand('set-properties', { component: self, stylables: [], traits: [] });
+            }
+        }, {
+            isComponent: function(el) {
+                var regex = /\b(THEAD|TBODY|TFOOT)\b/g;
+                if (regex.test(el.tagName)) {
+                    return { type: 'table group' };
+                }
+            },
+        }),
+
+        view: defaultType.view
+    });
 
     // Container
     domComponents.addType('container', {
@@ -1681,6 +1790,13 @@ export default grapesjs.plugins.add('components', (editor, options) => {
             var self = options.component;
             var stylable = options.stylables || self.get('stylable');
             var not_stylable = (stylable == false || stylable == []);
+
+            // Check if is_stylable been set as attribute
+            var is_stylable = options.component.get('is_stylable');
+            if (typeof(is_stylable) != 'undefined' && is_stylable != null && !is_stylable) {
+                stylable = [];
+                not_stylable = true;
+            }
 
             var disableTraits = options.component.get('disableTraits') || false;
             var traits = !disableTraits ? options.traits || [] : [];

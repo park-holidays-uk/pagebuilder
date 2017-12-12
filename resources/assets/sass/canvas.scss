@@ -12,7 +12,8 @@ input[data-hidden] {
     // - To make elements easily selectable.
     [class*="grid"],
     form,
-    form .form-dropzone {
+    form .form-dropzone,
+    div.table-wrapper {
         padding-top: 10px;
         padding-right: 10px;
         padding-bottom: 10px;
