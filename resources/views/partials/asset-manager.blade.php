@@ -13,7 +13,7 @@
                 <div class="gjs-fields">
                     <div class="gjs-field gjs-select">
                         <span id="gjs-sm-input-holder">
-                            <select id="gjs-am-filter-types" size="3" multiple>
+                            <select id="gjs-am-filter-types" size="5" multiple>
                                 @foreach($viewModel->types as $type)
                                 <option value="{{ $type->media_lookup_type }}">{{ $type->media_lookup_type }}</option>
                                 @endforeach
@@ -36,7 +36,7 @@
         
                     <div class="gjs-field gjs-select">
                         <span id="gjs-sm-input-holder">
-                            <select id="gjs-am-filter-tags" size="3" multiple>
+                            <select id="gjs-am-filter-tags" size="5" multiple>
                                 @foreach($viewModel->tags as $tag)
                                 <option value="{{ $tag->media_lookup_tag }}">{{ $tag->media_lookup_tag }}</option>
                                 @endforeach
@@ -59,7 +59,7 @@
         
                     <div class="gjs-field gjs-select">
                         <span id="gjs-sm-input-holder">
-                            <select id="gjs-am-filter-parks" size="3" multiple>
+                            <select id="gjs-am-filter-parks" size="5" multiple>
                                 @foreach($viewModel->parks as $park)
                                 <option value="{{ $park->id }}">{{ $park->name }}</option>
                                 @endforeach
