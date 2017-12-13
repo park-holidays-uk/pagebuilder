@@ -114,6 +114,14 @@ display: none;
             width: 100%;
             height: 100px;
             float: none;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        .gjs-am-preview-bg,
+        .gjs-am-close {
+            display: none !important;
+        }
+        .gjs-am-preview {
+            background-size: contain !important;
         }
         .gjs-am-meta {
             float: none;
@@ -161,11 +169,6 @@ display: none;
     }
 }
 
-
-/* .gjs-am-asset.gjs-am-asset-image .gjs-am-close {
-display: none !important;
-} */
-
 #gjs-am-pager {
     .gjs-am-pagination {
         list-style: none;
@@ -185,7 +188,7 @@ display: none !important;
         cursor: pointer;
     }
     .gjs-am-pagination>li.active a {
-        background-color: rgba(33, 33, 33, 0.2);
+        background-color: rgba(0, 0, 0, 0.2);
     }
 }
 
