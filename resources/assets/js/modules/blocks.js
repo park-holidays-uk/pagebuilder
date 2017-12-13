@@ -111,7 +111,7 @@ export default grapesjs.plugins.add('blocks', (editor, options) => {
             blockManager.add('html5-video', {
                 label: 'Video',
                 category: 'Basic',
-                content: '<video></video>',
+                content: '<video class="video-wrapper"></video>',
                 attributes: { class: 'fa fa-youtube-play' }
             });
 
