@@ -358,8 +358,6 @@ export default grapesjs.plugins.add('preset-webpage', (editor, options) => {
     });
 
     editor.on('storage:end', function(response) {
-        console.log('storage:end', response);
-
         if (typeof response != 'undefined') {
             response = JSON.parse(response);
 
