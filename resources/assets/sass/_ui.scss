@@ -245,6 +245,21 @@ display: none;
     .gjs-mdl-header .gjs-mdl-btn-close {
         top: 8px !important;
     }
+    &.gjs-dialog {
+        max-width: 400px;
+        background-color: #444444 !important;
+        &.gjs-error-dialog {
+            background-color: #9e3737 !important;
+            /*#e3b0b0*/
+        }
+        &.gjs-error-dialog .gjs-mdl-header {
+            background-color: #9e271f !important;
+            /*#f44336*/
+        }
+        p {
+            font-size: 14px;
+        }
+    }
     &.about-modal {
         width: 300px;
         max-width: 90%;

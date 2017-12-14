@@ -338,12 +338,35 @@ export default grapesjs.plugins.add('preset-webpage', (editor, options) => {
     });
 
     // Storage
+    editor.on('storage:error', function(error) {
+        console.log('storage:error', error);
+        var message = error.toString();
+
+        switch (message) {
+            case 'the server responded with a status of 413 (Request Entity Too Large)':
+                message = '<strong>Oh No!</strong> It looks like the page is too large, please reduce the amount of blocks used.';
+                break;
+            default:
+                var regex = /\b(SyntaxError: Unexpected token (.*) in JSON at position 0)?\b/g;
+                if (regex.test(message)) {
+                    message = '<strong>Ut Oh!</strong> There seems to be something wrong with the server response. ';
+                }
+                break;
+        }
+
+        editor.runCommand('open-dialog', { title: 'Error', type: 'error', message: message });
+    });
+
     editor.on('storage:end', function(response) {
+        console.log('storage:end', response);
+
         if (typeof response != 'undefined') {
             response = JSON.parse(response);
 
-            if (response.message) {
+            if (response.message && (!response.exception || response.status != 200)) {
                 editor.runCommand('open-snackbar', { message: response.message });
+            } else if ((response.exception || response.status != 200) && !response['gjs-html']) {
+                console.log('storage:end', response);
             }
         }
 

@@ -20,11 +20,14 @@ export default grapesjs.plugins.add('modals', (editor, options) => {
 
     /** CUSTOM MODALS **/
     var aboutModal = new Modal(modal, 'AboutModal', 'About');
+    var dialogModal = new Modal(modal, 'DialogModal');
     var iconSelectorModal = new Modal(modal, 'IconSelectorModal', 'Select an Icon');
 
     // About Modal Callback Function
     aboutModal.call(function() {
-        var container = $('<div class="about-content"></div>');
+        var container = $('<div class="gjs-about"></div>');
+        container.html('');
+
         var table = $('<table style="width: 100%;"></table>');
         table.append('<tr><td>Name</td><td style="text-align: right;">' + opt.app_info.name + '</tr>');
         table.append('<tr><td>Version</td><td style="text-align: right;">' + opt.app_info.version + '</tr>');
@@ -174,6 +177,28 @@ export default grapesjs.plugins.add('modals', (editor, options) => {
         }
     });
 
+    commands.add('open-dialog', {
+        run: function(editor, sender, options) {
+            dialogModal.title = options.title || 'Dialog';
+            dialogModal.className = options.type == 'error' ? 'gjs-error-dialog' : '';
+
+            var container = $('<div class="gjs-dialog-content"></div>');
+            var message = $('<p></p>');
+            message.html(options.message);
+            container.html('');
+            container.append(message);
+
+            if (options.type == 'error') {
+                var small = $('<small></small>');
+                small.html('If you continue to see this error, please contact your administrator.');
+                container.append(small);
+            }
+
+            dialogModal.setContent(container);
+            dialogModal.show();
+        }
+    });
+
     commands.add('open-icon-selector', {
         run: function(editor, sender) {
             // sender.set('active', 0);
@@ -187,8 +212,9 @@ export default grapesjs.plugins.add('modals', (editor, options) => {
 
     /** MODAL OPEN/CLOSE **/
     model.on('change:open', function(model) {
-        var dialogModal = $('.gjs-mdl-dialog');
+        var modalBox = $('.gjs-mdl-dialog');
         var content = model.get('content');
+        console.log('modal:change:open', modal, modalBox);
 
         if (content) {
             switch (content.className) {
@@ -221,28 +247,45 @@ export default grapesjs.plugins.add('modals', (editor, options) => {
         }
 
         switch (model.name) {
+            case dialogModal.name:
+                // Is Modal Open
+                if (model.attributes.open) {
+                    if (!modalBox.hasClass('gjs-dialog')) {
+                        modalBox.addClass('gjs-dialog');
+                    }
+                    if (!modalBox.hasClass(dialogModal.className)) {
+                        modalBox.addClass(dialogModal.className);
+                    }
+                } else {
+                    modalBox.removeClass('gjs-dialog');
+                    modalBox.removeClass(dialogModal.className);
+                }
+                break;
+
             case aboutModal.name:
                 // Is Modal Open
                 if (model.attributes.open) {
-                    if (!dialogModal.hasClass('about-modal') && dialogModal.find('.about-content').length > 0) {
-                        dialogModal.addClass('about-modal');
+                    if (!modalBox.hasClass('about-modal')) {
+                        modalBox.addClass('about-modal');
                     }
                 } else {
-                    dialogModal.removeClass('about-modal');
+                    modalBox.removeClass('about-modal');
                 }
                 break;
 
             case iconSelectorModal.name:
                 // Is Modal Open
                 if (model.attributes.open) {
-                    if (!dialogModal.hasClass('gjs-icon-selection')) {
-                        dialogModal.addClass('gjs-icon-selection');
+                    if (!modalBox.hasClass('gjs-icon-selection')) {
+                        modalBox.addClass('gjs-icon-selection');
                     }
                 } else {
-                    dialogModal.removeClass('gjs-icon-selection');
+                    modalBox.removeClass('gjs-icon-selection');
                 }
                 break;
         }
+
+        if (!model.attributes.open) { model.name = null; }
     });
 });
 
@@ -250,7 +293,7 @@ export default grapesjs.plugins.add('modals', (editor, options) => {
  *   MODAL CLASS 
  */
 class Modal {
-    constructor(_modal, _name, _title, _content = null) {
+    constructor(_modal, _name, _title = '', _content = null) {
         this.modal = _modal;
 
         this.name = _name;
