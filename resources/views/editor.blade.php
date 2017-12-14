@@ -45,6 +45,10 @@
                     action: '{{ config("pagebuilder.form_action") }}',
                     method: '{{ config("pagebuilder.form_method") }}'
                 },
+                mediaPath: {
+                    standard: '{{ config("pagebuilder.media_path") }}',
+                    resize: '{{ config("pagebuilder.resize_media_path") }}'
+                },
                 assetManager: {
                     path: '{{ config("pagebuilder.asset_manager_path") }}',
                     assetPath: '{{ config("pagebuilder.asset_path") }}',

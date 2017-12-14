@@ -28,6 +28,7 @@ Once config has been published, add the following to the .ENV file and change th
 PAGEBUILDER_DOMAIN=phast.parkholidays.com
 PAGEBUILDER_URLPREFIX=/pagebuilder
 PAGEBUILDER_MEDIA_PATH=//parkholidays.s3-website-eu-west-1.amazonaws.com/assets/
+PAGEBUILDER_RESIZE_MEDIA_PATH=//parkholidays.s3-website-eu-west-1.amazonaws.com/{w}x{h}/assets/
 PAGEBUILDER_ASSET_PATH=/dist/
 PAGEBUILDER_FORM_ACTION=/form/handle
 PAGEBUILDER_FORM_METHOD=POST
@@ -105,7 +106,6 @@ See also the list of [contributors](https://github.com/park-holidays-uk/pagebuil
 
 ## TODOS
 
-* Add support for SRCSET on images. - *Need to work out how path will work*
 * Tweak filtering options for Asset modal to work better.
 * Look at changing video default source to YouTube
 * Look into more permenant fix for DomDocument parsing issue (https://stackoverflow.com/questions/39479994/php-domdocument-savehtml-breaks-format)

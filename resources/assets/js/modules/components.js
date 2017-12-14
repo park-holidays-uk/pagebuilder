@@ -313,7 +313,6 @@ export default grapesjs.plugins.add('components', (editor, options) => {
                             break;
                     }
 
-                    console.log('Stylables', stylables);
                     // Run Commands
                     editor.runCommand('set-id-attribute', { component: self });
                     editor.runCommand('set-properties', { component: self, stylables: stylables, traits: traits });
@@ -1007,12 +1006,19 @@ export default grapesjs.plugins.add('components', (editor, options) => {
         model: imageType.model.extend({
             defaults: Object.assign({}, imageType.model.prototype.defaults, {
                 stylable: ['float', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'],
-                editable: true
+                editable: true,
+                resizable: false
             }),
             init() {
                 // Initialise code
                 var self = this;
                 var traits = [self.get('traits').where({ name: 'alt' })[0]].concat([{
+                    type: 'text',
+                    name: 'srcset_sizes',
+                    label: 'Srcset',
+                    placeholder: 'eg. 400x250 768w',
+                    changeProp: 1
+                }, {
                     type: 'checkbox',
                     name: 'is_responsive',
                     label: 'Responsive',
@@ -1023,15 +1029,26 @@ export default grapesjs.plugins.add('components', (editor, options) => {
                 editor.runCommand('set-properties', { component: self, traits: traits });
                 editor.runCommand('set-id-attribute', { component: self });
 
+                // Listener -- SRC
+                self.listenTo(self, 'change:src', function(component, value) {
+                    editor.runCommand('set-srcset', { component: component });
+                });
+
+                // Listener -- Srcseet Sizes
+                self.listenTo(self, 'change:srcset_sizes', function(component, value) {
+                    editor.runCommand('set-srcset', { component: component });
+                });
+
                 // Listener -- Responsive
                 self.listenTo(self, 'change:is_responsive', function(component, value) {
                     var respClass = ['img-responsive'];
-                    // Remove Old CLasses
-                    editor.runCommand('remove-class', { component: component, classes: respClass });
 
                     if (value) {
                         // Add New CLasses
                         editor.runCommand('add-class', { component: component, classes: respClass });
+                    } else {
+                        // Remove Old CLasses
+                        editor.runCommand('remove-class', { component: component, classes: respClass });
                     }
                 });
             }
@@ -1050,7 +1067,7 @@ export default grapesjs.plugins.add('components', (editor, options) => {
     domComponents.addType('video', {
         model: videoType.model.extend({
             defaults: Object.assign({}, videoType.model.prototype.defaults, {
-                stylable: ['float', 'width', 'height', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'],
+                stylable: ['margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'],
             }),
             init() {
                 // Initialise code
@@ -1767,7 +1784,7 @@ export default grapesjs.plugins.add('components', (editor, options) => {
      *   COMMANDS
      */
 
-    /** Add Remove Classes **/
+    /** Set ID and add CLASS based on CID  **/
     commands.add('set-id-attribute', {
         run: function(editor, sender, options) {
             var regex = /\b(c\d{2,})\b/g;
@@ -1781,6 +1798,37 @@ export default grapesjs.plugins.add('components', (editor, options) => {
             var removeClasses = options.component.get('classes').models.filter(function(c) { return regex.test(c.get('name')); }).map(function(c) { return c.get('name'); });
             editor.runCommand('remove-class', { component: options.component, classes: removeClasses });
             editor.runCommand('add-class', { component: options.component, classes: [options.component.cid] });
+        }
+    });
+
+    /** Set SRCSET **/
+    commands.add('set-srcset', {
+        run: function(editor, sender, options) {
+            var attrs = options.component.get('attributes');
+            var sizes = options.component.get('srcset_sizes');
+            var src = options.component.get('src');
+
+            if (sizes && src) {
+                sizes = sizes.split(',');
+                var srcset = [];
+                var filename = src.split('/');
+                filename = filename[filename.length - 1];
+
+                _.forEach(sizes, function(s) {
+                    var s = s.split(' ');
+                    if (s.length == 2) {
+                        var path = opt.mediaPath.resize.replace('{w}x{h}', s[0]);
+                        srcset.push(path + filename + ' ' + s[1]);
+                    }
+                });
+
+                attrs.srcset = srcset.join(',');
+            } else {
+                delete attrs.srcset;
+            }
+
+            options.component.set('attributes', attrs);
+            domComponents.render();
         }
     });
 
@@ -1965,12 +2013,6 @@ export default grapesjs.plugins.add('components', (editor, options) => {
      *   EVENTS
      */
 
-    /* Component Added */
-    editor.on('component:add', function(component) {
-        editor.runCommand('prevent-default');
-        console.log('Component Add', component);
-    });
-
     /* Selected Component Changed */
     editor.on('change:selectedComponent', function(ed, component) {
         console.log('Component Selected Changed', component);
@@ -1993,6 +2035,12 @@ export default grapesjs.plugins.add('components', (editor, options) => {
             var lmBtn = panels.getButton('views', 'open-layers');
             lmBtn.set('active', true);
         }
+    });
+
+    /* Component Added */
+    editor.on('component:add', function(component) {
+        editor.runCommand('prevent-default');
+        console.log('Component Add', component);
     });
 
     /* Padding Styles Updated */
