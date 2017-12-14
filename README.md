@@ -57,6 +57,7 @@ Check for any changes to ENV settings.
 * All layout blocks should be contained within a *DIV* element with the class *wrapper*. This will allow the use of both fullwidth and non-fullwidth blocks in the page.
 * When creating FORM blocks, they must contain an empty DIV with the class *form-dropzone*. This be the only area a user can drop form field blocks into.
 * To use SVG for block icons you can put teh code in the label field. see **Fig. TTK1**
+* Check out **Fig. TTK2** for editing image srcset.
 
 ### FIG. TTK1
 
@@ -66,6 +67,13 @@ Check for any changes to ENV settings.
     <polygon class="gjs-block-svg-path" points="4 10 5 10 5 14 4 14"></polygon>
 </svg>
 <div class="gjs-block-label">LABEL</div
+```
+
+### FIG TTK2
+Example..
+
+```
+400x250 768w,640x480 1024w,1024x768 1200w
 ```
 
 ## PHAST Wizard Requirements
