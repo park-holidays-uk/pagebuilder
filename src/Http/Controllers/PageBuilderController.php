@@ -88,17 +88,19 @@ class PageBuilderController extends Controller
 			$record = $this->getRecord($type, $id);
 			$html = $request->get('gjs-html');
 
-			if($type == 'block') {				
-				$json = json_decode($request->get('gjs-components'), true);
-				
-				foreach($json as $object) {
-					$html = $this->setGrapesAttributes($object, $html);
+			if($html) {
+				if($type == 'block') {				
+					$json = json_decode($request->get('gjs-components'), true);
+					
+					foreach($json as $object) {
+						$html = $this->setGrapesAttributes($object, $html);
+					}
+				} else {
+					$html = $this->setHiddenTypeAttributes($html);
 				}
-			} else {
-				$html = $this->setHiddenTypeAttributes($html);
+				
+				$html = preg_replace("/@\n@/","", $this->setInlineStyles($request->get('gjs-css'), $html)); 
 			}
-			
-			$html = preg_replace("/@\n@/","", $this->setInlineStyles($request->get('gjs-css'), $html)); 
 			
 			$record->html_base64 = $html ? base64_encode($html) : null;
 			$record->css_base64 = base64_encode(preg_replace("/([*{](.*?)[}][body{](.*?)[}])/", "", $request->get('gjs-css'))) ?? null;
