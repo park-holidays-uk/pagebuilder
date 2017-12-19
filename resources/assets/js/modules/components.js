@@ -511,7 +511,7 @@ export default grapesjs.plugins.add('components', (editor, options) => {
             defaults: Object.assign({}, linkType.model.prototype.defaults, {
                 stylable: [
                     'text-align', 'font-weight',
-                    'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'
+                    // 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'
                 ]
             }),
             init() {
@@ -1766,8 +1766,33 @@ export default grapesjs.plugins.add('components', (editor, options) => {
             }),
             init() {
                 var self = this;
+                var traits = [];
                 self.set('custom-name', 'Server Block');
-                editor.runCommand('set-properties', { component: self, traits: [] });
+
+                var attrs = self.get('attributes');
+                var isForm = attrs.hasOwnProperty('data-form');
+
+                if (isForm) {
+                    if (attrs['data-form'] == '') {
+                        attrs['data-form'] = 'WEBNL';
+                        self.set('attributes', attrs);
+                    }
+
+                    traits = [{
+                        type: 'select',
+                        name: 'data-form',
+                        label: 'Form',
+                        options: [
+                            { value: 'WEBNL', name: 'Newsletter sign up' },
+                            { value: 'WEBAAQ', name: 'Ask a question' },
+                            { value: 'WEBRCB', name: 'Request a callback' },
+                            { value: 'WEBAAV', name: 'Arrange a Viewing' },
+                            { value: 'WEBBR', name: 'Request a brochure' }
+                        ],
+                    }];
+                }
+
+                editor.runCommand('set-properties', { component: self, traits: traits });
                 editor.runCommand('set-id-attribute', { component: self });
             }
         }, {
