@@ -422,7 +422,7 @@ class PageBuilderController extends Controller
 		@$dom->loadHTML($html, LIBXML_HTML_NODEFDTD);//, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 		$xpath = new \DOMXPath($dom);
 
-		preg_match_all ('/(c\d{3,})/', $html, $items, PREG_PATTERN_ORDER);
+		preg_match_all ('/(c\d{2,})/', $html, $items, PREG_PATTERN_ORDER);
 
 		foreach($items[0] as $item) { 
 			$element = $xpath->query("//*[@id = '". $item ."']");
@@ -433,7 +433,7 @@ class PageBuilderController extends Controller
 			$element = $xpath->query("//*[contains(@class, '". $item ."')]");
 			if($element && $element->item(0)){
 				$class = $element->item(0)->getAttribute('class');
-				$class = preg_replace('/(.c\d{2,4})/', '', $class);
+				$class = preg_replace('/(.c\d{2,})/', '', $class);
 				$element->item(0)->setAttribute('class', trim($class));
 			}
 		}
