@@ -1069,6 +1069,11 @@ export default grapesjs.plugins.add('components', (editor, options) => {
         model: videoType.model.extend({
             defaults: Object.assign({}, videoType.model.prototype.defaults, {
                 stylable: ['margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'],
+                draggable: false,
+                droppable: false,
+                resizable: false,
+                copyable: false,
+                removable: false,
             }),
             init() {
                 // Initialise code
@@ -1785,7 +1790,7 @@ export default grapesjs.plugins.add('components', (editor, options) => {
                         options: [
                             { value: 'WEBNL', name: 'Newsletter sign up' },
                             { value: 'WEBAAQ', name: 'Ask a question' },
-                            { value: 'WEBRCB', name: 'Request a callback' },
+                            // { value: 'WEBRCB', name: 'Request a callback' },
                             { value: 'WEBAAV', name: 'Arrange a Viewing' },
                             { value: 'WEBBR', name: 'Request a brochure' }
                         ],
