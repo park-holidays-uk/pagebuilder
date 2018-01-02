@@ -1818,7 +1818,7 @@ export default grapesjs.plugins.add('components', (editor, options) => {
     /** Set ID and add CLASS based on CID  **/
     commands.add('set-id-attribute', {
         run: function(editor, sender, options) {
-            var regex = /\b(c\d{2,})\b/g;
+            var regex = /(c\d{2,})\w+/;
             var attrs = options.component.get('attributes');
             var oldId = attrs.id;
 
@@ -1827,6 +1827,14 @@ export default grapesjs.plugins.add('components', (editor, options) => {
 
             // Add new class matching new ID
             var removeClasses = options.component.get('classes').models.filter(function(c) { return regex.test(c.get('name')); }).map(function(c) { return c.get('name'); });
+
+            _.forEach(attrs.class.split(' '), function(c) {
+                if (regex.test(c) && removeClasses.indexOf(c) == -1) {
+                    removeClasses.push(c);
+                }
+            });
+
+            console.log('set-id-attribute', removeClasses);
             editor.runCommand('remove-class', { component: options.component, classes: removeClasses });
             editor.runCommand('add-class', { component: options.component, classes: [options.component.cid] });
         }
@@ -1935,14 +1943,16 @@ export default grapesjs.plugins.add('components', (editor, options) => {
             var removeAllBut = options.removeAllBut || [];
             var regex = /\b(c\d{2,})\b/g;
 
-            for (var i = componentClasses.length - 1; i >= 0; i--) {
-                var cls = componentClasses.models[i];
-                var removeThis = (classesToRemove.indexOf(cls.id) > -1) || ((removeAll || (removeAllBut.length > 0 && removeAllBut.indexOf(cls.id) == -1)) && !regex.test(cls.id));
+            var attrs = options.component.get('attributes');
+            var classes = attrs.class.split(' ');
 
-                if (removeThis) {
-                    componentClasses.remove(cls);
-                }
-            }
+            _.forEach(classesToRemove, function(c) {
+                var cls = _.find(componentClasses.models, { id: c });
+                componentClasses.remove(cls);
+                attrs.class = attrs.class.replace(c, '').trim();
+            });
+
+            options.component.set('attributes', attrs);
         }
     });
 
