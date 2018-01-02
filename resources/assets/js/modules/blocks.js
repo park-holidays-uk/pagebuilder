@@ -111,7 +111,7 @@ export default grapesjs.plugins.add('blocks', (editor, options) => {
             blockManager.add('html5-video', {
                 label: 'Video',
                 category: 'Basic',
-                content: '<video class="video-wrapper"></video>',
+                content: '<div class="video-wrapper"><video></video></div>',
                 attributes: { class: 'fa fa-youtube-play' }
             });
 
@@ -197,7 +197,7 @@ export default grapesjs.plugins.add('blocks', (editor, options) => {
               </svg>
               <div class="gjs-block-label">Form</div>`,
                 category: 'Forms',
-                content: '<form><serverblock name="csrf_token" id="csrf-token" data-gjs-removable="false"></serverblock><input type="hidden" name="name" title="Form name" placeholder="Form name" class="input"  data-gjs-custom-name="Hidden Input" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-removable="false" /> <input type="hidden" name="actions" title="Form actions" placeholder="Form actions" class="input"  data-gjs-custom-name="Hidden Input" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-removable="false" /> <input type="hidden" name="emailto" title="Email to" placeholder="Email to" class="input"  data-gjs-custom-name="Hidden Input" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-removable="false" /><div class="form-dropzone"></div></form>'
+                content: '<form><serverblock name="csrf_token" id="csrf-token" data-gjs-removable="false"></serverblock><input type="hidden" name="form_name" title="Form name" placeholder="Form name" class="input"  data-gjs-custom-name="Hidden Input" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-removable="false" /> <input type="hidden" name="actions" title="Form actions" placeholder="Form actions" class="input"  data-gjs-custom-name="Hidden Input" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-removable="false" /> <input type="hidden" name="emailto" title="Email to" placeholder="Email to" class="input"  data-gjs-custom-name="Hidden Input" data-gjs-draggable="false" data-gjs-copyable="false" data-gjs-removable="false" /><div class="form-dropzone"></div></form>'
             });
 
             // Label
