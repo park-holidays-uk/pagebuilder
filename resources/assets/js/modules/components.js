@@ -1064,11 +1064,39 @@ export default grapesjs.plugins.add('components', (editor, options) => {
         view: imageType.view
     });
 
+    // Video Wrapper
+    domComponents.addType('video wrapper', {
+        model: defaultType.model.extend({
+            defaults: Object.assign({}, defaultType.model.prototype.defaults, {
+                stylable: ['margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'],
+                droppable: false,
+                traits: []
+            }),
+            init() {
+                // Initialise code
+                var self = this;
+                var stylables = ['margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'];
+
+                // Run Commands
+                editor.runCommand('set-properties', { component: self, stylables: stylables, traits: [], disablePropertyTraits: true });
+                // editor.runCommand('set-id-attribute', { component: self });
+            }
+        }, {
+            isComponent: function(el) {
+                if (el.className == 'video-wrapper') {
+                    return { type: 'video wrapper' };
+                }
+            },
+        }),
+
+        view: defaultType.view
+    });
+
     // Video
     domComponents.addType('video', {
         model: videoType.model.extend({
             defaults: Object.assign({}, videoType.model.prototype.defaults, {
-                stylable: ['margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'],
+                stylable: [],
                 draggable: false,
                 droppable: false,
                 resizable: false,
@@ -1078,10 +1106,11 @@ export default grapesjs.plugins.add('components', (editor, options) => {
             init() {
                 // Initialise code
                 var self = this;
+                // var traits = self.get('traits').models.filter(function(t) { return t.get('changeProp') == 0 && t.get('type') != 'divider'; });
 
                 // Run Commands
-                // editor.runCommand('set-properties', { component: self });
-                editor.runCommand('set-id-attribute', { component: self });
+                // editor.runCommand('set-properties', { component: self, stylables: [], disablePropertyTraits: true });
+                // editor.runCommand('set-id-attribute', { component: self });
             }
         }, {
             isComponent: function(el) {
@@ -1828,13 +1857,14 @@ export default grapesjs.plugins.add('components', (editor, options) => {
             // Add new class matching new ID
             var removeClasses = options.component.get('classes').models.filter(function(c) { return regex.test(c.get('name')); }).map(function(c) { return c.get('name'); });
 
-            _.forEach(attrs.class.split(' '), function(c) {
-                if (regex.test(c) && removeClasses.indexOf(c) == -1) {
-                    removeClasses.push(c);
-                }
-            });
+            if (attrs.class) {
+                _.forEach(attrs.class.split(' '), function(c) {
+                    if (regex.test(c) && removeClasses.indexOf(c) == -1) {
+                        removeClasses.push(c);
+                    }
+                });
+            }
 
-            console.log('set-id-attribute', removeClasses);
             editor.runCommand('remove-class', { component: options.component, classes: removeClasses });
             editor.runCommand('add-class', { component: options.component, classes: [options.component.cid] });
         }
@@ -1944,12 +1974,14 @@ export default grapesjs.plugins.add('components', (editor, options) => {
             var regex = /\b(c\d{2,})\b/g;
 
             var attrs = options.component.get('attributes');
-            var classes = attrs.class.split(' ');
 
             _.forEach(classesToRemove, function(c) {
                 var cls = _.find(componentClasses.models, { id: c });
                 componentClasses.remove(cls);
-                attrs.class = attrs.class.replace(c, '').trim();
+
+                if (attrs.class) {
+                    attrs.class = attrs.class.replace(c, '').trim();
+                }
             });
 
             options.component.set('attributes', attrs);
@@ -2063,7 +2095,6 @@ export default grapesjs.plugins.add('components', (editor, options) => {
 
         var stylable = component ? component.get('stylable') : false;
         var disableSM = invalidComponent || (stylable == false || stylable == []);
-        console.log(component);
         var disableTM = invalidComponent || (component ? (component.get('traits').length == 0) : false);
 
         var smBtn = panels.getButton('views', 'open-sm');
