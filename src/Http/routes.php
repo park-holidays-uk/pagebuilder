@@ -74,10 +74,15 @@ Route::group(['prefix' => config('pagebuilder.url_prefix')], function() {
 //     $c = 0;
 
 //     foreach($pages as $page) {
-//         $page->html_base64 = base64_encode(preg_replace('/(parkholidays.s3-website-eu-west-1.amazonaws.com)/','d1q8m8tdjwh44.cloudfront.net', base64_decode($page->html_base64)));
-//         $page->save();
+//         //parkholidays.s3-website-eu-west-1.amazonaws.com
+//         $html_base64 = base64_encode(preg_replace('/\b(parkholidays.s3-website-eu-west-1.amazonaws.com)\b/','d1q8m8tdjwh44.cloudfront.net', base64_decode($page->html_base64)));
+        
+//         if($page->html_base64 != $html_base64) {
+//             $page->html_base64 = $html_base64;
+//             $page->save();
 
-//         $c += 1;
+//             $c += 1;
+//         }
 //     }
 
 //     return $c . ' pages have been amended';
