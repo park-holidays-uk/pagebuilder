@@ -332,7 +332,7 @@ class PageBuilderController extends Controller
 			$element->item(0)->setAttribute('properties', base64_encode($item->payload_properties));
 		}
 
-		$html = preg_replace('/\<(\/)?(html|body)>/','', $dom->saveHTML());
+		$html = $this->removeDocumentTags($dom->saveHTML());
 		return $html;
 	}
 
@@ -372,7 +372,7 @@ class PageBuilderController extends Controller
 			}
 		}
 		
-		return preg_replace('/\<(\/)?(html|body)>/','', $dom->saveHTML());
+		return $this->removeDocumentTags($dom->saveHTML());
 	}
 
 	// Convert CSS to inline styles
@@ -411,7 +411,7 @@ class PageBuilderController extends Controller
 			$i++;
 		}
 
-		$html = $this->removeGrapesJsId(preg_replace('/\<(\/)?(html|body)>/','', $dom->saveHTML()));
+		$html = $this->removeGrapesJsId($this->removeDocumentTags($dom->saveHTML()));
 		return $html;
 	}
 
@@ -437,7 +437,7 @@ class PageBuilderController extends Controller
 			}
 		}
 
-		$html = preg_replace('/\<(\/)?(html|body)>/','', trim($dom->saveHTML()));
+		$html = $this->removeDocumentTags($dom->saveHTML());
 		return $html;
 	}
 
@@ -466,7 +466,7 @@ class PageBuilderController extends Controller
 			}
 		}
 		
-		$html = preg_replace('/\<(\/)?(html|body)>/','', $dom->saveHTML());
+		$html = $this->removeDocumentTags($dom->saveHTML());
 		foreach($json['components'] as $component) {
 			$html = $this->setGrapesAttributes($component, $html);
 		}
@@ -487,5 +487,9 @@ class PageBuilderController extends Controller
 		}
 
 		return $value;
+	}
+
+	function removeDocumentTags($html) {
+		return preg_replace('/\<(\/)?(html|body)>/','', trim($html));
 	}
 }
