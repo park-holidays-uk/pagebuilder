@@ -1955,7 +1955,7 @@ export default grapesjs.plugins.add('components', (editor, options) => {
 
             _.forEach(classesToRemove, function(c) {
                 var cls = _.find(componentClasses.models, { id: c });
-                componentClasses.remove(cls);
+                if (cls) { componentClasses.remove(cls); }
 
                 if (attrs.class) {
                     attrs.class = attrs.class.replace(c, '').trim();
