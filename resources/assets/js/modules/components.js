@@ -322,14 +322,12 @@ export default grapesjs.plugins.add('components', (editor, options) => {
                     self.listenTo(self, 'change:bgColorClass', function(component, value) {
                         var removeClasses = [
                             'background-primary', 'background-holidays', 'background-touring', 'background-ownership',
-                            'background-sun', 'background-rose', 'background-dark', 'background-grey',
-
-                            'background-primary-pale', 'background-holidays-pale', 'background-touring-pale', 'background-ownership-pale',
-                            'background-grey-pale'
+                            'background-sun', 'background-rose', 'background-dark', 'background-grey'
                         ];
 
                         var paleableClasses = ['background-primary', 'background-holidays', 'background-touring', 'background-ownership', 'background-grey'];
                         var makePale = component.get('isBgPale') && _.indexOf(paleableClasses, value) > -1;
+                        removeClasses = removeClasses.concat(paleableClasses);
 
                         editor.runCommand('remove-class', { component: self, classes: removeClasses });
 
@@ -345,13 +343,11 @@ export default grapesjs.plugins.add('components', (editor, options) => {
                         var newClass;
                         var removeClasses = [
                             'background-primary', 'background-holidays', 'background-touring', 'background-ownership',
-                            'background-sun', 'background-rose', 'background-dark', 'background-grey',
-
-                            'background-primary-pale', 'background-holidays-pale', 'background-touring-pale', 'background-ownership-pale',
-                            'background-grey-pale'
+                            'background-sun', 'background-rose', 'background-dark', 'background-grey'
                         ];
 
                         var paleableClasses = ['background-primary', 'background-holidays', 'background-touring', 'background-ownership', 'background-grey'];
+                        removeClasses = removeClass.concat(paleableClasses);
 
                         var current = _.find(component.get('classes').models, function(c) {
                             return _.indexOf(removeClasses, c.id) > -1;
@@ -509,10 +505,7 @@ export default grapesjs.plugins.add('components', (editor, options) => {
     domComponents.addType('link', {
         model: linkType.model.extend({
             defaults: Object.assign({}, linkType.model.prototype.defaults, {
-                stylable: [
-                    'text-align', 'font-weight',
-                    // 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'
-                ]
+                stylable: []
             }),
             init() {
                 // Initialise code
@@ -525,7 +518,7 @@ export default grapesjs.plugins.add('components', (editor, options) => {
                     .concat(buttonStyleTraits);
 
                 // Run Commands
-                editor.runCommand('set-properties', { component: self, traits: traits });
+                editor.runCommand('set-properties', { component: self, stylables: ['text-align', 'font-weight'], traits: traits });
                 editor.runCommand('set-id-attribute', { component: self });
 
                 // Button Styles
@@ -882,15 +875,7 @@ export default grapesjs.plugins.add('components', (editor, options) => {
             },
         }),
 
-        view: defaultType.view.extend({
-            // The render() should return 'this'
-            render: function() {
-                // Extend the original render method
-                defaultType.view.prototype.render.apply(this, arguments);
-                // this.el.classList.add(stylePrefix + 'grd');
-                return this;
-            },
-        })
+        view: defaultType.view
     });
 
     // COLUMN
@@ -991,15 +976,7 @@ export default grapesjs.plugins.add('components', (editor, options) => {
             },
         }),
 
-        view: defaultType.view.extend({
-            // The render() should return 'this'
-            render: function() {
-                // Extend the original render method
-                defaultType.view.prototype.render.apply(this, arguments);
-                // this.el.classList.add(stylePrefix + 'grd-cl');
-                return this;
-            },
-        })
+        view: defaultType.view
     });
 
     // Image
@@ -1013,6 +990,7 @@ export default grapesjs.plugins.add('components', (editor, options) => {
             init() {
                 // Initialise code
                 var self = this;
+                var attrs = self.get('attributes');
                 var traits = [self.get('traits').where({ name: 'alt' })[0]].concat([{
                     type: 'text',
                     name: 'srcset_sizes',
@@ -1025,6 +1003,10 @@ export default grapesjs.plugins.add('components', (editor, options) => {
                     label: 'Responsive',
                     changeProp: 1
                 }]);
+
+                if (!self.get('is_responsive') && (attrs.class && attrs.class.indexOf('img-responsive') !== -1)) {
+                    self.set('is_responsive', true);
+                }
 
                 // Run Commands
                 editor.runCommand('set-properties', { component: self, traits: traits });
@@ -1068,7 +1050,7 @@ export default grapesjs.plugins.add('components', (editor, options) => {
     domComponents.addType('video wrapper', {
         model: defaultType.model.extend({
             defaults: Object.assign({}, defaultType.model.prototype.defaults, {
-                stylable: ['margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'],
+                stylable: [],
                 droppable: false,
                 traits: []
             }),
@@ -1079,11 +1061,11 @@ export default grapesjs.plugins.add('components', (editor, options) => {
 
                 // Run Commands
                 editor.runCommand('set-properties', { component: self, stylables: stylables, traits: [], disablePropertyTraits: true });
-                // editor.runCommand('set-id-attribute', { component: self });
             }
         }, {
             isComponent: function(el) {
-                if (el.className == 'video-wrapper') {
+                var regex = /(video-wrapper)/g;
+                if (regex.test(el.className)) {
                     return { type: 'video wrapper' };
                 }
             },
@@ -1106,11 +1088,7 @@ export default grapesjs.plugins.add('components', (editor, options) => {
             init() {
                 // Initialise code
                 var self = this;
-                // var traits = self.get('traits').models.filter(function(t) { return t.get('changeProp') == 0 && t.get('type') != 'divider'; });
-
-                // Run Commands
-                // editor.runCommand('set-properties', { component: self, stylables: [], disablePropertyTraits: true });
-                // editor.runCommand('set-id-attribute', { component: self });
+                self.set('stylable', []);
             }
         }, {
             isComponent: function(el) {
