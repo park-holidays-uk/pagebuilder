@@ -73,7 +73,7 @@ class PageBuilderController extends Controller
 			$data = collect([
 				'gjs-assets' => [],
 				'gjs-css' => base64_decode($record->css_base64),
-				'gjs-html' => preg_replace("/\s+|\n+|\r/", ' ', base64_decode($record->html_base64)),
+				'gjs-html' => base64_decode($record->html_base64),
 				'gjs-components' => $record->gjs_components
 			]);
 		}
@@ -99,11 +99,11 @@ class PageBuilderController extends Controller
 					$html = $this->setHiddenTypeAttributes($html);
 				}
 				
-				$html = preg_replace("/@\n@/","", $this->setInlineStyles($request->get('gjs-css'), $html)); 
+				$html = preg_replace("/(\\n)/","", $this->setInlineStyles($request->get('gjs-css'), $html)); 
 			}
 			
 			$record->html_base64 = $html ? base64_encode($html) : null;
-			$record->css_base64 = base64_encode(preg_replace("/([*{](.*?)[}][body{](.*?)[}])/", "", $request->get('gjs-css'))) ?? null;
+			$record->css_base64 = base64_encode(preg_replace("/(\*|body)(\X)?{(\n)?(.*?)(\n)?}/", "", $request->get('gjs-css'))) ?? null;
 			$record->gjs_components = $request->get('gjs-components');
 			$record->save();
 
@@ -187,7 +187,7 @@ class PageBuilderController extends Controller
 		if($blocks) {
 			$blocks->each(function($item, $key) use($data) { 
 				if($item->html_base64 && trim($item->html_base64) != '') {
-					$html = ($item->is_dynamic) ? preg_replace("/@\n@/","", $this->setPayloadProperties($item)) : base64_decode($item->html_base64);
+					$html = ($item->is_dynamic) ? preg_replace("/(\\n)/","", $this->setPayloadProperties($item)) : base64_decode($item->html_base64);
 				
 					$data->push((object) [
 						'category' => $item->group->name,
@@ -264,7 +264,7 @@ class PageBuilderController extends Controller
 	{
 		$css = file_get_contents('https://i.icomoon.io/public/342e837bbb/ParkHolidays/style.css');
 		//'/(.icon-(.*))\w+(?=:)/'
-		preg_match_all('/(.icon-(.*))(:before(\s)?{(\n)(.*)(\n)})+/', $css, $icons);
+		preg_match_all('/(.icon-(.*?))(:before(\s)?{(\n)?(.*?)(\n)?})+/', $css, $icons);
 		$data = collect([]);
 
 		if($icons) {
@@ -382,7 +382,7 @@ class PageBuilderController extends Controller
 		@$dom->loadHTML($html, LIBXML_HTML_NODEFDTD);//, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 		$xpath = new \DOMXPath($dom);
 
-		preg_match_all ('/(.(.*?)|#c\d{2,})\s?({(.*?)})/', $css, $styles, PREG_PATTERN_ORDER);
+		preg_match_all ('/(.|#)c\d{2,}(\X)?{(.*?)}/', $css, $styles, PREG_PATTERN_ORDER);
 
 		$prevSelector = null;
 		$i = 0;
@@ -490,6 +490,6 @@ class PageBuilderController extends Controller
 	}
 
 	function removeDocumentTags($html) {
-		return preg_replace('/\<(\/)?(html|body)>/','', trim($html));
+		return preg_replace('/\<(\/)?(html|body)(.*?)>/','', trim($html));
 	}
 }
