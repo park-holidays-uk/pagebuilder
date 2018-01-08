@@ -125,7 +125,7 @@ export default grapesjs.plugins.add('blocks', (editor, options) => {
             });
 
             // Heading One
-            blockManager.add('heading-one-text', {
+            blockManager.add('heading-text', {
                 label: 'Heading',
                 category: 'Typography',
                 content: '<h1 data-gjs-custom-name="Heading">Lorem Ipsum</h1>',

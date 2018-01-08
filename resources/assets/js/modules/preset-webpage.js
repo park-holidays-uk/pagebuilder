@@ -349,7 +349,7 @@ export default grapesjs.plugins.add('preset-webpage', (editor, options) => {
             default:
                 var regex = /\b(SyntaxError: Unexpected token (.*) in JSON at position 0)?\b/g;
                 if (regex.test(message)) {
-                    message = '<strong>Ut Oh!</strong> There seems to be something wrong with the server response. ';
+                    message = '<strong>Ut Oh!</strong> There seems to be something wrong with the server response.';
                 }
                 break;
         }
