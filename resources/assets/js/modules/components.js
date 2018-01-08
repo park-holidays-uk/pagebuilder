@@ -38,6 +38,31 @@ export default grapesjs.plugins.add('components', (editor, options) => {
     // Shared Traits
     var dividerTrait = { type: 'divider', changeProp: 1 };
 
+    var backgroundColorTraits = [{
+            type: 'select',
+            name: 'bgColorClass',
+            label: 'BG. Colour',
+            options: [
+                { name: 'None', value: '' },
+                { name: 'Primary', value: 'background-primary' },
+                { name: 'Holidays', value: 'background-holidays' },
+                { name: 'Touring', value: 'background-touring' },
+                { name: 'Ownership', value: 'background-ownership' },
+                { name: 'Sun', value: 'background-sun' },
+                { name: 'Rose', value: 'background-rose' },
+                { name: 'Dark', value: 'background-dark' },
+                { name: 'Grey', value: 'background-grey' }
+            ],
+            changeProp: 1
+        },
+        {
+            type: 'checkbox',
+            name: 'isBgPale',
+            label: 'Pale',
+            changeProp: 1
+        }
+    ];
+
     var propertyTraits = [{
         type: 'checkbox',
         name: 'disableTraits',
@@ -287,30 +312,7 @@ export default grapesjs.plugins.add('components', (editor, options) => {
                                 'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right'
                             ];
 
-                            traits = [{
-                                    type: 'select',
-                                    name: 'bgColorClass',
-                                    label: 'BG. Colour',
-                                    options: [
-                                        { name: 'None', value: '' },
-                                        { name: 'Primary', value: 'background-primary' },
-                                        { name: 'Holidays', value: 'background-holidays' },
-                                        { name: 'Touring', value: 'background-touring' },
-                                        { name: 'Ownership', value: 'background-ownership' },
-                                        { name: 'Sun', value: 'background-sun' },
-                                        { name: 'Rose', value: 'background-rose' },
-                                        { name: 'Dark', value: 'background-dark' },
-                                        { name: 'Grey', value: 'background-grey' }
-                                    ],
-                                    changeProp: 1
-                                },
-                                {
-                                    type: 'checkbox',
-                                    name: 'isBgPale',
-                                    label: 'Pale',
-                                    changeProp: 1
-                                }
-                            ];
+                            traits = backgroundColorTraits;
                             break;
                     }
 
@@ -322,12 +324,13 @@ export default grapesjs.plugins.add('components', (editor, options) => {
                     self.listenTo(self, 'change:bgColorClass', function(component, value) {
                         var removeClasses = [
                             'background-primary', 'background-holidays', 'background-touring', 'background-ownership',
-                            'background-sun', 'background-rose', 'background-dark', 'background-grey'
+                            'background-sun', 'background-rose', 'background-dark', 'background-grey',
+                            'background-primary-pale', 'background-holidays-pale', 'background-touring-pale', 'background-ownership-pale',
+                            'background-grey-pale'
                         ];
 
                         var paleableClasses = ['background-primary', 'background-holidays', 'background-touring', 'background-ownership', 'background-grey'];
                         var makePale = component.get('isBgPale') && _.indexOf(paleableClasses, value) > -1;
-                        removeClasses = removeClasses.concat(paleableClasses);
 
                         editor.runCommand('remove-class', { component: self, classes: removeClasses });
 
@@ -343,11 +346,12 @@ export default grapesjs.plugins.add('components', (editor, options) => {
                         var newClass;
                         var removeClasses = [
                             'background-primary', 'background-holidays', 'background-touring', 'background-ownership',
-                            'background-sun', 'background-rose', 'background-dark', 'background-grey'
+                            'background-sun', 'background-rose', 'background-dark', 'background-grey',
+                            'background-primary-pale', 'background-holidays-pale', 'background-touring-pale', 'background-ownership-pale',
+                            'background-grey-pale'
                         ];
 
                         var paleableClasses = ['background-primary', 'background-holidays', 'background-touring', 'background-ownership', 'background-grey'];
-                        removeClasses = removeClass.concat(paleableClasses);
 
                         var current = _.find(component.get('classes').models, function(c) {
                             return _.indexOf(removeClasses, c.id) > -1;
@@ -431,6 +435,8 @@ export default grapesjs.plugins.add('components', (editor, options) => {
                     changeProp: 1
                 });
 
+                traits = traits.concat(backgroundColorTraits);
+
                 switch (self.get('tagName')) {
                     case 'caption':
                     case 'label':
@@ -487,6 +493,54 @@ export default grapesjs.plugins.add('components', (editor, options) => {
                     if (value) {
                         editor.runCommand('add-class', { component: self, classes: [value] });
                     }
+                });
+
+                // Listener -- Background Colour
+                self.listenTo(self, 'change:bgColorClass', function(component, value) {
+                    var removeClasses = [
+                        'background-primary', 'background-holidays', 'background-touring', 'background-ownership',
+                        'background-sun', 'background-rose', 'background-dark', 'background-grey',
+                        'background-primary-pale', 'background-holidays-pale', 'background-touring-pale', 'background-ownership-pale',
+                        'background-grey-pale'
+                    ];
+
+                    var paleableClasses = ['background-primary', 'background-holidays', 'background-touring', 'background-ownership', 'background-grey'];
+                    var makePale = component.get('isBgPale') && _.indexOf(paleableClasses, value) > -1;
+
+                    editor.runCommand('remove-class', { component: self, classes: removeClasses });
+
+                    if (value) {
+                        editor.runCommand('add-class', { component: self, classes: [makePale ? value + '-pale' : value] });
+                    }
+
+                    editor.trigger('change:selectedComponent');
+                });
+
+                // Listener -- Is Background Color Pale
+                self.listenTo(self, 'change:isBgPale', function(component, value) {
+                    var newClass;
+                    var removeClasses = [
+                        'background-primary', 'background-holidays', 'background-touring', 'background-ownership',
+                        'background-sun', 'background-rose', 'background-dark', 'background-grey',
+                        'background-primary-pale', 'background-holidays-pale', 'background-touring-pale', 'background-ownership-pale',
+                        'background-grey-pale'
+                    ];
+
+                    var paleableClasses = ['background-primary', 'background-holidays', 'background-touring', 'background-ownership', 'background-grey'];
+
+                    var current = _.find(component.get('classes').models, function(c) {
+                        return _.indexOf(removeClasses, c.id) > -1;
+                    });
+
+                    var paleable = _.indexOf(paleableClasses, current.id) > -1;
+
+                    if (current) {
+                        newClass = value ? (paleable ? current.id + '-pale' : current.id.replace('-pale', '')) : current.id.replace('-pale', '');
+                        editor.runCommand('remove-class', { component: self, classes: removeClasses });
+                        editor.runCommand('add-class', { component: self, classes: [newClass] });
+                    }
+
+                    if (!paleable) { component.set('isBgPale', false); }
                 });
             }
         }, {
