@@ -676,7 +676,8 @@ export default grapesjs.plugins.add('components', (editor, options) => {
                         { name: 'None', value: '' },
                         { name: 'Holidays', value: 'holidays' },
                         { name: 'Touring', value: 'touring' },
-                        { name: 'Ownership', value: 'ownership' }
+                        { name: 'Ownership', value: 'ownership' },
+                        { name: 'Flexi Dine', value: 'flexi-dine' }
                     ],
                     changeProp: 1
                 }];
