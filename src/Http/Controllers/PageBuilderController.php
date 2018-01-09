@@ -382,22 +382,31 @@ class PageBuilderController extends Controller
 		@$dom->loadHTML($html, LIBXML_HTML_NODEFDTD);//, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 		$xpath = new \DOMXPath($dom);
 
-		preg_match_all ('/(.|#)c\d{2,}(\X)?{(.*?)}/', $css, $styles, PREG_PATTERN_ORDER);
+		preg_match_all ('/(.|#)c\d{2,}(\X)?{(\n)?(.*?)(\n)?}/', $css, $styles, PREG_PATTERN_ORDER);
 
 		$prevSelector = null;
 		$i = 0;
+		$x = 0;
+
+		for($c=count($styles)-1; $c>=0; $c--) {
+			if(strlen($styles[$c][0]) > 1) { $x = $c; }	
+		}
 		
-		foreach($styles[1] as $selector) {
+		foreach($styles[$x] as $selector) {
 			$element = null;
 			
 			if($selector != $prevSelector) {
 				switch($selector[0]) {
 					case '#':
 						$id = explode('.', substr($selector, 1))[0];
+						if(strpos($id, '{') != -1) { $id = explode('{', $id)[0]; }
+
 						$element = $xpath->query("//*[@id = '". $id ."']");
 						break;
 					case '.':
 						$classStr = str_replace('.', ' ', substr($selector, 1));
+						if(strpos($classStr, '{') != -1) { $classStr = explode('{', $classStr)[0]; }
+
 						$element = $xpath->query("//*[contains(@class, '". $classStr ."')]");
 						break;
 				}
