@@ -459,6 +459,18 @@ export default grapesjs.plugins.add('components', (editor, options) => {
                             self.set('custom-name', 'Paragraph');
                         }
                         break;
+                    case 'b':
+                    case 'strong':
+                        if (!self.get('custom-name')) {
+                            self.set('custom-name', 'Bold');
+                        }
+                        break;
+                    case 'i':
+                    case 'em':
+                        if (!self.get('custom-name')) {
+                            self.set('custom-name', 'Emphasized');
+                        }
+                        break;
                 }
 
                 // Run Commands
@@ -545,7 +557,7 @@ export default grapesjs.plugins.add('components', (editor, options) => {
             }
         }, {
             isComponent: function(el) {
-                var regex = /\b(SPAN|P|H\d{1}|SMALL|CINE|LABEL|CAPTION)\b/g;
+                var regex = /\b(SPAN|P|H\d{1}|SMALL|CINE|LABEL|CAPTION|B|STRONG|I|EM)\b/g;
                 if (regex.test(el.tagName)) {
                     return { type: 'text' };
                 }
