@@ -389,7 +389,7 @@ class PageBuilderController extends Controller
 		$x = 0;
 
 		for($c=count($styles)-1; $c>=0; $c--) {
-			if(strlen($styles[$c][0]) > 1) { $x = $c; }	
+			if(count($styles[$c]) > 1 && strlen($styles[$c][0]) > 1) { $x = $c; }	
 		}
 		
 		foreach($styles[$x] as $selector) {
