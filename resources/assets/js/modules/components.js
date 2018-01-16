@@ -2013,11 +2013,25 @@ export default grapesjs.plugins.add('components', (editor, options) => {
             var parentModel = options.component.sm;
             const sm = parentModel.get('SelectorManager');
             var componentClasses = options.component.get('classes');
-            var classesToRemove = options.classes || [];
             var removeAll = options.removeAll || false;
             var removeAllBut = options.removeAllBut || [];
+            var classesToRemove = options.classes || [];
             var regex = /\b(c\d{2,})\b/g;
 
+            if (removeAll || removeAllBut.length > 0) {
+                classesToRemove = [];
+                _.forEach(componentClasses.models, function(model) {
+                    var remove = !regex.test(model.id);
+                    console.log(remove);
+                    if (remove && removeAllBut.length > 0) {
+                        remove = !removeAllBut.includes(model.id);
+                    }
+                    console.log(remove);
+                    if (remove) { classesToRemove.push(model.id); }
+                });
+            }
+
+            console.log('Classes To Remove', classesToRemove);
             var attrs = options.component.get('attributes');
 
             _.forEach(classesToRemove, function(c) {
